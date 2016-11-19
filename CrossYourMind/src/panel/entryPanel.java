@@ -130,27 +130,6 @@ public class entryPanel extends JPanel
 				selectMaster (4);
 			}
 		});
-		CH[5].addActionListener (new ActionListener ()
-		{
-			public void actionPerformed (ActionEvent e)
-			{
-				selectMaster (5);
-			}
-		});
-		CH[6].addActionListener (new ActionListener ()
-		{
-			public void actionPerformed (ActionEvent e)
-			{
-				selectMaster (6);
-			}
-		});
-		CH[7].addActionListener (new ActionListener ()
-		{
-			public void actionPerformed (ActionEvent e)
-			{
-				selectMaster (7);
-			}
-		});
 		
 		// Press the enter key to finish typing nickname
 		typeNickname.addActionListener (new ActionListener ()
@@ -200,8 +179,8 @@ public class entryPanel extends JPanel
 	// Objective: Initialize buttons for characters
 	private void initCH ()
 	{
-		CH = new JButton[8];
-		for (int i = 0 ; i < 8; i++)
+		CH = new JButton[5];
+		for (int i = 0 ; i < 5; i++)
 		{
 			CH[i] = new JButton (charImages.get (i));
 			CH[i].setPreferredSize (new Dimension (120, 220));
