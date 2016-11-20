@@ -2,7 +2,7 @@ package info;
 
 import java.io.Serializable;
 
-public class userInfo implements Serializable
+public class UserInfo implements Serializable
 {
 // ** STATUS ** 
 	public static final int IN_LOBBY = 100;
@@ -19,7 +19,7 @@ public class userInfo implements Serializable
 	int score;
 	
 // ** CONSTRUCTOR **
-	public userInfo ()
+	public UserInfo ()
 	{
 		nickName = "";
 		gameName = "";
@@ -27,7 +27,7 @@ public class userInfo implements Serializable
 		score = 0;
 	}
 	
-	public userInfo (int _status, String _nickName, String _imagePath)
+	public UserInfo (int _status, String _nickName, String _imagePath)
 	{
 		status = _status;
 		nickName = _nickName;

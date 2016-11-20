@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import drawing.point;
+import drawing.UserPoint;
 
-public class progressInfo implements Serializable
+public class ProgressInfo implements Serializable
 {
 // ** STATUS **
 	// in entryPanel
@@ -73,15 +73,15 @@ public class progressInfo implements Serializable
 	String lobbyChat;
 	
 	// for game
-	ArrayList<userInfo> usersGame;
+	ArrayList<UserInfo> usersGame;
 	String[][] chatsGame; // double pointer for each user
 	int roundTime;
 	
 	// for drawing
 	int drawColor;
-	ArrayList<point> pList;
+	ArrayList<UserPoint> pList;
 	
-	public progressInfo ()
+	public ProgressInfo ()
 	{ 
 		status = 0;
 		chat = "";
@@ -95,12 +95,12 @@ public class progressInfo implements Serializable
 	public ArrayList<String> get_usersLobby () { return usersLobby; }
 	public ArrayList<String> get_gamesLobby () { return gamesLobby; }
 	public String get_lobbyChat () { return lobbyChat; }
-	public ArrayList<userInfo> get_usersGame () { return usersGame; }
+	public ArrayList<UserInfo> get_usersGame () { return usersGame; }
 	public String[][] get_chatsGame () { return chatsGame; }
 	public int get_roundTime () { return roundTime; }
 	public int get_drawColor () { return drawColor; }
 	//public int get_drawingThickness () { return drawingThickness; }
-	public ArrayList<point> get_pList () { return pList; }
+	public ArrayList<UserPoint> get_pList () { return pList; }
 // ** SET METHOD **
 	public void set_status (int item) { status = item; }
 	public void set_chat (String item) { chat = item; }
@@ -108,10 +108,10 @@ public class progressInfo implements Serializable
 	public void set_usersLobby (ArrayList<String> item) { usersLobby = item; }
 	public void set_gamesLobby (ArrayList<String> item) { gamesLobby = item; }
 	public void set_lobbyChat (String item) { lobbyChat = item; }
-	public void set_usersGame (ArrayList<userInfo> item) { usersGame = item; }
+	public void set_usersGame (ArrayList<UserInfo> item) { usersGame = item; }
 	public void set_chatsGame (String[][] item) { chatsGame = item; }
 	public void set_roundTime (int item) { roundTime = item; }
 	public void set_drawColor (int item) { drawColor = item; }
 	//public void set_drawingThickness (int item) { drawingThickness = item; }
-	public void set_pList (ArrayList<point> item) { pList = item; }
+	public void set_pList (ArrayList<UserPoint> item) { pList = item; }
 }

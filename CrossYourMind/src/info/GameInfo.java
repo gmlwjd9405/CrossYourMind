@@ -2,7 +2,7 @@ package info;
 
 import java.io.Serializable;
 
-public class gameInfo implements Serializable
+public class GameInfo implements Serializable
 {
 // ** STATUS **
 	public static final int WATING = 100;
@@ -18,7 +18,7 @@ public class gameInfo implements Serializable
 	int roundNum;
 	
 // ** CONSTRUCTOR **
-	public gameInfo (int _status, String _gameName, int _participants)
+	public GameInfo (int _status, String _gameName, int _participants)
 	{
 		status = _status;
 		gameName = _gameName;

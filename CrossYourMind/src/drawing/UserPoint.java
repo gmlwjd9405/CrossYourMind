@@ -2,12 +2,12 @@ package drawing;
 
 import java.io.Serializable;
 
-public class point implements Serializable
+public class UserPoint implements Serializable
 {
 	int pointX;
 	int pointY;
 	
-	public point (int x, int y)
+	public UserPoint (int x, int y)
 	{
 		pointX = x;
 		pointY = y;

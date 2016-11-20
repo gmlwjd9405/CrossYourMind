@@ -37,21 +37,21 @@ import javax.swing.border.LineBorder;
 import javax.swing.AbstractAction;
 import javax.swing.Timer;
 
-import frame.mainFrame;
-import info.progressInfo;
-import info.userInfo;
-import drawing.point;
+import frame.MainFrame;
+import info.ProgressInfo;
+import info.UserInfo;
+import drawing.UserPoint;
 
 import java.util.ArrayList;
 
-public class gamePanel extends JPanel
+public class GamePanel extends JPanel
 {
 // ** DEFINE **
 	public static final int ROUND_TIME = 60;
 	
 // ** VARIABLE **
 	// Connect its parent frame
-	mainFrame f;
+	MainFrame f;
 	// For inner panels
 	JPanel northPanel, centerPanel, westPanel, eastPanel, southPanel;
 	JLabel titleImage;
@@ -68,12 +68,12 @@ public class gamePanel extends JPanel
 	// For drawing
 	Canvas cv;
 	int pointX, pointY;
-	ArrayList<point> pList;
+	ArrayList<UserPoint> pList;
 	Color drawColor;
 	int drawThick;
 	
 	// For game operation
-	ArrayList<userInfo> usersGame;
+	ArrayList<UserInfo> usersGame;
 	boolean gameStarted;
 	boolean isQuestioner;
 	long gameTime;
@@ -82,7 +82,7 @@ public class gamePanel extends JPanel
 	Thread thread;
 	
 // ** CONSTRUCTOR **
-	public gamePanel (mainFrame f)
+	public GamePanel (MainFrame f)
 	{
 		this.f = f;
 		
@@ -102,8 +102,8 @@ public class gamePanel extends JPanel
 	{
 		// Initialize data
 		this.setLayout (new BorderLayout ());
-		pList = new ArrayList<point> ();
-		usersGame = new ArrayList<userInfo> ();
+		pList = new ArrayList<UserPoint> ();
+		usersGame = new ArrayList<UserInfo> ();
 		
 		// For north panel
 		northPanel = new JPanel (new BorderLayout ());
@@ -254,10 +254,10 @@ public class gamePanel extends JPanel
 			{
 				if (!isQuestioner)
 				{
-					progressInfo pi = new progressInfo ();
-					pi.set_status (progressInfo.CHAT_GAME);
+					ProgressInfo pi = new ProgressInfo ();
+					pi.set_status (ProgressInfo.CHAT_GAME);
 					pi.set_chat (gameChat.getText ());
-					gamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.f.sendProtocol (pi);
 					gameChat.setText ("");
 				}
 			}
@@ -270,9 +270,9 @@ public class gamePanel extends JPanel
 			{
 				if (!gameStarted)
 				{
-					progressInfo pi = new progressInfo ();
-					pi.set_status (progressInfo.START_TRY);
-					gamePanel.this.f.sendProtocol (pi);
+					ProgressInfo pi = new ProgressInfo ();
+					pi.set_status (ProgressInfo.START_TRY);
+					GamePanel.this.f.sendProtocol (pi);
 				}
 			}
 		});
@@ -284,12 +284,12 @@ public class gamePanel extends JPanel
 			{
 				if (!gameStarted)
 				{
-					progressInfo pi = new progressInfo ();
-					pi.set_status (progressInfo.EXIT_GAME);
-					gamePanel.this.f.sendProtocol (pi);
-					gamePanel.this.f.setSize (mainFrame.lobbyPwidth, mainFrame.lobbyPheight);
-					gamePanel.this.f.set_currentCard (mainFrame.lobbyPcard);
-					gamePanel.this.f.get_card().show (gamePanel.this.f.getContentPane (), mainFrame.lobbyPcard);
+					ProgressInfo pi = new ProgressInfo ();
+					pi.set_status (ProgressInfo.EXIT_GAME);
+					GamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.f.setSize (MainFrame.lobbyPwidth, MainFrame.lobbyPheight);
+					GamePanel.this.f.set_currentCard (MainFrame.lobbyPcard);
+					GamePanel.this.f.get_card().show (GamePanel.this.f.getContentPane (), MainFrame.lobbyPcard);
 				}
 			}
 		});
@@ -302,12 +302,12 @@ public class gamePanel extends JPanel
 			{
 				if (SwingUtilities.isLeftMouseButton(e) && isQuestioner)
 				{
-					pList = new ArrayList<point> ();
-					pList.add (new point (e.getX (), e.getY ()));
-					progressInfo pi = new progressInfo ();
-					pi.set_status (progressInfo.DRAW);
+					pList = new ArrayList<UserPoint> ();
+					pList.add (new UserPoint (e.getX (), e.getY ()));
+					ProgressInfo pi = new ProgressInfo ();
+					pi.set_status (ProgressInfo.DRAW);
 					pi.set_pList (pList);
-					gamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.f.sendProtocol (pi);
 				}
 			}
 		});
@@ -319,9 +319,9 @@ public class gamePanel extends JPanel
 			{
 				if (isQuestioner)
 				{
-					progressInfo pi = new progressInfo ();
-					pi.set_status (progressInfo.SELECT_CLEAR);
-					gamePanel.this.f.sendProtocol (pi);
+					ProgressInfo pi = new ProgressInfo ();
+					pi.set_status (ProgressInfo.SELECT_CLEAR);
+					GamePanel.this.f.sendProtocol (pi);
 				}
 			}
 		});
@@ -333,9 +333,9 @@ public class gamePanel extends JPanel
 			{
 				if (isQuestioner)
 				{
-					progressInfo pi = new progressInfo ();
-					pi.set_status (progressInfo.SELECT_ERASER);
-					gamePanel.this.f.sendProtocol (pi);
+					ProgressInfo pi = new ProgressInfo ();
+					pi.set_status (ProgressInfo.SELECT_ERASER);
+					GamePanel.this.f.sendProtocol (pi);
 				}
 			}
 		});
@@ -347,10 +347,10 @@ public class gamePanel extends JPanel
 			{
 				if (isQuestioner)
 				{
-					progressInfo pi = new progressInfo ();
-					pi.set_status (progressInfo.SELECT_COLOR);
+					ProgressInfo pi = new ProgressInfo ();
+					pi.set_status (ProgressInfo.SELECT_COLOR);
 					pi.set_drawColor (0);
-					gamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.f.sendProtocol (pi);
 				}
 			}
 		});
@@ -360,10 +360,10 @@ public class gamePanel extends JPanel
 			{
 				if (isQuestioner)
 				{
-					progressInfo pi = new progressInfo ();
-					pi.set_status (progressInfo.SELECT_COLOR);
+					ProgressInfo pi = new ProgressInfo ();
+					pi.set_status (ProgressInfo.SELECT_COLOR);
 					pi.set_drawColor (1);
-					gamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.f.sendProtocol (pi);
 				}
 			}
 		});
@@ -373,10 +373,10 @@ public class gamePanel extends JPanel
 			{
 				if (isQuestioner)
 				{
-					progressInfo pi = new progressInfo ();
-					pi.set_status (progressInfo.SELECT_COLOR);
+					ProgressInfo pi = new ProgressInfo ();
+					pi.set_status (ProgressInfo.SELECT_COLOR);
 					pi.set_drawColor (2);
-					gamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.f.sendProtocol (pi);
 				}
 			}
 		});
@@ -386,10 +386,10 @@ public class gamePanel extends JPanel
 			{
 				if (isQuestioner)
 				{
-					progressInfo pi = new progressInfo ();
-					pi.set_status (progressInfo.SELECT_COLOR);
+					ProgressInfo pi = new ProgressInfo ();
+					pi.set_status (ProgressInfo.SELECT_COLOR);
 					pi.set_drawColor (3);
-					gamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.f.sendProtocol (pi);
 				}
 			}
 		});
@@ -399,10 +399,10 @@ public class gamePanel extends JPanel
 			{
 				if (isQuestioner)
 				{
-					progressInfo pi = new progressInfo ();
-					pi.set_status (progressInfo.SELECT_COLOR);
+					ProgressInfo pi = new ProgressInfo ();
+					pi.set_status (ProgressInfo.SELECT_COLOR);
 					pi.set_drawColor (4);
-					gamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.f.sendProtocol (pi);
 				}
 			}
 		});
@@ -412,10 +412,10 @@ public class gamePanel extends JPanel
 			{
 				if (isQuestioner)
 				{
-					progressInfo pi = new progressInfo ();
-					pi.set_status (progressInfo.SELECT_COLOR);
+					ProgressInfo pi = new ProgressInfo ();
+					pi.set_status (ProgressInfo.SELECT_COLOR);
 					pi.set_drawColor (5);
-					gamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.f.sendProtocol (pi);
 				}
 			}
 		});
@@ -430,7 +430,7 @@ public class gamePanel extends JPanel
 		eastPanel.removeAll ();
 		int size = usersGame.size ();
 		// Initialize score of each player
-		for (userInfo ui: usersGame)
+		for (UserInfo ui: usersGame)
 		{
 			ui.set_score (0);
 		}
@@ -616,7 +616,7 @@ public class gamePanel extends JPanel
 	{
 		int score = 0;
 		// Update the score of target user
-		for (userInfo ui: usersGame)
+		for (UserInfo ui: usersGame)
 		{
 			if (ui.get_nickName ().equals (nickName))
 			{
@@ -661,7 +661,7 @@ public class gamePanel extends JPanel
 	// INPUT: list of the users in this game 
 	// OUTPUT: null
 	// Objective: Invoke updatePanel function to redraw west&east panel
-	public void joinApproved (ArrayList<userInfo> usersGame)
+	public void joinApproved (ArrayList<UserInfo> usersGame)
 	{
 		this.usersGame = usersGame;
 		System.out.println("f : " + usersGame);
@@ -671,7 +671,7 @@ public class gamePanel extends JPanel
 	// INPUT: list of the users in this game 
 	// OUTPUT: null
 	// Objective: Invoke updatePanel function to draw west&east panel at first
-	public void createApproved (ArrayList<userInfo> usersGame)
+	public void createApproved (ArrayList<UserInfo> usersGame)
 	{
 		this.usersGame = usersGame;
 		updatePanel ();
@@ -682,7 +682,7 @@ public class gamePanel extends JPanel
 	// Objective: Inform user that unable to start game because the user is not game master
 	public void startDeniedMaster ()
 	{
-		JOptionPane.showMessageDialog (gamePanel.this.f.getContentPane (), "You are not the game master!");
+		JOptionPane.showMessageDialog (GamePanel.this.f.getContentPane (), "You are not the game master!");
 	}
 	
 	// INPUT: null
@@ -690,7 +690,7 @@ public class gamePanel extends JPanel
 	// Objective: Inform user that unable to start game because there is not enough player
 	public void startDeniedNum ()
 	{
-		JOptionPane.showMessageDialog (gamePanel.this.f.getContentPane (), "You need at least two players!");
+		JOptionPane.showMessageDialog (GamePanel.this.f.getContentPane (), "You need at least two players!");
 	}
 	
 	// INPUT: answer of this round, nickname of questioner
@@ -700,7 +700,7 @@ public class gamePanel extends JPanel
 	// For all client, set the timer with game time
 	public void gameStarted (String roundAnswer, String questioner)
 	{
-		if (gamePanel.this.f.get_myNickname ().equals (questioner))
+		if (GamePanel.this.f.get_myNickname ().equals (questioner))
 		{
 			isQuestioner = true;
 			answer.setText (roundAnswer);
@@ -737,11 +737,11 @@ public class gamePanel extends JPanel
 	// INPUT: list of points drawn by questioner
 	// OUTPUT: null
 	// Objective: Draw the canvas with point list, selected color
-	public void drawBroadcasted (ArrayList<point> pList)
+	public void drawBroadcasted (ArrayList<UserPoint> pList)
 	{
 		Graphics g = cv.getGraphics ();
 		
-		for (point p: pList)
+		for (UserPoint p: pList)
 		{
 			System.out.println ("(" + p.get_pointX() + ", " + p.get_pointY() + ")");
 			g.setColor (drawColor);
@@ -947,9 +947,9 @@ public class gamePanel extends JPanel
 				if (isQuestioner)
 				{
 					// Questioner sends the server to notify that the round ended
-					progressInfo pi = new progressInfo ();
-					pi.set_status (progressInfo.TIMER_EXPIRE);
-					gamePanel.this.f.sendProtocol (pi);
+					ProgressInfo pi = new ProgressInfo ();
+					pi.set_status (ProgressInfo.TIMER_EXPIRE);
+					GamePanel.this.f.sendProtocol (pi);
 				}
 			}
 		};
@@ -1003,9 +1003,9 @@ public class gamePanel extends JPanel
 				gameStarted = false;
 				if (isQuestioner)
 				{
-					progressInfo pi = new progressInfo ();
-					pi.set_status (progressInfo.TIMER_EXPIRE);
-					gamePanel.this.f.sendProtocol (pi);
+					ProgressInfo pi = new ProgressInfo ();
+					pi.set_status (ProgressInfo.TIMER_EXPIRE);
+					GamePanel.this.f.sendProtocol (pi);
 				}
 			}
 		}

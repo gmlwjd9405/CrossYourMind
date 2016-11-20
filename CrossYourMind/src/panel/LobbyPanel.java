@@ -31,14 +31,14 @@ import javax.swing.border.LineBorder;
 
 import java.util.ArrayList;
 
-import frame.mainFrame;
-import info.progressInfo;
+import frame.MainFrame;
+import info.ProgressInfo;
 
-public class lobbyPanel extends JPanel
+public class LobbyPanel extends JPanel
 {
 // ** VARIABLE **
 	// Connect to its parent frame
-	mainFrame f;
+	MainFrame f;
 	// For inner panels
 	JPanel northPanel, centerPanel, southPanel;
 	JLabel titleImage, gameListImage;
@@ -56,7 +56,7 @@ public class lobbyPanel extends JPanel
 	String[] usersLobby;
 
 // ** CONSTRUCTOR **
-	public lobbyPanel (mainFrame f)
+	public LobbyPanel (MainFrame f)
 	{
 		this.f = f;
 		recent8Chat = new String[8]; // In lobby, show only recent 8 chats
@@ -157,10 +157,10 @@ public class lobbyPanel extends JPanel
 		{
 			public void actionPerformed (ActionEvent e)
 			{
-				progressInfo pi = new progressInfo ();
-				pi.set_status(progressInfo.CHAT_LOBBY);
+				ProgressInfo pi = new ProgressInfo ();
+				pi.set_status(ProgressInfo.CHAT_LOBBY);
 				pi.set_chat(typeChat.getText ());
-				lobbyPanel.this.f.sendProtocol(pi);
+				LobbyPanel.this.f.sendProtocol(pi);
 				typeChat.setText ("");
 			}
 		});
@@ -179,12 +179,12 @@ public class lobbyPanel extends JPanel
 		{
 			public void actionPerformed (ActionEvent e)
 			{
-				progressInfo pi = new progressInfo ();
-				pi.set_status(progressInfo.EXIT_LOBBY);
-				lobbyPanel.this.f.sendProtocol(pi);
-				lobbyPanel.this.f.setSize (mainFrame.entryPwidth, mainFrame.entryPheight);
-				lobbyPanel.this.f.set_currentCard (mainFrame.entryPcard);
-				lobbyPanel.this.f.get_card().show (lobbyPanel.this.f.getContentPane (), mainFrame.entryPcard);
+				ProgressInfo pi = new ProgressInfo ();
+				pi.set_status(ProgressInfo.EXIT_LOBBY);
+				LobbyPanel.this.f.sendProtocol(pi);
+				LobbyPanel.this.f.setSize (MainFrame.entryPwidth, MainFrame.entryPheight);
+				LobbyPanel.this.f.set_currentCard (MainFrame.entryPcard);
+				LobbyPanel.this.f.get_card().show (LobbyPanel.this.f.getContentPane (), MainFrame.entryPcard);
 				//lobbyPanel.this.f.setDefaultCloseOperation (JFrame.DO_NOTHING_ON_CLOSE);
 			}
 		});
@@ -198,15 +198,15 @@ public class lobbyPanel extends JPanel
 				{
 					if (gameList.getSelectedIndex () == -1)
 					{
-						JOptionPane.showMessageDialog(lobbyPanel.this.f.getContentPane (), "Select the room.");
+						JOptionPane.showMessageDialog(LobbyPanel.this.f.getContentPane (), "Select the room.");
 					}
 					else
 					{
 						System.out.println ("I'm here!");
-						progressInfo pi = new progressInfo ();
-						pi.set_status (progressInfo.JOIN_GAME_TRY);
+						ProgressInfo pi = new ProgressInfo ();
+						pi.set_status (ProgressInfo.JOIN_GAME_TRY);
 						pi.set_chat (gameList.getSelectedValue ().trim ());
-						lobbyPanel.this.f.sendProtocol(pi);
+						LobbyPanel.this.f.sendProtocol(pi);
 					}
 				}
 			}
@@ -293,13 +293,13 @@ public class lobbyPanel extends JPanel
 	// Objective: Change the client's display to game panel when joining game succeeds
 	public void joinApproved (String gameName)
 	{
-		progressInfo pi = new progressInfo ();
-		pi.set_status (progressInfo.JOIN_GAME);
+		ProgressInfo pi = new ProgressInfo ();
+		pi.set_status (ProgressInfo.JOIN_GAME);
 		pi.set_chat (gameName);
-		lobbyPanel.this.f.sendProtocol(pi);
-		lobbyPanel.this.f.setSize (mainFrame.gamePwidth, mainFrame.gamePheight);
-		lobbyPanel.this.f.set_currentCard (mainFrame.gamePcard);
-		lobbyPanel.this.f.get_card().show (lobbyPanel.this.f.getContentPane (), mainFrame.gamePcard);
+		LobbyPanel.this.f.sendProtocol(pi);
+		LobbyPanel.this.f.setSize (MainFrame.gamePwidth, MainFrame.gamePheight);
+		LobbyPanel.this.f.set_currentCard (MainFrame.gamePcard);
+		LobbyPanel.this.f.get_card().show (LobbyPanel.this.f.getContentPane (), MainFrame.gamePcard);
 	}
 	
 	// INPUT: null
@@ -307,7 +307,7 @@ public class lobbyPanel extends JPanel
 	// Objective: Notice the client that joining game failed because the game is full or already started
 	public void joinDenied ()
 	{
-		JOptionPane.showMessageDialog (lobbyPanel.this.f.getContentPane (), "The game is full or already started.");
+		JOptionPane.showMessageDialog (LobbyPanel.this.f.getContentPane (), "The game is full or already started.");
 	}
 	
 	// INPUT: null
@@ -315,10 +315,10 @@ public class lobbyPanel extends JPanel
 	// Objective: Change the client's display to game panel when creating game succeeds
 	public void createApproved ()
 	{
-		lobbyPanel.this.f.setSize (mainFrame.gamePwidth, mainFrame.gamePheight);
-		lobbyPanel.this.f.set_currentCard (mainFrame.gamePcard);
-		lobbyPanel.this.f.get_card().show (lobbyPanel.this.f.getContentPane (), mainFrame.gamePcard);
-		lobbyPanel.this.closeCreateDialog ();	
+		LobbyPanel.this.f.setSize (MainFrame.gamePwidth, MainFrame.gamePheight);
+		LobbyPanel.this.f.set_currentCard (MainFrame.gamePcard);
+		LobbyPanel.this.f.get_card().show (LobbyPanel.this.f.getContentPane (), MainFrame.gamePcard);
+		LobbyPanel.this.closeCreateDialog ();	
 	}
 	
 	// INPUT: null
@@ -350,7 +350,7 @@ class CreateDialog extends JPanel
 {
 // ** VARIABLE **
 	// Connect to its parent panel
-	lobbyPanel lp;
+	LobbyPanel lp;
 	// For inner panels
 	JPanel southPanel;
 	JLabel message;
@@ -358,7 +358,7 @@ class CreateDialog extends JPanel
 	JButton createButton, exitButton;
 	
 // ** CONSTRUCTOR **
-	public CreateDialog (lobbyPanel lp)
+	public CreateDialog (LobbyPanel lp)
 	{
 		this.lp = lp;
 		setPanel ();
@@ -415,8 +415,8 @@ class CreateDialog extends JPanel
 					JOptionPane.showMessageDialog (CreateDialog.this.lp.f.getContentPane (), "Please enter room name.");
 				else
 				{
-					progressInfo pi = new progressInfo ();
-					pi.set_status(progressInfo.CREATE_GAME_TRY);
+					ProgressInfo pi = new ProgressInfo ();
+					pi.set_status(ProgressInfo.CREATE_GAME_TRY);
 					pi.set_chat (typeRoomName.getText ());
 					CreateDialog.this.lp.f.sendProtocol(pi);
 					typeRoomName.setText ("");
@@ -433,8 +433,8 @@ class CreateDialog extends JPanel
 					JOptionPane.showMessageDialog (CreateDialog.this.lp.f.getContentPane (), "Please enter room name.");
 				else
 				{
-					progressInfo pi = new progressInfo ();
-					pi.set_status(progressInfo.CREATE_GAME_TRY);
+					ProgressInfo pi = new ProgressInfo ();
+					pi.set_status(ProgressInfo.CREATE_GAME_TRY);
 					pi.set_chat (typeRoomName.getText ());
 					CreateDialog.this.lp.f.sendProtocol(pi);
 					typeRoomName.setText ("");

@@ -2,10 +2,10 @@ package server;
 
 import java.io.Serializable;
 
-import info.userInfo;
-import info.gameInfo;
-import info.progressInfo;
-import drawing.point;
+import info.UserInfo;
+import info.GameInfo;
+import info.ProgressInfo;
+import drawing.UserPoint;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,7 +22,7 @@ public class ALPHAserver extends Thread
 	// For connection
 	ServerSocket ss;
 	ArrayList<ServerClient> scList;
-	ArrayList<gameInfo> giList;
+	ArrayList<GameInfo> giList;
 	ArrayList<String> wordList;
 	
 	String recentLobbyChat;
@@ -41,7 +41,7 @@ public class ALPHAserver extends Thread
 		// Initialize data
 		recentLobbyChat = new String (); 
 		scList = new ArrayList<ServerClient> ();
-		giList = new ArrayList<gameInfo> ();
+		giList = new ArrayList<GameInfo> ();
 		
 		ActionListener action = new ActionListener ()
 		{
@@ -151,8 +151,8 @@ public class ALPHAserver extends Thread
 			{
 				if (sc.userInLobby ())
 				{
-					progressInfo pi_ack = new progressInfo ();
-					pi_ack.set_status (progressInfo.CHAT_LOBBY_UPDATE);
+					ProgressInfo pi_ack = new ProgressInfo ();
+					pi_ack.set_status (ProgressInfo.CHAT_LOBBY_UPDATE);
 					pi_ack.set_lobbyChat (recentLobbyChat);
 					sc.lockedWrite (pi_ack);
 				}
@@ -182,7 +182,7 @@ public class ALPHAserver extends Thread
 	public void printGames ()
 	{
 		System.out.println ("GAMES:");
-		for (gameInfo gi: giList)
+		for (GameInfo gi: giList)
 		{
 			System.out.println ("| " + gi.get_gameName ());
 		}
@@ -206,7 +206,7 @@ public class ALPHAserver extends Thread
 	// Objective: Check if the name is already in user
 	public boolean checkDuplicateGame (String new_gameName)
 	{
-		for (gameInfo gi: giList)
+		for (GameInfo gi: giList)
 		{
 			if (gi.get_gameName().equals(new_gameName))
 				return true;
@@ -219,7 +219,7 @@ public class ALPHAserver extends Thread
 	// Objective: Create data structure for the game
 	public void newGame (String roomName)
 	{
-		giList.add (new gameInfo (gameInfo.WATING, roomName, 1));
+		giList.add (new GameInfo (GameInfo.WATING, roomName, 1));
 	}
 	
 	// INPUT: null
@@ -231,8 +231,8 @@ public class ALPHAserver extends Thread
 		{
 			try
 			{
-				progressInfo pi_ack = new progressInfo ();
-				pi_ack.set_status (progressInfo.GAME_LOBBY_UPDATE);
+				ProgressInfo pi_ack = new ProgressInfo ();
+				pi_ack.set_status (ProgressInfo.GAME_LOBBY_UPDATE);
 				pi_ack.set_gamesLobby (giListNames ());
 				sc.lockedWrite (pi_ack);
 			}
@@ -252,8 +252,8 @@ public class ALPHAserver extends Thread
 		{
 			try
 			{
-				progressInfo pi_ack = new progressInfo ();
-				pi_ack.set_status (progressInfo.USER_LOBBY_UPDATE);
+				ProgressInfo pi_ack = new ProgressInfo ();
+				pi_ack.set_status (ProgressInfo.USER_LOBBY_UPDATE);
 				pi_ack.set_usersLobby (userListNames ());
 				sc.lockedWrite (pi_ack);
 			}
@@ -275,8 +275,8 @@ public class ALPHAserver extends Thread
 			{
 				if (sc.getUserInfo ().get_gameName ().equals (gameName))
 				{
-					progressInfo pi_ack = new progressInfo ();
-					pi_ack.set_status (progressInfo.USER_GAME_UPDATE);
+					ProgressInfo pi_ack = new ProgressInfo ();
+					pi_ack.set_status (ProgressInfo.USER_GAME_UPDATE);
 					pi_ack.set_usersGame(getUsersGame (gameName));
 					sc.lockedWrite (pi_ack);
 				}
@@ -311,7 +311,7 @@ public class ALPHAserver extends Thread
 		ArrayList<String> names = new ArrayList<String> ();
 		for (int i = 0; i < length; i++)
 		{
-			if (scList.get (i).getUserStatus () == userInfo.IN_LOBBY && !(scList.get (i).getUserNickname ().equals ("")))
+			if (scList.get (i).getUserStatus () == UserInfo.IN_LOBBY && !(scList.get (i).getUserNickname ().equals ("")))
 				names.add (scList.get (i).getUserNickname ());
 		}
 		return names;
@@ -322,7 +322,7 @@ public class ALPHAserver extends Thread
 	// Objective: Update data structures about input informations.
 	public void userJoinGame (String nickName, String gameName)
 	{
-		for (gameInfo gi: giList)
+		for (GameInfo gi: giList)
 		{
 			try
 			{
@@ -346,8 +346,8 @@ public class ALPHAserver extends Thread
 				if (sc.getUserInfo ().get_gameName ().equals (gameName))
 				{
 					System.out.println (sc.getUserInfo().get_nickName());
-					progressInfo pi_ack = new progressInfo ();
-					pi_ack.set_status (progressInfo.JOIN_GAME_NEW);
+					ProgressInfo pi_ack = new ProgressInfo ();
+					pi_ack.set_status (ProgressInfo.JOIN_GAME_NEW);
 					pi_ack.set_usersGame (getUsersGame (gameName));
 					sc.lockedWrite (pi_ack);
 				}
@@ -364,13 +364,13 @@ public class ALPHAserver extends Thread
 	// Objective: Check if the game is full or already started	
 	public boolean checkFull (String gameName)
 	{
-		for (gameInfo gi: giList)
+		for (GameInfo gi: giList)
 		{
 			try
 			{
 				if (gi.get_gameName ().equals (gameName))
 				{
-					if (gi.get_participants () == 6 || gi.get_status() == gameInfo.PLAYING)
+					if (gi.get_participants () == 6 || gi.get_status() == GameInfo.PLAYING)
 						return true;
 				}
 			}
@@ -413,9 +413,9 @@ public class ALPHAserver extends Thread
 	// INPUT: name of the target game
 	// OUTPUT: list of users in that game
 	// Objective: Get the list of users for given game name
-	public ArrayList<userInfo> getUsersGame (String gameName)
+	public ArrayList<UserInfo> getUsersGame (String gameName)
 	{
-		ArrayList<userInfo> ui = new ArrayList<userInfo> ();
+		ArrayList<UserInfo> ui = new ArrayList<UserInfo> ();
 		for (ServerClient sc: scList)
 		{
 			if (sc.getUserInfo ().get_gameName ().equals (gameName))
@@ -431,7 +431,7 @@ public class ALPHAserver extends Thread
 	// Objective: For debugging
 	public void printGi ()
 	{
-		for (gameInfo gi: giList)
+		for (GameInfo gi: giList)
 		{
 			System.out.println ("status: " + gi.get_status () + "gameName: " + gi.get_gameName() + "participants: " + gi.get_participants ());
 		}
@@ -442,7 +442,7 @@ public class ALPHAserver extends Thread
 	// Objective: Check if the game can be started (enough participants)
 	public boolean startAvailable (String gameName)
 	{
-		for (gameInfo gi: giList)
+		for (GameInfo gi: giList)
 		{
 			if (gi.get_gameName ().equals (gameName))
 			{
@@ -458,12 +458,12 @@ public class ALPHAserver extends Thread
 	// Objective: For all the clients in the game, notify to start the game
 	public void startGameAll (String gameName)
 	{
-		for (gameInfo gi: giList)
+		for (GameInfo gi: giList)
 		{
 			if (gi.get_gameName ().equals (gameName))
 			{
-				gi.set_status (gameInfo.PLAYING);
-				gi.set_roundNum (gameInfo.ROUND_NUM);
+				gi.set_status (GameInfo.PLAYING);
+				gi.set_roundNum (GameInfo.ROUND_NUM);
 			}
 		}
 		String questioner = "";
@@ -473,13 +473,13 @@ public class ALPHAserver extends Thread
 			{
 				if (sc.getUserInfo ().get_gameName ().equals (gameName))
 				{
-					progressInfo pi_ack = new progressInfo ();
+					ProgressInfo pi_ack = new ProgressInfo ();
 					if (sc.getUserInfo ().get_isMaster ())
 					{
 						questioner = new String (sc.getUserNickname ());
-						sc.getUserInfo ().set_status(userInfo.IN_GAME_QUESTIONER);
-						pi_ack.set_status (progressInfo.START_APPROVE_QUESTIONER);
-						for (gameInfo gi: giList)
+						sc.getUserInfo ().set_status(UserInfo.IN_GAME_QUESTIONER);
+						pi_ack.set_status (ProgressInfo.START_APPROVE_QUESTIONER);
+						for (GameInfo gi: giList)
 						{
 							try
 							{
@@ -498,8 +498,8 @@ public class ALPHAserver extends Thread
 					}
 					else
 					{
-						sc.getUserInfo ().set_status(userInfo.IN_GAME_ANSWERER);
-						pi_ack.set_status (progressInfo.START_APPROVE_ANSWERER);
+						sc.getUserInfo ().set_status(UserInfo.IN_GAME_ANSWERER);
+						pi_ack.set_status (ProgressInfo.START_APPROVE_ANSWERER);
 					}
 					pi_ack.set_imagePath (questioner);
 					sc.lockedWrite (pi_ack);
@@ -515,7 +515,7 @@ public class ALPHAserver extends Thread
 	// INPUT: name of the target game, point list to draw
 	// OUTPUT: null
 	// Objective: If questioner draws to canvas, broadcast the drawing to the users in the game
-	public void drawBroadcast (String gameName, ArrayList<point> pList)
+	public void drawBroadcast (String gameName, ArrayList<UserPoint> pList)
 	{
 		for (ServerClient sc:scList)
 		{
@@ -523,8 +523,8 @@ public class ALPHAserver extends Thread
 			{
 				if (sc.getUserInfo ().get_gameName ().equals (gameName))
 				{
-					progressInfo pi_broadcast = new progressInfo ();
-					pi_broadcast.set_status (progressInfo.DRAW_BROADCAST);
+					ProgressInfo pi_broadcast = new ProgressInfo ();
+					pi_broadcast.set_status (ProgressInfo.DRAW_BROADCAST);
 					pi_broadcast.set_pList (pList);
 					sc.lockedWrite (pi_broadcast);
 				}
@@ -547,8 +547,8 @@ public class ALPHAserver extends Thread
 			{
 				if (sc.getUserInfo ().get_gameName ().equals (gameName))
 				{
-					progressInfo pi_broadcast = new progressInfo ();
-					pi_broadcast.set_status (progressInfo.SELECT_CLEAR_BROADCAST);
+					ProgressInfo pi_broadcast = new ProgressInfo ();
+					pi_broadcast.set_status (ProgressInfo.SELECT_CLEAR_BROADCAST);
 					sc.lockedWrite (pi_broadcast);
 				}
 			}
@@ -570,8 +570,8 @@ public class ALPHAserver extends Thread
 			{
 				if (sc.getUserInfo ().get_gameName ().equals (gameName))
 				{
-					progressInfo pi_broadcast = new progressInfo ();
-					pi_broadcast.set_status (progressInfo.SELECT_ERASER_BROADCAST);
+					ProgressInfo pi_broadcast = new ProgressInfo ();
+					pi_broadcast.set_status (ProgressInfo.SELECT_ERASER_BROADCAST);
 					sc.lockedWrite (pi_broadcast);
 				}
 			}
@@ -593,8 +593,8 @@ public class ALPHAserver extends Thread
 			{
 				if (sc.getUserInfo ().get_gameName ().equals (gameName))
 				{
-					progressInfo pi_broadcast = new progressInfo ();
-					pi_broadcast.set_status (progressInfo.SELECT_COLOR_BROADCAST);
+					ProgressInfo pi_broadcast = new ProgressInfo ();
+					pi_broadcast.set_status (ProgressInfo.SELECT_COLOR_BROADCAST);
 					pi_broadcast.set_drawColor (drawingColor);
 					sc.lockedWrite (pi_broadcast);
 				}
@@ -619,7 +619,7 @@ public class ALPHAserver extends Thread
 		{
 			System.out.println ("SERVER: In while: " + scList.size ());
 			i = rand.nextInt (scList.size ());
-			userInfo selected = scList.get (i).getUserInfo ();
+			UserInfo selected = scList.get (i).getUserInfo ();
 			if (!(selected.get_nickName ().equals (recentQuestioner)) && (selected.get_gameName ().equals (gameName)))
 			{
 				nextQuestioner = new String (scList.get (i).getUserInfo ().get_nickName ()); 
@@ -627,7 +627,7 @@ public class ALPHAserver extends Thread
 			}
 		}
 		//System.out.println ("SERVER: Out while");
-		for (gameInfo gi: giList)
+		for (GameInfo gi: giList)
 		{
 			try
 			{
@@ -643,19 +643,19 @@ public class ALPHAserver extends Thread
 							{
 								if (sc.getUserInfo ().get_gameName ().equals (gameName))
 								{
-									progressInfo pi_ack = new progressInfo ();
+									ProgressInfo pi_ack = new ProgressInfo ();
 									pi_ack.set_imagePath (nextQuestioner);
 									if (sc.getUserInfo ().get_nickName ().equals (nextQuestioner))
 									{System.out.println ("IN if");
-										sc.getUserInfo ().set_status(userInfo.IN_GAME_QUESTIONER);
-										pi_ack.set_status (progressInfo.START_APPROVE_QUESTIONER);
+										sc.getUserInfo ().set_status(UserInfo.IN_GAME_QUESTIONER);
+										pi_ack.set_status (ProgressInfo.START_APPROVE_QUESTIONER);
 										gi.set_roundAnswer (getRandomWord ());
 										pi_ack.set_chat (gi.get_roundAnswer ());
 									}
 									else
 									{System.out.println ("IN else");
-										sc.getUserInfo ().set_status(userInfo.IN_GAME_ANSWERER);
-										pi_ack.set_status (progressInfo.START_APPROVE_ANSWERER);
+										sc.getUserInfo ().set_status(UserInfo.IN_GAME_ANSWERER);
+										pi_ack.set_status (ProgressInfo.START_APPROVE_ANSWERER);
 									}
 									System.out.println ("  SEND| chat:" + pi_ack.get_chat() + " iPath:" + pi_ack.get_imagePath());
 									System.out.println ("        status:" + pi_ack.get_status ());
@@ -671,8 +671,8 @@ public class ALPHAserver extends Thread
 					}
 					else // roundNum <= 0
 					{
-						progressInfo pi_broadcast = new progressInfo ();
-						pi_broadcast.set_status (progressInfo.ROUND_TERMINATE);
+						ProgressInfo pi_broadcast = new ProgressInfo ();
+						pi_broadcast.set_status (ProgressInfo.ROUND_TERMINATE);
 						pi_broadcast.set_chat (findWinner (gameName));
 						for (ServerClient sc: scList)
 						{
@@ -682,7 +682,7 @@ public class ALPHAserver extends Thread
 								sc.getUserInfo ().set_score (0);
 							}
 						}
-						gi.set_status (gameInfo.WATING);
+						gi.set_status (GameInfo.WATING);
 					}
 				}
 			}
@@ -741,14 +741,14 @@ public class ALPHAserver extends Thread
 	// If not correct, just update the chats in game
 	public void checkAnswer (String gameName, String nickName, String chat)
 	{
-		for (gameInfo gi: giList)
+		for (GameInfo gi: giList)
 		{
 			if (gi.get_gameName ().equals (gameName))
 			{
 				if (gi.get_roundAnswer ().equals (chat))
 				{//System.out.println("CORRECT");
-					progressInfo pi_broadcast = new progressInfo ();
-					pi_broadcast.set_status (progressInfo.CORRECT_ANSWER);
+					ProgressInfo pi_broadcast = new ProgressInfo ();
+					pi_broadcast.set_status (ProgressInfo.CORRECT_ANSWER);
 					pi_broadcast.set_chat (nickName);
 					pi_broadcast.set_imagePath (chat);
 					for (ServerClient sc: scList)
@@ -761,8 +761,8 @@ public class ALPHAserver extends Thread
 				}
 				else
 				{
-					progressInfo pi_broadcast = new progressInfo ();
-					pi_broadcast.set_status (progressInfo.CHAT_GAME_UPDATE);
+					ProgressInfo pi_broadcast = new ProgressInfo ();
+					pi_broadcast.set_status (ProgressInfo.CHAT_GAME_UPDATE);
 					pi_broadcast.set_chat (nickName);
 					pi_broadcast.set_imagePath (chat);
 					for (ServerClient sc: scList)
@@ -804,8 +804,8 @@ public class ALPHAserver extends Thread
 	// Objective: For all the clients, notify that 1 second elapsed
 	public void timerBroadcast ()
 	{
-		progressInfo pi_broadcast = new progressInfo ();
-		pi_broadcast.set_status (progressInfo.TIMER_BROADCAST);
+		ProgressInfo pi_broadcast = new ProgressInfo ();
+		pi_broadcast.set_status (ProgressInfo.TIMER_BROADCAST);
 		for (ServerClient sc: scList)
 		{
 			try
