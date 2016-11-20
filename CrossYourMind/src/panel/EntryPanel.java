@@ -8,6 +8,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowAdapter;
@@ -18,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+import javax.net.ssl.ExtendedSSLSession;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -29,20 +32,23 @@ import info.ProgressInfo;
 public class EntryPanel extends JPanel {
 	// ** VARIABLE **
 	// Connect to its parent frame
-	MainFrame f;
-	// For inner panels
-	JPanel northPanel, centerPanel, southPanel;
-	JLabel titleImage;
-	JButton[] CH;
-	JButton enterButton;
-	ArrayList<Icon> charImages;
-	JTextField typeNickname;
+	private MainFrame mainFrame;
 
-	String imagePath;
+	// For inner panels
+	private JPanel northPanel, centerPanel, southPanel;
+	private JLabel titleImage;
+	private JButton[] CH;
+	private JButton enterButton;
+	private ArrayList<Icon> charImages = new ArrayList<Icon>();;
+	private ArrayList<Icon> charPressedImages = new ArrayList<Icon>();;
+	private JTextField typeNickname;
+
+	private String imagePath;
+	InputActionListener inputActionListener = new InputActionListener();
 
 	// ** CONSTRUCTOR **
 	public EntryPanel(MainFrame f) {
-		this.f = f;
+		this.mainFrame = f;
 		initCharImages();
 		imagePath = "";
 		setPanel();
@@ -55,33 +61,39 @@ public class EntryPanel extends JPanel {
 	// Objective: Initialize the panels
 	private void setPanel() {
 		this.setLayout(new BorderLayout());
+
 		// For north panel
-		northPanel = new JPanel(new BorderLayout());
-		northPanel.setPreferredSize(new Dimension(800, 150));
+		northPanel = new JPanel(new FlowLayout());
+		northPanel.setPreferredSize(new Dimension(800, 110));
+		northPanel.setBackground(new Color(64, 64, 64));
 		titleImage = new JLabel();
 		titleImage.setIcon(new ImageIcon("src/images/titlePanel.png"));
-		titleImage.setPreferredSize(new Dimension(800, 150));
+		titleImage.setPreferredSize(new Dimension(750, 100));
 		northPanel.add(titleImage);
 		this.add(BorderLayout.NORTH, northPanel);
 
 		// For center panel
 		centerPanel = new JPanel(new FlowLayout());
-		centerPanel.setPreferredSize(new Dimension(800, 300));
-		centerPanel.setBackground(new Color(189, 215, 238));
+		centerPanel.setPreferredSize(new Dimension(800, 360));
+		// centerPanel.setBackground(new Color(64, 64, 64));
+		centerPanel.setBackground(Color.gray);
 		initCH();
 		this.add(BorderLayout.CENTER, centerPanel);
 
 		// For south panel
 		southPanel = new JPanel(new FlowLayout());
-		southPanel.setPreferredSize(new Dimension(800, 150));
-		southPanel.setBackground(new Color(189, 215, 238));
+		southPanel.setPreferredSize(new Dimension(800, 50));
+		southPanel.setBackground(new Color(64, 64, 64));
 		typeNickname = new JTextField();
-		typeNickname.setPreferredSize(new Dimension(300, 80));
-		typeNickname.setFont(new Font(null, Font.BOLD, 30));
-		typeNickname.setBorder(new LineBorder(new Color(91, 155, 213), 4));
-		enterButton = new JButton(new ImageIcon("src/images/enterButton.png"));
-		enterButton.setPreferredSize(new Dimension(100, 80));
-		// enterButton.setBorder (null);
+		typeNickname.setPreferredSize(new Dimension(250, 40));
+		typeNickname.setBackground(new Color(255, 230, 153));
+		typeNickname.setFont(new Font(null, Font.BOLD, 25));
+		typeNickname.setBorder(new LineBorder(new Color(255, 206, 5), 4));
+		enterButton = new JButton(new ImageIcon("src/images/enterUp.png"));
+		enterButton.setBackground(new Color(64, 64, 64));
+		enterButton.setOpaque(true);
+		enterButton.setPreferredSize(new Dimension(100, 40));
+		// enterButton.setBorder(null);
 		southPanel.add(typeNickname);
 		southPanel.add(enterButton);
 		this.add(BorderLayout.SOUTH, southPanel);
@@ -118,41 +130,8 @@ public class EntryPanel extends JPanel {
 			}
 		});
 
-		// Press the enter key to finish typing nickname
-		typeNickname.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (typeNickname.getText().equals(""))
-					JOptionPane.showMessageDialog(EntryPanel.this.f.getContentPane(), "Please enter nickname.");
-				else if (imagePath == "")
-					JOptionPane.showMessageDialog(EntryPanel.this.f.getContentPane(), "Please select a character.");
-				else {
-					ProgressInfo pi = new ProgressInfo();
-					pi.set_status(ProgressInfo.USER_ACCEPT);
-					pi.set_chat(typeNickname.getText());
-					pi.set_imagePath(imagePath);
-					EntryPanel.this.f.sendProtocol(pi);
-					typeNickname.setText("");
-				}
-			}
-		});
-
-		// Click enter button with mouse to finish typing nickname
-		enterButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (typeNickname.getText().equals(""))
-					JOptionPane.showMessageDialog(EntryPanel.this.f.getContentPane(), "Please enter nickname.");
-				else if (imagePath == "")
-					JOptionPane.showMessageDialog(EntryPanel.this.f.getContentPane(), "Please select a character.");
-				else {
-					ProgressInfo pi = new ProgressInfo();
-					pi.set_status(ProgressInfo.USER_ACCEPT);
-					pi.set_chat(typeNickname.getText());
-					pi.set_imagePath(imagePath);
-					EntryPanel.this.f.sendProtocol(pi);
-					typeNickname.setText("");
-				}
-			}
-		});
+		typeNickname.addActionListener(inputActionListener);
+		enterButton.addActionListener(inputActionListener);
 	}
 
 	// INPUT: null
@@ -162,7 +141,7 @@ public class EntryPanel extends JPanel {
 		CH = new JButton[5];
 		for (int i = 0; i < 5; i++) {
 			CH[i] = new JButton(charImages.get(i));
-			CH[i].setPreferredSize(new Dimension(120, 220));
+			CH[i].setPreferredSize(new Dimension(135, 350));
 			CH[i].setBorder(new LineBorder(Color.black, 6));
 			centerPanel.add(CH[i]);
 		}
@@ -172,12 +151,16 @@ public class EntryPanel extends JPanel {
 	// OUTPUT: null
 	// Objective: Initialize images for characters
 	private void initCharImages() {
-		charImages = new ArrayList<Icon>();
-		ArrayList<String> url = new ArrayList<String>();
-		url = this.f.getCharImageList();
-		int length = url.size();
+		ArrayList<String> imagePath = new ArrayList<String>();
+		ArrayList<String> imagePathBtnPressed = new ArrayList<String>();
+
+		imagePath = this.mainFrame.getCharImageList();
+		imagePathBtnPressed = this.mainFrame.getCharEnteredImageList();
+
+		int length = imagePath.size();
 		for (int i = 0; i < length; i++) {
-			charImages.add(new ImageIcon(url.get(i)));
+			charImages.add(new ImageIcon(imagePath.get(i)));
+			charPressedImages.add(new ImageIcon(imagePathBtnPressed.get(i)));
 		}
 	}
 
@@ -186,12 +169,45 @@ public class EntryPanel extends JPanel {
 	// Objective: Display only the selected character with blue border, others
 	// with black border
 	private void selectMaster(int selected) {
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < 5; i++) {
 			if (i == selected) {
-				CH[i].setBorder(new LineBorder(new Color(91, 155, 213), 8));
-				imagePath = this.f.getCharImageList().get(i);
+				// CH[i].setBorder(new LineBorder(Color.white, 5));
+				CH[i].setIcon(charPressedImages.get(i));
+				imagePath = this.mainFrame.getLobbyCharImageList().get(i);
+				// CH[i].setBorder(new LineBorder(new Color(91, 155, 213), 8));
+
 			} else
-				CH[i].setBorder(new LineBorder(Color.black, 6));
+				// CH[i].setBorder(new LineBorder(Color.black, 4));
+				CH[i].setIcon(charImages.get(i));
+		}
+	}
+
+	/** Mouse Entered, Exited -> have to modify */
+	private void selectExited(int selected) {
+		for (int i = 0; i < 5; i++) {
+			if (i == selected) {
+				CH[i].setIcon(charImages.get(i));
+				// CH[i].setBorder(new LineBorder(new Color(91, 155, 213), 8));
+				CH[i].setBorder(new LineBorder(Color.black, 4));
+			}
+		}
+	}
+
+	/** inner class: check client enter all required information */
+	public class InputActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (typeNickname.getText().equals(""))
+				JOptionPane.showMessageDialog(EntryPanel.this.mainFrame.getContentPane(), "Please enter nickname.");
+			else if (imagePath == "")
+				JOptionPane.showMessageDialog(EntryPanel.this.mainFrame.getContentPane(), "Please select a character.");
+			else {
+				ProgressInfo pi = new ProgressInfo();
+				pi.set_status(ProgressInfo.USER_ACCEPT);
+				pi.set_chat(typeNickname.getText());
+				pi.set_imagePath(imagePath);
+				EntryPanel.this.mainFrame.sendProtocol(pi);
+				typeNickname.setText("");
+			}
 		}
 	}
 }
