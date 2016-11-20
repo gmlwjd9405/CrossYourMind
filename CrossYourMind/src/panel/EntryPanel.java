@@ -1,18 +1,12 @@
 package panel;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowAdapter;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -20,7 +14,6 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
-import javax.net.ssl.ExtendedSSLSession;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -56,9 +49,9 @@ public class EntryPanel extends JPanel {
 	}
 
 	// ** METHOD **
-	// INPUT: null
-	// OUTPUT: null
-	// Objective: Initialize the panels
+	/**
+	 * INPUT: null, OUTPUT: null, Objective: Initialize the panels
+	 */
 	private void setPanel() {
 		this.setLayout(new BorderLayout());
 
@@ -74,8 +67,8 @@ public class EntryPanel extends JPanel {
 
 		// For center panel
 		centerPanel = new JPanel(new FlowLayout());
-		centerPanel.setPreferredSize(new Dimension(800, 360));
-		// centerPanel.setBackground(new Color(64, 64, 64));
+		centerPanel.setPreferredSize(new Dimension(800, 400));
+		//centerPanel.setBackground(new Color(64, 64, 64));
 		centerPanel.setBackground(Color.gray);
 		initCH();
 		this.add(BorderLayout.CENTER, centerPanel);
@@ -92,16 +85,16 @@ public class EntryPanel extends JPanel {
 		enterButton = new JButton(new ImageIcon("src/images/enterUp.png"));
 		enterButton.setBackground(new Color(64, 64, 64));
 		enterButton.setOpaque(true);
-		enterButton.setPreferredSize(new Dimension(100, 40));
+		enterButton.setPreferredSize(new Dimension(100, 37));
 		// enterButton.setBorder(null);
 		southPanel.add(typeNickname);
 		southPanel.add(enterButton);
 		this.add(BorderLayout.SOUTH, southPanel);
 	}
 
-	// INPUT: null
-	// OUTPUT: null
-	// Objective: Initialize reactions in this panel
+	/**
+	 * INPUT: null, OUTPUT: null, Objective: Initialize reactions in this panel
+	 */
 	private void setEvent() {
 		// Click buttons for each character to select
 		CH[0].addActionListener(new ActionListener() {
@@ -134,9 +127,9 @@ public class EntryPanel extends JPanel {
 		enterButton.addActionListener(inputActionListener);
 	}
 
-	// INPUT: null
-	// OUTPUT: null
-	// Objective: Initialize buttons for characters
+	/**
+	 * INPUT: null, OUTPUT: null, Objective: Initialize buttons for characters
+	 */
 	private void initCH() {
 		CH = new JButton[5];
 		for (int i = 0; i < 5; i++) {
@@ -147,9 +140,9 @@ public class EntryPanel extends JPanel {
 		}
 	}
 
-	// INPUT: null
-	// OUTPUT: null
-	// Objective: Initialize images for characters
+	/**
+	 * INPUT: null OUTPUT: null Objective: Initialize images for characters
+	 */
 	private void initCharImages() {
 		ArrayList<String> imagePath = new ArrayList<String>();
 		ArrayList<String> imagePathBtnPressed = new ArrayList<String>();
@@ -164,10 +157,10 @@ public class EntryPanel extends JPanel {
 		}
 	}
 
-	// INPUT: null
-	// OUTPUT: null
-	// Objective: Display only the selected character with blue border, others
-	// with black border
+	/**
+	 * INPUT: null, OUTPUT: null, Objective: Display only the selected character
+	 * with blue border, others with black border
+	 */
 	private void selectMaster(int selected) {
 		for (int i = 0; i < 5; i++) {
 			if (i == selected) {
@@ -183,15 +176,15 @@ public class EntryPanel extends JPanel {
 	}
 
 	/** Mouse Entered, Exited -> have to modify */
-	private void selectExited(int selected) {
-		for (int i = 0; i < 5; i++) {
-			if (i == selected) {
-				CH[i].setIcon(charImages.get(i));
-				// CH[i].setBorder(new LineBorder(new Color(91, 155, 213), 8));
-				CH[i].setBorder(new LineBorder(Color.black, 4));
-			}
-		}
-	}
+//	private void selectExited(int selected) {
+//		for (int i = 0; i < 5; i++) {
+//			if (i == selected) {
+//				CH[i].setIcon(charImages.get(i));
+//				// CH[i].setBorder(new LineBorder(new Color(91, 155, 213), 8));
+//				CH[i].setBorder(new LineBorder(Color.black, 4));
+//			}
+//		}
+//	}
 
 	/** inner class: check client enter all required information */
 	public class InputActionListener implements ActionListener {

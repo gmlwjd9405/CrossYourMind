@@ -30,11 +30,11 @@ public class MainFrame extends JFrame implements Runnable {
 	public static final String lobbyPcard = "lobbyPanel";
 	public static final String gamePcard = "gamePanel";
 	public static final int entryPwidth = 800;
-	public static final int entryPheight = 550;
+	public static final int entryPheight = 560;
 	public static final int lobbyPwidth = 800;
-	public static final int lobbyPheight = 550;
+	public static final int lobbyPheight = 560;
 	public static final int gamePwidth = 800;
-	public static final int gamePheight = 550;
+	public static final int gamePheight = 560;
 	public static final String serverIP = "127.0.0.1";
 	public static final int serverPort = 3333;
 
@@ -82,7 +82,7 @@ public class MainFrame extends JFrame implements Runnable {
 		this.getContentPane().add(gamePcard, gameP);
 		this.currentCard = entryPcard;
 		this.setSize(entryPwidth, entryPheight);
-		this.setResizable(false);
+		//this.setResizable(false);
 		this.addWindowListener(new WindowAdapter() // For window closing action
 		{
 			@Override
