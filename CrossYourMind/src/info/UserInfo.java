@@ -13,7 +13,7 @@ public class UserInfo implements Serializable
 // ** VARIABLE **
 	int status;
 	String nickName;
-	String imagePath;
+	String imagePath; //select character 
 	String gameName;
 	boolean isMaster;
 	int score;
@@ -27,15 +27,15 @@ public class UserInfo implements Serializable
 		score = 0;
 	}
 	
-	public UserInfo (int _status, String _nickName, String _imagePath)
-	{
-		status = _status;
-		nickName = _nickName;
-		imagePath = _imagePath;
-		gameName = "";
-		isMaster = false;
-		score = 0;
-	}
+//	public UserInfo (int _status, String _nickName, String _imagePath)
+//	{
+//		status = _status;
+//		nickName = _nickName;
+//		imagePath = _imagePath;
+//		gameName = "";
+//		isMaster = false;
+//		score = 0;
+//	}
 	
 // ** METHOD **
 	public int get_status () { return status; }

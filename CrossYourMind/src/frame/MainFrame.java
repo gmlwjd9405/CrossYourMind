@@ -26,6 +26,7 @@ import java.io.ObjectOutputStream;
 
 public class MainFrame extends JFrame implements Runnable {
 	// ** DEFINE **
+	public static final String ImagePath = "src/images/";
 	public static final String entryPcard = "entryPanel";
 	public static final String lobbyPcard = "lobbyPanel";
 	public static final String gamePcard = "gamePanel";
@@ -62,7 +63,7 @@ public class MainFrame extends JFrame implements Runnable {
 	private ArrayList<String> gamecharImageList;
 
 	private String myNickname;
-	private String myImagePath;
+	private String myLobbyImagePath; //seleced charNum
 
 	private Object read;
 
@@ -82,7 +83,7 @@ public class MainFrame extends JFrame implements Runnable {
 		this.getContentPane().add(gamePcard, gameP);
 		this.currentCard = entryPcard;
 		this.setSize(entryPwidth, entryPheight);
-		//this.setResizable(false);
+		this.setResizable(false);
 		this.addWindowListener(new WindowAdapter() // For window closing action
 		{
 			@Override
@@ -136,7 +137,7 @@ public class MainFrame extends JFrame implements Runnable {
 				case ProgressInfo.USER_APPROVE: {
 					System.out.println("USER_APPROVE");
 					set_myNickname(progressInfo.get_chat());
-					set_myImagePath(progressInfo.get_imagePath());
+					set_myLobbyImagePath(progressInfo.get_lobbyImagePath());
 					this.setSize(lobbyPwidth, lobbyPheight);
 					this.set_currentCard(lobbyPcard);
 					card.show(getContentPane(), lobbyPcard);
@@ -325,11 +326,11 @@ public class MainFrame extends JFrame implements Runnable {
 		talkcharImageList = new ArrayList<String>();
 		gamecharImageList = new ArrayList<String>();
 		for (int i = 0; i < 5; i++) {
-			entrycharImageList.add("src/images/CHAR" + i + ".png");
-			entryEnteredcharImageList.add("src/images/CHAR" + i + "Pressed.png");
-			lobbyImageList.add("src/images/CHAR" + i + "L.png");
-			talkcharImageList.add("src/images/CHAR" + i + "T.png");
-			gamecharImageList.add("src/images/CHAR" + i + "H.png");
+			entrycharImageList.add(ImagePath + "Char" + i + ".png");
+			entryEnteredcharImageList.add(ImagePath + "Char" + i + "E.png");
+			lobbyImageList.add(ImagePath + "Char" + i + "L.png");
+			talkcharImageList.add(ImagePath + "Char" + i + "T.png");
+			gamecharImageList.add(ImagePath + "Char" + i + "H.png");
 		}
 	}
 
@@ -369,20 +370,20 @@ public class MainFrame extends JFrame implements Runnable {
 	
 	/* Get methods */
 	public String get_myNickname () { return myNickname; }
-	public String get_myImagePath () { return myImagePath; }
+	public String get_myLobbyImagePath () { return myLobbyImagePath; }
 	public String get_currentCard () { return currentCard; }
 	// INPUT: null
 	// OUTPUT: the list of path of image resources
 	// Objective: Access the image resource
 	public ArrayList<String> getCharImageList() {return entrycharImageList;	}
 	public ArrayList<String> getCharEnteredImageList() {return entryEnteredcharImageList;	}
-	public ArrayList<String> getLobbyCharImageList() {return lobbyImageList;}
-	public ArrayList<String> getTalkCharImageList() {return talkcharImageList;}
-	public ArrayList<String> getGameCharImageList() {return gamecharImageList;}
+	//public ArrayList<String> getLobbyCharImageList() {return lobbyImageList;}
+	//public ArrayList<String> getTalkCharImageList() {return talkcharImageList;}
+	//public ArrayList<String> getGameCharImageList() {return gamecharImageList;}
 	
 	/* Set methods */
 	public void set_myNickname (String item) { myNickname = item; }
-	public void set_myImagePath (String item) { myImagePath = item; }
+	public void set_myLobbyImagePath (String item) { myLobbyImagePath = item; }
 	public void set_currentCard (String item) { currentCard = item; }
 	
 	

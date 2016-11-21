@@ -345,10 +345,12 @@ public class LobbyPanel extends JPanel {
 	 */
 	public void myInfoUpdate() {
 		myInfo.removeAll();
-		myChar = new JLabel(new ImageIcon(this.mainFrame.get_myImagePath()));
-		myChar.setPreferredSize(new Dimension(100, 180));
+		myChar = new JLabel(new ImageIcon(this.mainFrame.get_myLobbyImagePath()));
+		myChar.setBounds(5, 5, 100, 120);
+		myChar.setBackground(Color.red);
+		myChar.setOpaque(true);
 		myNickname = new JLabel("  " + this.mainFrame.get_myNickname());
-		myNickname.setPreferredSize(new Dimension(200, 180));
+		myNickname.setBounds(110, 0, 140, 130);
 		myNickname.setFont(new Font(null, Font.PLAIN, 40));
 		myInfo.add(myChar);
 		myInfo.add(myNickname);

@@ -166,7 +166,7 @@ public class EntryPanel extends JPanel {
 			if (i == selected) {
 				// CH[i].setBorder(new LineBorder(Color.white, 5));
 				CH[i].setIcon(charPressedImages.get(i));
-				imagePath = this.mainFrame.getLobbyCharImageList().get(i);
+				imagePath = this.mainFrame.getCharImageList().get(i);
 				// CH[i].setBorder(new LineBorder(new Color(91, 155, 213), 8));
 
 			} else

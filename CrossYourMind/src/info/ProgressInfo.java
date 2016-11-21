@@ -65,23 +65,28 @@ public class ProgressInfo implements Serializable
 
 // ** VARIABLE **	
 	// for general purpose
-	int status;
-	String chat; // typed chatting (lobby or game)
-	String imagePath;
+	private int status;
+	private String chat; // typed chatting (lobby or game)
+	private String imagePath;
+	private String lobbyImagePath;
+	//private String proFileImagePath;
+	private String chatImagePath;
+	private String gameCharImagePath;
+	
 	
 	// for lobby
-	ArrayList<String> usersLobby;
-	ArrayList<String> gamesLobby;
-	String lobbyChat;
+	private ArrayList<String> usersLobby;
+	private ArrayList<String> gamesLobby;
+	private String lobbyChat;
 	
 	// for game
-	ArrayList<UserInfo> usersGame;
-	String[][] chatsGame; // double pointer for each user
-	int roundTime;
+	private ArrayList<UserInfo> usersGame;
+	private String[][] chatsGame; // double pointer for each user
+	private int roundTime;
 	
 	// for drawing
-	int drawColor;
-	ArrayList<UserPoint> pList;
+	private int drawColor;
+	private ArrayList<UserPoint> pList;
 	
 	public ProgressInfo ()
 	{ 
@@ -89,11 +94,20 @@ public class ProgressInfo implements Serializable
 		chat = "";
 		imagePath = "";
 	}
+
+	public String seperateImagePath(String imagePath) {
+		// seperate imageFilename and .png
+		String frontImagePath = imagePath.substring(0, imagePath.length()-4);
+		return frontImagePath;
+	}
 	
 // ** GET METHOD **
 	public int get_status () { return status; }
 	public String get_chat () { return chat; }
 	public String get_imagePath () { return imagePath; }
+	public String get_lobbyImagePath() { return lobbyImagePath; }
+	public String get_chatImagePath () { return chatImagePath; }
+	public String get_gameCharImagePath () { return gameCharImagePath; }
 	public ArrayList<String> get_usersLobby () { return usersLobby; }
 	public ArrayList<String> get_gamesLobby () { return gamesLobby; }
 	public String get_lobbyChat () { return lobbyChat; }
@@ -106,7 +120,14 @@ public class ProgressInfo implements Serializable
 // ** SET METHOD **
 	public void set_status (int item) { status = item; }
 	public void set_chat (String item) { chat = item; }
-	public void set_imagePath (String item) { imagePath = item; }
+	public void set_imagePath(String item) {
+		imagePath = item;
+		String frontImagePath = seperateImagePath(item);
+		lobbyImagePath = frontImagePath + "L.png";
+		//proFileImagePath;
+		chatImagePath = frontImagePath + "T.png";;
+		gameCharImagePath = frontImagePath + "H.png";;
+	}
 	public void set_usersLobby (ArrayList<String> item) { usersLobby = item; }
 	public void set_gamesLobby (ArrayList<String> item) { gamesLobby = item; }
 	public void set_lobbyChat (String item) { lobbyChat = item; }
