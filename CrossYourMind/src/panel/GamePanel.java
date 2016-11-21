@@ -2,47 +2,37 @@ package panel;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.FlowLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
 
-import javax.swing.WindowConstants;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JDialog;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.JTextArea;
 import javax.swing.JTextPane;
-import javax.swing.text.BadLocationException;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.border.LineBorder;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
-import javax.swing.border.LineBorder;
-import javax.swing.AbstractAction;
-import javax.swing.Timer;
 
+import drawing.UserPoint;
 import frame.MainFrame;
 import info.ProgressInfo;
 import info.UserInfo;
-import drawing.UserPoint;
-
-import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
 	// ** DEFINE **
@@ -54,15 +44,19 @@ public class GamePanel extends JPanel {
 	// For inner panels
 	private JPanel northPanel, centerPanel, drawingPanel, westPanel, eastPanel, southPanel;
 	private JLabel titleImage;
-	private JPanel centerToolPanel, centerCanvas;
-	private JPanel user1Panel, user2Panel, user3Panel, user4Panel, user5Panel, user6Panel;
-	private JTextPane user1Chat, user2Chat, user3Chat, user4Chat, user5Chat, user6Chat;
-	private JLabel user1Char, user2Char, user3Char, user4Char, user5Char, user6Char;
-	private JTextPane user1Nickname, user2Nickname, user3Nickname, user4Nickname, user5Nickname, user6Nickname;
+	private JPanel centerToolPanel, centerCanvasPanel;
+//	private JPanel user1Panel, user2Panel, user3Panel, user4Panel, user5Panel, user6Panel;
+//	private JTextPane user1Chat, user2Chat, user3Chat, user4Chat, user5Chat, user6Chat;
+//	private JLabel user1Char, user2Char, user3Char, user4Char, user5Char, user6Char;
+//	private JTextPane user1Nickname, user2Nickname, user3Nickname, user4Nickname, user5Nickname, user6Nickname;
+	private JPanel[] userPanel = new JPanel[4];
+	private JTextPane[] userChat = new JTextPane[4];
+	private JLabel[] userChar = new JLabel[4];
+	private JTextPane[] userNickname = new JTextPane[4];
 	private JTextField gameChat;
 	private JTextPane answer, timer;
 	private JButton clearAll, eraser, color[];
-	private JButton color0, color1, color2, color3, color4, color5;
+	//private JButton color0, color1, color2, color3, color4, color5;
 	private JButton startButton, backButton;
 
 	// For drawing
@@ -117,17 +111,19 @@ public class GamePanel extends JPanel {
 
 		/* For center panel */
 		centerPanel = new JPanel(null);
-		centerPanel.setBounds(0, 110, 800, 400);
+		centerPanel.setBounds(0, 110, 800, 360);
+		centerPanel.setBackground(new Color(64,64,64));
+		centerPanel.setOpaque(true);
 
 		drawingPanel = new JPanel(null);
-		drawingPanel.setBounds(0, 150, 500, 370);
-		drawingPanel.setBackground(Color.black);
+		drawingPanel.setBounds(142, 7, 500, 340);
+		drawingPanel.setBackground(new Color(64, 64, 64));
 		drawingPanel.setOpaque(true);
 
 		/* For drawing tools */
 		centerToolPanel = new JPanel(null);
-		centerToolPanel.setBounds(0, 0, 500, 60);
-		centerToolPanel.setBorder(new LineBorder(new Color(157, 195, 230), 4));
+		centerToolPanel.setBounds(0, 0, 500, 33);
+		centerToolPanel.setBorder(new LineBorder(new Color(219,219,219), 2));
 		// centerToolPanel.setAlignmentX (1.0f);
 		// centerToolPanel.setAlignmentY (1.0f);
 		StyleContext contextAnswer = new StyleContext();
@@ -135,19 +131,19 @@ public class GamePanel extends JPanel {
 		Style styleAnswer = contextAnswer.getStyle(StyleContext.DEFAULT_STYLE);
 		StyleConstants.setAlignment(styleAnswer, StyleConstants.ALIGN_CENTER);
 		answer = new JTextPane(documentAnswer);
-		answer.setPreferredSize(new Dimension(200, 40));
+		answer.setBounds(0, 0, 150, 35);
 		answer.setFont(new Font(null, Font.BOLD, 15));
 		answer.setText("ANSWER");
-		answer.setBorder(new LineBorder(Color.black, 2));
+		answer.setBorder(new LineBorder(new Color(64,64,64), 2));
 		answer.setEditable(false);
 		clearAll = new JButton("CLEAR");
-		clearAll.setPreferredSize(new Dimension(80, 40));
+		clearAll.setBounds(155, 0, 60, 35);
 		eraser = new JButton("ERASER");
-		eraser.setPreferredSize(new Dimension(80, 40));
+		eraser.setBounds(220, 0, 60, 35);
 		color = new JButton[6];
 		for (int i = 0; i < color.length; i++) {
 			color[i] = new JButton();
-			color[i].setPreferredSize(new Dimension(40, 40));
+			color[i].setBounds(285 + i*32, 0, 30, 35);
 		}
 		color[0].setBackground(Color.black);
 		color[1].setBackground(Color.red);
@@ -160,7 +156,7 @@ public class GamePanel extends JPanel {
 		Style styleTimer = contextTimer.getStyle(StyleContext.DEFAULT_STYLE);
 		StyleConstants.setAlignment(styleTimer, StyleConstants.ALIGN_CENTER);
 		timer = new JTextPane(documentTimer);
-		timer.setPreferredSize(new Dimension(80, 40));
+		timer.setBounds(440, 0, 60, 35); //?
 		timer.setFont(new Font(null, Font.BOLD, 15));
 		timer.setText("TIMER");
 		timer.setBorder(new LineBorder(Color.black, 2));
@@ -173,85 +169,72 @@ public class GamePanel extends JPanel {
 		}
 		centerToolPanel.add(timer);
 		// For drawing canvas
-		centerCanvas = new JPanel(null);
-		centerCanvas.setBounds(0, 60, 500, 310);
-		centerCanvas.setBorder(new LineBorder(new Color(157, 195, 230), 4));
-		centerCanvas.add(canvas = new Canvas());
+		centerCanvasPanel = new JPanel(null);
+		centerCanvasPanel.setBounds(0, 35, 500, 305);
+		centerCanvasPanel.setBorder(new LineBorder(new Color(255, 206, 5), 2));
+		centerCanvasPanel.add(canvas = new Canvas());
 		canvas.setBackground(Color.white);
 		canvas.setEnabled(true);
 		drawingPanel.add(centerToolPanel);
-		drawingPanel.add(centerCanvas);
+		drawingPanel.add(centerCanvasPanel);
 
 		centerPanel.add(drawingPanel);
-		this.add(centerPanel);
 
-		// For west panel: 3 users
-		westPanel = new JPanel(new GridLayout(3, 1));
-		westPanel.setPreferredSize(new Dimension(200, 650));
-		westPanel.setBackground(new Color(189, 215, 238));
-		user1Panel = new JPanel();
-		user1Chat = new JTextPane();
-		user1Char = new JLabel();
-		user1Nickname = new JTextPane();
-		user1Nickname.setText("");
-		user2Panel = new JPanel();
-		user2Chat = new JTextPane();
-		user2Char = new JLabel();
-		user2Nickname = new JTextPane();
-		user2Nickname.setText("");
-		user3Panel = new JPanel();
-		user3Chat = new JTextPane();
-		user3Char = new JLabel();
-		user3Nickname = new JTextPane();
-		user3Nickname.setText("");
-		westPanel.add(user1Panel);
-		westPanel.add(user2Panel);
-		westPanel.add(user3Panel);
-		this.add(BorderLayout.WEST, westPanel);
+		// For west panel: 2 users
+		westPanel = new JPanel(null);
+		westPanel.setBounds(12, 10, 130, 336);
+		westPanel.setBorder(new LineBorder(new Color(255,206,5), 3));
+		westPanel.setBackground(new Color(255, 230, 156));
+		westPanel.setOpaque(true);
+		for(int i=0; i<2; i++){
+			userPanel[i] = new JPanel();
+			userChat[i] = new JTextPane();
+			userChar[i] = new JLabel();
+			userNickname[i] = new JTextPane();
+			userNickname[i].setText("");
+			userPanel[i].setBounds(0, i*180, 140, 180);
+			userPanel[i].setBackground(Color.red);
+			userPanel[i].setOpaque(true);
+			westPanel.add(userPanel[i]);
+		}
+		centerPanel.add(westPanel);
 
-		// For east panel: 3 users
-		eastPanel = new JPanel(new GridLayout(3, 1));
-		eastPanel.setPreferredSize(new Dimension(200, 650));
-		eastPanel.setBackground(new Color(189, 215, 238));
-		user4Panel = new JPanel();
-		user4Chat = new JTextPane();
-		user4Char = new JLabel("");
-		user4Nickname = new JTextPane();
-		user4Nickname.setText("");
-		user5Panel = new JPanel();
-		user5Chat = new JTextPane();
-		user5Char = new JLabel();
-		user5Nickname = new JTextPane();
-		user5Nickname.setText("");
-		user6Panel = new JPanel();
-		user6Chat = new JTextPane();
-		user6Char = new JLabel();
-		user6Nickname = new JTextPane();
-		user6Nickname.setText("");
-		eastPanel.add(user4Panel);
-		eastPanel.add(user5Panel);
-		eastPanel.add(user6Panel);
-		this.add(BorderLayout.EAST, eastPanel);
+		// For east panel: 2 users
+		eastPanel = new JPanel(null);
+		eastPanel.setBounds(642, 10, 130, 336);
+		eastPanel.setBorder(new LineBorder(new Color(255,206,5), 3));
+		eastPanel.setBackground(new Color(255, 230, 156));
+		for(int i=2; i<4; i++){
+			userPanel[i] = new JPanel();
+			userChat[i] = new JTextPane();
+			userChar[i] = new JLabel();
+			userNickname[i] = new JTextPane();
+			userNickname[i].setText("");
+			userPanel[i].setBounds(0, i*180, 140, 180);
+			userPanel[i].setBackground(Color.red);
+			userPanel[i].setOpaque(true);
+			eastPanel.add(userPanel[i]);
+		}
+		centerPanel.add(eastPanel);
 
 		// For south panel: chat and buttons
-		southPanel = new JPanel(new FlowLayout());
-		southPanel.setAlignmentX(0);
-		southPanel.setAlignmentY(0);
-		southPanel.setPreferredSize(new Dimension(1200, 100));
-		southPanel.setBackground(new Color(222, 235, 247));
-		southPanel.setBorder(new LineBorder(new Color(157, 195, 230), 4));
+		southPanel = new JPanel(null);
+		southPanel.setBounds(0, 470, 800, 50);
+		southPanel.setBackground(new Color(64, 64, 64));
 		gameChat = new JTextField();
-		gameChat.setPreferredSize(new Dimension(800, 60));
+		gameChat.setBounds(240, 0, 250, 40);
 		gameChat.setFont(new Font(null, Font.BOLD, 30));
-		gameChat.setBorder(new LineBorder(new Color(91, 155, 213), 4));
-		startButton = new JButton(new ImageIcon("src/images/startButton.png"));
-		startButton.setPreferredSize(new Dimension(180, 80));
-		backButton = new JButton(new ImageIcon("src/images/backButton.png"));
-		backButton.setPreferredSize(new Dimension(180, 80));
+		gameChat.setBorder(new LineBorder(new Color(255,206,5), 4));
+		startButton = new JButton(new ImageIcon("src/images/startUp.png"));
+		startButton.setBounds(530, 2, 100, 37);
+		backButton = new JButton(new ImageIcon("src/images/backUp.png"));
+		backButton.setBounds(635, 2, 100, 37);
 		southPanel.add(gameChat);
 		southPanel.add(startButton);
 		southPanel.add(backButton);
-		this.add(BorderLayout.SOUTH, southPanel);
+		
+		this.add(centerPanel);
+		this.add(southPanel);
 	}
 
 	/**
@@ -366,185 +349,125 @@ public class GamePanel extends JPanel {
 
 		// Re-draw userNpanel according the number of users currently in game
 		switch (size) {
-		case 6: {
-			user6Panel = new JPanel(new BorderLayout());
-			user6Panel.setBorder(new LineBorder(new Color(157, 195, 230), 4));
-			StyleContext contextUser6 = new StyleContext();
-			StyledDocument documentUser6 = new DefaultStyledDocument(contextUser6);
-			Style styleUser6 = contextUser6.getStyle(StyleContext.DEFAULT_STYLE);
-			StyleConstants.setAlignment(styleUser6, StyleConstants.ALIGN_CENTER);
-			user6Chat = new JTextPane(documentUser6);
-			user6Chat.setPreferredSize(new Dimension(200, 40));
-			user6Chat.setFont(new Font(null, Font.BOLD, 20));
-			user6Chat.setText("");
-			user6Chat.setBorder(new LineBorder(Color.black, 2));
-			user6Chat.setEditable(false);
-			user6Char = new JLabel(new ImageIcon(usersGame.get(size - 6).get_imagePath().substring(0,
-					usersGame.get(size - 6).get_imagePath().length() - 4) + "H.png"));
-			user6Char.setPreferredSize(new Dimension(100, 100));
-			StyleContext contextUser6Nickname = new StyleContext();
-			StyledDocument documentUser6Nickname = new DefaultStyledDocument(contextUser6Nickname);
-			Style styleUser6Nickname = contextUser6Nickname.getStyle(StyleContext.DEFAULT_STYLE);
-			StyleConstants.setAlignment(styleUser6Nickname, StyleConstants.ALIGN_CENTER);
-			user6Nickname = new JTextPane(documentUser6Nickname);
-			user6Nickname
-					.setText(usersGame.get(size - 6).get_nickName() + " SCORE: " + usersGame.get(size - 6).get_score());
-			user6Nickname.setPreferredSize(new Dimension(200, 60));
-			user6Nickname.setFont(new Font(null, Font.BOLD, 15));
-			user6Panel.add(BorderLayout.NORTH, user6Chat);
-			user6Panel.add(BorderLayout.CENTER, user6Char);
-			user6Panel.add(BorderLayout.SOUTH, user6Nickname);
-			eastPanel.add(BorderLayout.SOUTH, user6Panel);
-		}
-		case 5: {
-			user5Panel = new JPanel(new BorderLayout());
-			user5Panel.setBorder(new LineBorder(new Color(157, 195, 230), 4));
-			StyleContext contextUser5 = new StyleContext();
-			StyledDocument documentUser5 = new DefaultStyledDocument(contextUser5);
-			Style styleUser5 = contextUser5.getStyle(StyleContext.DEFAULT_STYLE);
-			StyleConstants.setAlignment(styleUser5, StyleConstants.ALIGN_CENTER);
-			user5Chat = new JTextPane(documentUser5);
-			user5Chat.setPreferredSize(new Dimension(200, 40));
-			user5Chat.setFont(new Font(null, Font.BOLD, 20));
-			user5Chat.setText("");
-			user5Chat.setBorder(new LineBorder(Color.black, 2));
-			user5Chat.setEditable(false);
-			user5Char = new JLabel(new ImageIcon(usersGame.get(size - 5).get_imagePath().substring(0,
-					usersGame.get(size - 5).get_imagePath().length() - 4) + "H.png"));
-			user5Char.setPreferredSize(new Dimension(100, 100));
-			StyleContext contextUser5Nickname = new StyleContext();
-			StyledDocument documentUser5Nickname = new DefaultStyledDocument(contextUser5Nickname);
-			Style styleUser5Nickname = contextUser5Nickname.getStyle(StyleContext.DEFAULT_STYLE);
-			StyleConstants.setAlignment(styleUser5Nickname, StyleConstants.ALIGN_CENTER);
-			user5Nickname = new JTextPane(documentUser5Nickname);
-			user5Nickname
-					.setText(usersGame.get(size - 5).get_nickName() + " SCORE: " + usersGame.get(size - 5).get_score());
-			user5Nickname.setPreferredSize(new Dimension(200, 60));
-			user5Nickname.setFont(new Font(null, Font.BOLD, 15));
-			user5Panel.add(BorderLayout.NORTH, user5Chat);
-			user5Panel.add(BorderLayout.CENTER, user5Char);
-			user5Panel.add(BorderLayout.SOUTH, user5Nickname);
-			eastPanel.add(BorderLayout.CENTER, user5Panel);
-		}
 		case 4: {
-			user4Panel = new JPanel(new BorderLayout());
-			user4Panel.setBorder(new LineBorder(new Color(157, 195, 230), 4));
+			userPanel[3] = new JPanel(new BorderLayout());
+			userPanel[3].setBorder(new LineBorder(new Color(157, 195, 230), 4));
 			StyleContext contextUser4 = new StyleContext();
 			StyledDocument documentUser4 = new DefaultStyledDocument(contextUser4);
 			Style styleUser4 = contextUser4.getStyle(StyleContext.DEFAULT_STYLE);
 			StyleConstants.setAlignment(styleUser4, StyleConstants.ALIGN_CENTER);
-			user4Chat = new JTextPane(documentUser4);
-			user4Chat.setPreferredSize(new Dimension(200, 40));
-			user4Chat.setFont(new Font(null, Font.BOLD, 20));
-			user4Chat.setText("");
-			user4Chat.setBorder(new LineBorder(Color.black, 2));
-			user4Chat.setEditable(false);
-			user4Char = new JLabel(new ImageIcon(usersGame.get(size - 4).get_imagePath().substring(0,
+			userChat[3] = new JTextPane(documentUser4);
+			userChat[3].setPreferredSize(new Dimension(200, 40));
+			userChat[3].setFont(new Font(null, Font.BOLD, 20));
+			userChat[3].setText("");
+			userChat[3].setBorder(new LineBorder(Color.black, 2));
+			userChat[3].setEditable(false);
+			userChar[3] = new JLabel(new ImageIcon(usersGame.get(size - 4).get_imagePath().substring(0,
 					usersGame.get(size - 4).get_imagePath().length() - 4) + "H.png"));
-			user4Char.setPreferredSize(new Dimension(100, 100));
+			userChar[3].setPreferredSize(new Dimension(100, 100));
 			StyleContext contextUser4Nickname = new StyleContext();
 			StyledDocument documentUser4Nickname = new DefaultStyledDocument(contextUser4Nickname);
 			Style styleUser4Nickname = contextUser4Nickname.getStyle(StyleContext.DEFAULT_STYLE);
 			StyleConstants.setAlignment(styleUser4Nickname, StyleConstants.ALIGN_CENTER);
-			user4Nickname = new JTextPane(documentUser4Nickname);
-			user4Nickname
+			userNickname[3] = new JTextPane(documentUser4Nickname);
+			userNickname[3]
 					.setText(usersGame.get(size - 4).get_nickName() + " SCORE: " + usersGame.get(size - 4).get_score());
-			user4Nickname.setPreferredSize(new Dimension(200, 60));
-			user4Nickname.setFont(new Font(null, Font.BOLD, 15));
-			user4Panel.add(BorderLayout.NORTH, user4Chat);
-			user4Panel.add(BorderLayout.CENTER, user4Char);
-			user4Panel.add(BorderLayout.SOUTH, user4Nickname);
-			eastPanel.add(BorderLayout.NORTH, user4Panel);
+			userNickname[3].setPreferredSize(new Dimension(200, 60));
+			userNickname[3].setFont(new Font(null, Font.BOLD, 15));
+			userPanel[3].add(BorderLayout.NORTH, userChat[3]);
+			userPanel[3].add(BorderLayout.CENTER, userChar[3]);
+			userPanel[3].add(BorderLayout.SOUTH, userNickname[3]);
+			eastPanel.add(BorderLayout.NORTH, userPanel[3]);
 		}
 		case 3: {
-			user3Panel = new JPanel(new BorderLayout());
-			user3Panel.setBorder(new LineBorder(new Color(157, 195, 230), 4));
+			userPanel[2] = new JPanel(new BorderLayout());
+			userPanel[2].setBorder(new LineBorder(new Color(157, 195, 230), 4));
 			StyleContext contextUser3 = new StyleContext();
 			StyledDocument documentUser3 = new DefaultStyledDocument(contextUser3);
 			Style styleUser3 = contextUser3.getStyle(StyleContext.DEFAULT_STYLE);
 			StyleConstants.setAlignment(styleUser3, StyleConstants.ALIGN_CENTER);
-			user3Chat = new JTextPane(documentUser3);
-			user3Chat.setPreferredSize(new Dimension(200, 40));
-			user3Chat.setFont(new Font(null, Font.BOLD, 20));
-			user3Chat.setText("");
-			user3Chat.setBorder(new LineBorder(Color.black, 2));
-			user3Chat.setEditable(false);
-			user3Char = new JLabel(new ImageIcon(usersGame.get(size - 3).get_imagePath().substring(0,
+			userChat[2] = new JTextPane(documentUser3);
+			userChat[2].setPreferredSize(new Dimension(200, 40));
+			userChat[2].setFont(new Font(null, Font.BOLD, 20));
+			userChat[2].setText("");
+			userChat[2].setBorder(new LineBorder(Color.black, 2));
+			userChat[2].setEditable(false);
+			userChar[2] = new JLabel(new ImageIcon(usersGame.get(size - 3).get_imagePath().substring(0,
 					usersGame.get(size - 3).get_imagePath().length() - 4) + "H.png"));
-			user3Char.setPreferredSize(new Dimension(100, 100));
+			userChar[2].setPreferredSize(new Dimension(100, 100));
 			StyleContext contextUser3Nickname = new StyleContext();
 			StyledDocument documentUser3Nickname = new DefaultStyledDocument(contextUser3Nickname);
 			Style styleUser3Nickname = contextUser3Nickname.getStyle(StyleContext.DEFAULT_STYLE);
 			StyleConstants.setAlignment(styleUser3Nickname, StyleConstants.ALIGN_CENTER);
-			user3Nickname = new JTextPane(documentUser3Nickname);
-			user3Nickname
+			userNickname[2] = new JTextPane(documentUser3Nickname);
+			userNickname[2]
 					.setText(usersGame.get(size - 3).get_nickName() + " SCORE: " + usersGame.get(size - 3).get_score());
-			user3Nickname.setPreferredSize(new Dimension(200, 60));
-			user3Nickname.setFont(new Font(null, Font.BOLD, 15));
-			user3Panel.add(BorderLayout.NORTH, user3Chat);
-			user3Panel.add(BorderLayout.CENTER, user3Char);
-			user3Panel.add(BorderLayout.SOUTH, user3Nickname);
-			westPanel.add(BorderLayout.SOUTH, user3Panel);
+			userNickname[2].setPreferredSize(new Dimension(200, 60));
+			userNickname[2].setFont(new Font(null, Font.BOLD, 15));
+			userPanel[2].add(BorderLayout.NORTH, userChat[2]);
+			userPanel[2].add(BorderLayout.CENTER, userChar[2]);
+			userPanel[2].add(BorderLayout.SOUTH, userNickname[2]);
+			westPanel.add(BorderLayout.SOUTH, userPanel[2]);
 		}
 		case 2: {
-			user2Panel = new JPanel(new BorderLayout());
-			user2Panel.setBorder(new LineBorder(new Color(157, 195, 230), 4));
+			userPanel[1] = new JPanel(new BorderLayout());
+			userPanel[1].setBorder(new LineBorder(new Color(157, 195, 230), 4));
 			StyleContext contextUser2 = new StyleContext();
 			StyledDocument documentUser2 = new DefaultStyledDocument(contextUser2);
 			Style styleUser2 = contextUser2.getStyle(StyleContext.DEFAULT_STYLE);
 			StyleConstants.setAlignment(styleUser2, StyleConstants.ALIGN_CENTER);
-			user2Chat = new JTextPane(documentUser2);
-			user2Chat.setPreferredSize(new Dimension(200, 40));
-			user2Chat.setFont(new Font(null, Font.BOLD, 20));
-			user2Chat.setText("");
-			user2Chat.setBorder(new LineBorder(Color.black, 2));
-			user2Chat.setEditable(false);
-			user2Char = new JLabel(new ImageIcon(usersGame.get(size - 2).get_imagePath().substring(0,
+			userChat[1] = new JTextPane(documentUser2);
+			userChat[1].setPreferredSize(new Dimension(200, 40));
+			userChat[1].setFont(new Font(null, Font.BOLD, 20));
+			userChat[1].setText("");
+			userChat[1].setBorder(new LineBorder(Color.black, 2));
+			userChat[1].setEditable(false);
+			userChar[1] = new JLabel(new ImageIcon(usersGame.get(size - 2).get_imagePath().substring(0,
 					usersGame.get(size - 2).get_imagePath().length() - 4) + "H.png"));
-			user2Char.setPreferredSize(new Dimension(100, 100));
-			StyleContext contextUser2Nickname = new StyleContext();
-			StyledDocument documentUser2Nickname = new DefaultStyledDocument(contextUser2Nickname);
-			Style styleUser2Nickname = contextUser2Nickname.getStyle(StyleContext.DEFAULT_STYLE);
-			StyleConstants.setAlignment(styleUser2Nickname, StyleConstants.ALIGN_CENTER);
-			user2Nickname = new JTextPane(documentUser2Nickname);
-			user2Nickname
-					.setText(usersGame.get(size - 2).get_nickName() + " SCORE: " + usersGame.get(size - 2).get_score());
-			user2Nickname.setPreferredSize(new Dimension(200, 60));
-			user2Nickname.setFont(new Font(null, Font.BOLD, 15));
-			user2Panel.add(BorderLayout.NORTH, user2Chat);
-			user2Panel.add(BorderLayout.CENTER, user2Char);
-			user2Panel.add(BorderLayout.SOUTH, user2Nickname);
-			westPanel.add(BorderLayout.CENTER, user2Panel);
-		}
-		case 1: {
-			user1Panel = new JPanel(new BorderLayout());
-			user1Panel.setBorder(new LineBorder(new Color(157, 195, 230), 4));
-			StyleContext contextUser1 = new StyleContext();
-			StyledDocument documentUser1 = new DefaultStyledDocument(contextUser1);
-			Style styleUser1 = contextUser1.getStyle(StyleContext.DEFAULT_STYLE);
-			StyleConstants.setAlignment(styleUser1, StyleConstants.ALIGN_CENTER);
-			user1Chat = new JTextPane(documentUser1);
-			user1Chat.setPreferredSize(new Dimension(200, 40));
-			user1Chat.setFont(new Font(null, Font.BOLD, 20));
-			user1Chat.setText("");
-			user1Chat.setBorder(new LineBorder(Color.black, 2));
-			user1Chat.setEditable(false);
-			user1Char = new JLabel(new ImageIcon(usersGame.get(size - 1).get_imagePath().substring(0,
-					usersGame.get(size - 1).get_imagePath().length() - 4) + "H.png"));
-			user1Char.setPreferredSize(new Dimension(100, 100));
+			userChar[1].setPreferredSize(new Dimension(100, 100));
 			StyleContext contextUser1Nickname = new StyleContext();
 			StyledDocument documentUser1Nickname = new DefaultStyledDocument(contextUser1Nickname);
 			Style styleUser1Nickname = contextUser1Nickname.getStyle(StyleContext.DEFAULT_STYLE);
 			StyleConstants.setAlignment(styleUser1Nickname, StyleConstants.ALIGN_CENTER);
-			user1Nickname = new JTextPane(documentUser1Nickname);
-			user1Nickname
+			userNickname[1] = new JTextPane(documentUser1Nickname);
+			userNickname[1]
+					.setText(usersGame.get(size - 2).get_nickName() + " SCORE: " + usersGame.get(size - 2).get_score());
+			userNickname[1].setPreferredSize(new Dimension(200, 60));
+			userNickname[1].setFont(new Font(null, Font.BOLD, 15));
+			userPanel[1].add(BorderLayout.NORTH, userChat[1]);
+			userPanel[1].add(BorderLayout.CENTER, userChar[1]);
+			userPanel[1].add(BorderLayout.SOUTH, userNickname[1]);
+			westPanel.add(BorderLayout.CENTER, userPanel[1]);
+		}
+		case 1: {
+			userPanel[0] = new JPanel(new BorderLayout());
+			userPanel[0].setBorder(new LineBorder(new Color(157, 195, 230), 4));
+			StyleContext contextUser1 = new StyleContext();
+			StyledDocument documentUser1 = new DefaultStyledDocument(contextUser1);
+			Style styleUser1 = contextUser1.getStyle(StyleContext.DEFAULT_STYLE);
+			StyleConstants.setAlignment(styleUser1, StyleConstants.ALIGN_CENTER);
+			userChat[0] = new JTextPane(documentUser1);
+			userChat[0].setPreferredSize(new Dimension(200, 40));
+			userChat[0].setFont(new Font(null, Font.BOLD, 20));
+			userChat[0].setText("");
+			userChat[0].setBorder(new LineBorder(Color.black, 2));
+			userChat[0].setEditable(false);
+			userChar[0] = new JLabel(new ImageIcon(usersGame.get(size - 1).get_imagePath().substring(0,
+					usersGame.get(size - 1).get_imagePath().length() - 4) + "H.png"));
+			userChat[0].setPreferredSize(new Dimension(100, 100));
+			StyleContext contextUser1Nickname = new StyleContext();
+			StyledDocument documentUser1Nickname = new DefaultStyledDocument(contextUser1Nickname);
+			Style styleUser1Nickname = contextUser1Nickname.getStyle(StyleContext.DEFAULT_STYLE);
+			StyleConstants.setAlignment(styleUser1Nickname, StyleConstants.ALIGN_CENTER);
+			userNickname[0] = new JTextPane(documentUser1Nickname);
+			userNickname[0]
 					.setText(usersGame.get(size - 1).get_nickName() + " SCORE: " + usersGame.get(size - 1).get_score());
-			user1Nickname.setPreferredSize(new Dimension(200, 60));
-			user1Nickname.setFont(new Font(null, Font.BOLD, 15));
-			user1Panel.add(BorderLayout.NORTH, user1Chat);
-			user1Panel.add(BorderLayout.CENTER, user1Char);
-			user1Panel.add(BorderLayout.SOUTH, user1Nickname);
-			westPanel.add(BorderLayout.NORTH, user1Panel);
+			userNickname[0].setPreferredSize(new Dimension(200, 60));
+			userNickname[0].setFont(new Font(null, Font.BOLD, 15));
+			userPanel[0].add(BorderLayout.NORTH, userChat[0]);
+			userPanel[0].add(BorderLayout.CENTER, userChat[0]);
+			userPanel[0].add(BorderLayout.SOUTH, userNickname[0]);
+			westPanel.add(BorderLayout.NORTH, userPanel[0]);
 		}
 		}
 		eastPanel.revalidate();
@@ -568,34 +491,24 @@ public class GamePanel extends JPanel {
 		}
 
 		// Update display of score for target user
-		if (!(user6Nickname.getText().equals(""))) {
-			if (user6Nickname.getText().substring(0, user6Nickname.getText().length() - 9).equals(nickName))
-				user6Nickname.setText(user6Nickname.getText().substring(0, user6Nickname.getText().length() - 1)
+		if (!(userNickname[3].getText().equals(""))) {
+			if (userNickname[3].getText().substring(0, userNickname[3].getText().length() - 9).equals(nickName))
+				userNickname[3].setText(userNickname[3].getText().substring(0, userNickname[3].getText().length() - 1)
 						.concat(String.valueOf(score)));
 		}
-		if (!(user5Nickname.getText().equals(""))) {
-			if (user5Nickname.getText().substring(0, user5Nickname.getText().length() - 9).equals(nickName))
-				user5Nickname.setText(user5Nickname.getText().substring(0, user5Nickname.getText().length() - 1)
+		if (!(userNickname[2].getText().equals(""))) {
+			if (userNickname[2].getText().substring(0, userNickname[2].getText().length() - 9).equals(nickName))
+				userNickname[2].setText(userNickname[2].getText().substring(0, userNickname[2].getText().length() - 1)
 						.concat(String.valueOf(score)));
 		}
-		if (!(user4Nickname.getText().equals(""))) {
-			if (user4Nickname.getText().substring(0, user4Nickname.getText().length() - 9).equals(nickName))
-				user4Nickname.setText(user4Nickname.getText().substring(0, user4Nickname.getText().length() - 1)
+		if (!(userNickname[1].getText().equals(""))) {
+			if (userNickname[1].getText().substring(0, userNickname[1].getText().length() - 9).equals(nickName))
+				userNickname[1].setText(userNickname[1].getText().substring(0, userNickname[1].getText().length() - 1)
 						.concat(String.valueOf(score)));
 		}
-		if (!(user3Nickname.getText().equals(""))) {
-			if (user3Nickname.getText().substring(0, user3Nickname.getText().length() - 9).equals(nickName))
-				user3Nickname.setText(user3Nickname.getText().substring(0, user3Nickname.getText().length() - 1)
-						.concat(String.valueOf(score)));
-		}
-		if (!(user2Nickname.getText().equals(""))) {
-			if (user2Nickname.getText().substring(0, user2Nickname.getText().length() - 9).equals(nickName))
-				user2Nickname.setText(user2Nickname.getText().substring(0, user2Nickname.getText().length() - 1)
-						.concat(String.valueOf(score)));
-		}
-		if (!(user1Nickname.getText().equals(""))) {
-			if (user1Nickname.getText().substring(0, user1Nickname.getText().length() - 9).equals(nickName))
-				user1Nickname.setText(user1Nickname.getText().substring(0, user1Nickname.getText().length() - 1)
+		if (!(userNickname[0].getText().equals(""))) {
+			if (userNickname[0].getText().substring(0, userNickname[0].getText().length() - 9).equals(nickName))
+				userNickname[0].setText(userNickname[0].getText().substring(0, userNickname[0].getText().length() - 1)
 						.concat(String.valueOf(score)));
 		}
 	}
@@ -717,64 +630,36 @@ public class GamePanel extends JPanel {
 	public void quetionerBorder(String questioner) {
 		int size = usersGame.size();
 		switch (size) {
-		case 6: {
-			if (usersGame.get(size - 6).get_nickName().equals(questioner)) {
-				user1Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user2Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user3Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user4Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user5Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user6Panel.setBorder(new LineBorder(Color.black, 4));
-			}
-		}
-		case 5: {
-			if (usersGame.get(size - 5).get_nickName().equals(questioner)) {
-				user1Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user2Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user3Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user4Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user5Panel.setBorder(new LineBorder(Color.black, 4));
-				user6Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-			}
-		}
 		case 4: {
 			if (usersGame.get(size - 4).get_nickName().equals(questioner)) {
-				user1Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user2Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user3Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user4Panel.setBorder(new LineBorder(Color.black, 4));
-				user5Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user6Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
+				userPanel[0].setBorder(new LineBorder(new Color(189, 215, 238), 4));
+				userPanel[1].setBorder(new LineBorder(new Color(189, 215, 238), 4));
+				userPanel[2].setBorder(new LineBorder(new Color(189, 215, 238), 4));
+				userPanel[3].setBorder(new LineBorder(Color.black, 4));
 			}
 		}
 		case 3: {
 			if (usersGame.get(size - 3).get_nickName().equals(questioner)) {
-				user1Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user2Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user3Panel.setBorder(new LineBorder(Color.black, 4));
-				user4Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user5Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user6Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
+				userPanel[0].setBorder(new LineBorder(new Color(189, 215, 238), 4));
+				userPanel[1].setBorder(new LineBorder(new Color(189, 215, 238), 4));
+				userPanel[2].setBorder(new LineBorder(Color.black, 4));
+				userPanel[3].setBorder(new LineBorder(new Color(189, 215, 238), 4));
 			}
 		}
 		case 2: {
 			if (usersGame.get(size - 2).get_nickName().equals(questioner)) {
-				user1Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user2Panel.setBorder(new LineBorder(Color.black, 4));
-				user3Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user4Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user5Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user6Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
+				userPanel[0].setBorder(new LineBorder(new Color(189, 215, 238), 4));
+				userPanel[1].setBorder(new LineBorder(Color.black, 4));
+				userPanel[2].setBorder(new LineBorder(new Color(189, 215, 238), 4));
+				userPanel[3].setBorder(new LineBorder(new Color(189, 215, 238), 4));
 			}
 		}
 		case 1: {
 			if (usersGame.get(size - 1).get_nickName().equals(questioner)) {
-				user1Panel.setBorder(new LineBorder(Color.black, 4));
-				user2Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user3Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user4Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user5Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-				user6Panel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
+				userPanel[0].setBorder(new LineBorder(Color.black, 4));
+				userPanel[1].setBorder(new LineBorder(new Color(189, 215, 238), 4));
+				userPanel[2].setBorder(new LineBorder(new Color(189, 215, 238), 4));
+				userPanel[3].setBorder(new LineBorder(new Color(189, 215, 238), 4));
 			}
 		}
 		}
@@ -785,29 +670,21 @@ public class GamePanel extends JPanel {
 	 * Objective: Update the chat fields for the players in game
 	 */
 	public void gameChatUpdate(String nickName, String chat) {
-		if (!(user6Nickname.getText().equals(""))) {
-			if (user6Nickname.getText().substring(0, user6Nickname.getText().length() - 9).equals(nickName))
-				user6Chat.setText(chat);
+		if (!(userNickname[3].getText().equals(""))) {
+			if (userNickname[3].getText().substring(0, userNickname[3].getText().length() - 9).equals(nickName))
+				userChat[3].setText(chat);
 		}
-		if (!(user5Nickname.getText().equals(""))) {
-			if (user5Nickname.getText().substring(0, user5Nickname.getText().length() - 9).equals(nickName))
-				user5Chat.setText(chat);
+		if (!(userNickname[2].getText().equals(""))) {
+			if (userNickname[2].getText().substring(0, userNickname[2].getText().length() - 9).equals(nickName))
+				userChat[2].setText(chat);
 		}
-		if (!(user4Nickname.getText().equals(""))) {
-			if (user4Nickname.getText().substring(0, user4Nickname.getText().length() - 9).equals(nickName))
-				user4Chat.setText(chat);
+		if (!(userNickname[1].getText().equals(""))) {
+			if (userNickname[1].getText().substring(0, userNickname[1].getText().length() - 9).equals(nickName))
+				userChat[1].setText(chat);
 		}
-		if (!(user3Nickname.getText().equals(""))) {
-			if (user3Nickname.getText().substring(0, user3Nickname.getText().length() - 9).equals(nickName))
-				user3Chat.setText(chat);
-		}
-		if (!(user2Nickname.getText().equals(""))) {
-			if (user2Nickname.getText().substring(0, user2Nickname.getText().length() - 9).equals(nickName))
-				user2Chat.setText(chat);
-		}
-		if (!(user1Nickname.getText().equals(""))) {
-			if (user1Nickname.getText().substring(0, user1Nickname.getText().length() - 9).equals(nickName))
-				user1Chat.setText(chat);
+		if (!(userNickname[0].getText().equals(""))) {
+			if (userNickname[0].getText().substring(0, userNickname[0].getText().length() - 9).equals(nickName))
+				userChat[0].setText(chat);
 		}
 	}
 
@@ -819,34 +696,24 @@ public class GamePanel extends JPanel {
 	public void correctAnswer(String nickName, String answer) {
 		gameStarted = false;
 		String message = "";
-		if (!(user6Nickname.getText().equals(""))) {
-			if (user6Nickname.getText().substring(0, user6Nickname.getText().length() - 9).equals(nickName))
-				message = new String(user6Nickname.getText().substring(0, user6Nickname.getText().length() - 9)
+		if (!(userNickname[3].getText().equals(""))) {
+			if (userNickname[3].getText().substring(0, userNickname[3].getText().length() - 9).equals(nickName))
+				message = new String(userNickname[3].getText().substring(0, userNickname[3].getText().length() - 9)
 						+ " got correct!\n" + "ANSWER: " + answer);
 		}
-		if (!(user5Nickname.getText().equals(""))) {
-			if (user5Nickname.getText().substring(0, user5Nickname.getText().length() - 9).equals(nickName))
-				message = new String(user5Nickname.getText().substring(0, user5Nickname.getText().length() - 9)
+		if (!(userNickname[2].getText().equals(""))) {
+			if (userNickname[2].getText().substring(0, userNickname[2].getText().length() - 9).equals(nickName))
+				message = new String(userNickname[2].getText().substring(0, userNickname[2].getText().length() - 9)
 						+ " got correct!\n" + "ANSWER: " + answer);
 		}
-		if (!(user4Nickname.getText().equals(""))) {
-			if (user4Nickname.getText().substring(0, user4Nickname.getText().length() - 9).equals(nickName))
-				message = new String(user4Nickname.getText().substring(0, user4Nickname.getText().length() - 9)
+		if (!(userNickname[1].getText().equals(""))) {
+			if (userNickname[1].getText().substring(0, userNickname[1].getText().length() - 9).equals(nickName))
+				message = new String(userNickname[1].getText().substring(0, userNickname[1].getText().length() - 9)
 						+ " got correct!\n" + "ANSWER: " + answer);
 		}
-		if (!(user3Nickname.getText().equals(""))) {
-			if (user3Nickname.getText().substring(0, user3Nickname.getText().length() - 9).equals(nickName))
-				message = new String(user3Nickname.getText().substring(0, user3Nickname.getText().length() - 9)
-						+ " got correct!\n" + "ANSWER: " + answer);
-		}
-		if (!(user2Nickname.getText().equals(""))) {
-			if (user2Nickname.getText().substring(0, user2Nickname.getText().length() - 9).equals(nickName))
-				message = new String(user2Nickname.getText().substring(0, user2Nickname.getText().length() - 9)
-						+ " got correct!\n" + "ANSWER: " + answer);
-		}
-		if (!(user1Nickname.getText().equals(""))) {
-			if (user1Nickname.getText().substring(0, user1Nickname.getText().length() - 9).equals(nickName))
-				message = new String(user1Nickname.getText().substring(0, user1Nickname.getText().length() - 9)
+		if (!(userNickname[0].getText().equals(""))) {
+			if (userNickname[0].getText().substring(0, userNickname[0].getText().length() - 9).equals(nickName))
+				message = new String(userNickname[0].getText().substring(0, userNickname[0].getText().length() - 9)
 						+ " got correct!\n" + "ANSWER: " + answer);
 		}
 		final JOptionPane optionPane = new JOptionPane(message, JOptionPane.INFORMATION_MESSAGE,
