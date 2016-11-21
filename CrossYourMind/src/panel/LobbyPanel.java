@@ -34,17 +34,21 @@ public class LobbyPanel extends JPanel {
 	MainFrame mainFrame;
 	// For inner panels
 	private JPanel northPanel, centerPanel;
-	private JLabel titleImage, gameListImage;
-	private JPanel gameListPanel, userListPanel;
+	private JLabel titleImage;
+	private JLabel gameListLabel, userListLabel, myinfoLabel, lobbyChatLabel;
+
+	private JPanel gameListPanel, userListPanel, lobbyChat, infoAndButton;
 	private JScrollPane gameListScroll, userListScroll;
 	private JList<String> gameList, userList;
-	private JPanel lobbyChat, infoAndButton;
+
 	private JTextArea showChat;
 	private JTextField typeChat;
+
 	private JPanel myInfo, buttonPanel;
 	private JLabel myChar, myNickname;
 	private JButton createButton, backButton;
 	private JDialog createDialog;
+
 	private String[] recent8Chat, gamesLobby, usersLobby;
 
 	// ** CONSTRUCTOR **
@@ -81,90 +85,6 @@ public class LobbyPanel extends JPanel {
 		createDialog.setVisible(false);
 	}
 
-	// /** INPUT: null, OUTPUT: null, Objective: Initialize the panels */
-	// private void setPanel() {
-	// this.setLayout(new BorderLayout());
-	//
-	// /* For north panel */
-	// northPanel = new JPanel(new FlowLayout());
-	// northPanel.setPreferredSize(new Dimension(800, 110));
-	// northPanel.setBackground(new Color(64, 64, 64));
-	// titleImage = new JLabel();
-	// titleImage.setIcon(new ImageIcon("src/images/titlePanel.png"));
-	// titleImage.setPreferredSize(new Dimension(750, 100));
-	// northPanel.add(titleImage);
-	// this.add(BorderLayout.NORTH, northPanel);
-	//
-	// /* For center panel */
-	// centerPanel = new JPanel(new BorderLayout());
-	// centerPanel.setPreferredSize(new Dimension(800, 450));
-	// gameListPanel = new JPanel(new BorderLayout());
-	// gameListPanel.setPreferredSize(new Dimension(400, 450));
-	// gameList = new JList<String>();
-	// gameList.setPreferredSize(new Dimension(400, 450));
-	// gameList.setBackground(new Color(222, 235, 247));
-	// gameList.setFont(new Font(null, Font.PLAIN, 40));
-	// gameList.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-	// gameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	// gameListScroll = new JScrollPane(gameList);
-	// gameListPanel.add(BorderLayout.CENTER, gameListScroll);
-	// userListPanel = new JPanel(new BorderLayout());
-	// userListPanel.setPreferredSize(new Dimension(200, 450));
-	// userList = new JList<String>();
-	// userList.setPreferredSize(new Dimension(200, 450));
-	// userList.setBackground(new Color(222, 235, 247));
-	// userList.setFont(new Font(null, Font.PLAIN, 40));
-	// userList.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-	// userListScroll = new JScrollPane(userList);
-	// userListPanel.add(BorderLayout.CENTER, userListScroll);
-	// centerPanel.add(BorderLayout.WEST, gameListPanel);
-	// centerPanel.add(BorderLayout.EAST, userListPanel);
-	// this.add(BorderLayout.CENTER, centerPanel);
-	//
-	// /* For south panel */
-	// southPanel = new JPanel(new BorderLayout());
-	// southPanel.setPreferredSize(new Dimension(800, 300));
-	// // Left of the south panel: chats in lobby
-	// lobbyChat = new JPanel(new BorderLayout());
-	// lobbyChat.setPreferredSize(new Dimension(400, 300));
-	// showChat = new JTextArea();
-	// showChat.setPreferredSize(new Dimension(400, 240));
-	// showChat.setBackground(new Color(222, 235, 247));
-	// showChat.setFont(new Font(null, Font.PLAIN, 20));
-	// showChat.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-	// showChat.setEditable(false);
-	// typeChat = new JTextField();
-	// typeChat.setPreferredSize(new Dimension(400, 60));
-	// typeChat.setFont(new Font(null, Font.BOLD, 30));
-	// typeChat.setBorder(new LineBorder(new Color(91, 155, 213), 4));
-	// lobbyChat.add(BorderLayout.NORTH, showChat);
-	// lobbyChat.add(BorderLayout.SOUTH, typeChat);
-	// // Right of the south panel: Information of this client & buttons
-	// infoAndButton = new JPanel(new BorderLayout());
-	// infoAndButton.setPreferredSize(new Dimension(200, 300));
-	// myInfo = new JPanel(new FlowLayout());
-	// myInfo.setAlignmentX(0);
-	// myInfo.setAlignmentY(0);
-	// myInfo.setPreferredSize(new Dimension(200, 200));
-	// myInfo.setBackground(new Color(222, 235, 247));
-	// myInfo.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-	// buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-	// buttonPanel.setPreferredSize(new Dimension(200, 100));
-	// buttonPanel.setBackground(new Color(222, 235, 247));
-	// buttonPanel.setBorder(new LineBorder(new Color(189, 215, 238), 4));
-	// createButton = new JButton(new ImageIcon("src/images/createButton.png"));
-	// createButton.setPreferredSize(new Dimension(90, 80));
-	// backButton = new JButton(new ImageIcon("src/images/backButton.png"));
-	// backButton.setPreferredSize(new Dimension(90, 80));
-	// buttonPanel.add(createButton);
-	// buttonPanel.add(backButton);
-	// infoAndButton.add(BorderLayout.NORTH, myInfo);
-	// infoAndButton.add(BorderLayout.SOUTH, buttonPanel);
-	// southPanel.add(BorderLayout.WEST, lobbyChat);
-	// southPanel.add(BorderLayout.EAST, infoAndButton);
-	// this.add(BorderLayout.SOUTH, southPanel);
-	// }
-
 	/** INPUT: null, OUTPUT: null, Objective: Initialize the panels */
 	private void setPanel() {
 		this.setLayout(null);
@@ -188,32 +108,40 @@ public class LobbyPanel extends JPanel {
 
 		gameListPanel = new JPanel(null);
 		gameListPanel.setBounds(5, 0, 200, 400);
+		gameListLabel = new JLabel(new ImageIcon("src/images/gameListLabel.png"));
+		gameListLabel.setBounds(0, 0, 200, 30);
 		gameList = new JList<String>();
 		gameList.setBackground(new Color(255, 230, 153));
 		gameList.setBorder(new LineBorder(new Color(255, 206, 5), 4));
-		gameList.setFont(new Font(null, Font.PLAIN, 25));
+		gameList.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 20));
 		gameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		gameListScroll = new JScrollPane(gameList);
-		gameListScroll.setBounds(0, 0, 200, 400);
+		gameListScroll.setBounds(0, 30, 200, 370);
+		gameListPanel.add(gameListLabel);
 		gameListPanel.add(gameListScroll);
 
 		userListPanel = new JPanel(null);
 		userListPanel.setBounds(210, 0, 250, 200);
+		userListLabel = new JLabel(new ImageIcon("src/images/userListLabel.png"));
+		userListLabel.setBounds(0, 0, 250, 30);
 		userList = new JList<String>();
 		userList.setBackground(new Color(255, 230, 153));
 		userList.setBorder(new LineBorder(new Color(255, 206, 5), 4));
-		userList.setFont(new Font(null, Font.PLAIN, 25));
+		userList.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 20));
 		userListScroll = new JScrollPane(userList);
-		userListScroll.setBounds(0, 0, 250, 200);
+		userListScroll.setBounds(0, 30, 250, 170);
+		userListPanel.add(userListLabel);
 		userListPanel.add(userListScroll);
 
 		// Right of the south panel: Information of this client & buttons
 		infoAndButton = new JPanel(null);
 		infoAndButton.setBounds(210, 205, 250, 210);
 		infoAndButton.setBackground(new Color(64, 64, 64));
+		myinfoLabel = new JLabel(new ImageIcon("src/images/myInfoLabel.png"));
+		myinfoLabel.setBounds(0, 0, 250, 30);
 
 		myInfo = new JPanel(null);
-		myInfo.setBounds(0, 0, 250, 160);
+		myInfo.setBounds(0, 30, 250, 130);
 		myInfo.setBackground(new Color(255, 230, 153));
 		myInfo.setOpaque(true);
 		myInfo.setBorder(new LineBorder(new Color(255, 206, 5), 4));
@@ -233,30 +161,31 @@ public class LobbyPanel extends JPanel {
 		buttonPanel.add(createButton);
 		buttonPanel.add(backButton);
 
+		infoAndButton.add(myinfoLabel);
 		infoAndButton.add(myInfo);
 		infoAndButton.add(buttonPanel);
-
+		
 		// Left of the south panel: chats in lobby
 		lobbyChat = new JPanel(null);
 		lobbyChat.setBounds(465, 0, 310, 400);
+		lobbyChatLabel = new JLabel(new ImageIcon("src/images/lobbyChatLabel.png"));
+		lobbyChatLabel.setBounds(0, 0, 310, 30);
 		showChat = new JTextArea();
-		showChat.setSize(310, 365);
+		showChat.setBounds(0, 30, 310, 335);
 		showChat.setBackground(new Color(255, 230, 153));
-		showChat.setFont(new Font(null, Font.PLAIN, 20));
+		showChat.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 15));
 		showChat.setBorder(new LineBorder(new Color(255, 206, 5), 4));
 		showChat.setEditable(false);
 		typeChat = new JTextField();
 		typeChat.setPreferredSize(new Dimension(400, 60));
-		typeChat.setFont(new Font(null, Font.BOLD, 30));
+		typeChat.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 30));
 		typeChat.setBorder(new LineBorder(new Color(91, 155, 213), 4));
-		// lobbyChat.add(BorderLayout.NORTH, showChat);
-		// lobbyChat.add(BorderLayout.SOUTH, typeChat);
+		lobbyChat.add(lobbyChatLabel);
 		lobbyChat.add(showChat);
 		lobbyChat.add(typeChat);
 
 		centerPanel.add(gameListPanel);
 		centerPanel.add(userListPanel);
-		// this.add(BorderLayout.CENTER, centerPanel);
 		this.add(centerPanel);
 		centerPanel.add(lobbyChat);
 		centerPanel.add(infoAndButton);

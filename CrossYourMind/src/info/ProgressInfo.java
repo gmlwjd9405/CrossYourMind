@@ -9,6 +9,8 @@ import drawing.UserPoint;
 public class ProgressInfo implements Serializable
 {
 // ** STATUS **
+	public static final String FONT = "12롯데마트드림Light";
+	
 	// in entryPanel
 	public static final int IN_ENTRY = 100;
 	public static final int USER_ENTRY = 101;

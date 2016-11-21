@@ -51,7 +51,7 @@ public class GamePanel extends JPanel
 	
 // ** VARIABLE **
 	// Connect its parent frame
-	MainFrame f;
+	MainFrame mainFrame;
 	// For inner panels
 	JPanel northPanel, centerPanel, westPanel, eastPanel, southPanel;
 	JLabel titleImage;
@@ -84,7 +84,7 @@ public class GamePanel extends JPanel
 // ** CONSTRUCTOR **
 	public GamePanel (MainFrame f)
 	{
-		this.f = f;
+		this.mainFrame = f;
 		
 		drawColor = Color.black;
 		drawThick = 10;
@@ -257,7 +257,7 @@ public class GamePanel extends JPanel
 					ProgressInfo pi = new ProgressInfo ();
 					pi.set_status (ProgressInfo.CHAT_GAME);
 					pi.set_chat (gameChat.getText ());
-					GamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.mainFrame.sendProtocol (pi);
 					gameChat.setText ("");
 				}
 			}
@@ -272,7 +272,7 @@ public class GamePanel extends JPanel
 				{
 					ProgressInfo pi = new ProgressInfo ();
 					pi.set_status (ProgressInfo.START_TRY);
-					GamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.mainFrame.sendProtocol (pi);
 				}
 			}
 		});
@@ -286,10 +286,10 @@ public class GamePanel extends JPanel
 				{
 					ProgressInfo pi = new ProgressInfo ();
 					pi.set_status (ProgressInfo.EXIT_GAME);
-					GamePanel.this.f.sendProtocol (pi);
-					GamePanel.this.f.setSize (MainFrame.lobbyPwidth, MainFrame.lobbyPheight);
-					GamePanel.this.f.set_currentCard (MainFrame.lobbyPcard);
-					GamePanel.this.f.get_card().show (GamePanel.this.f.getContentPane (), MainFrame.lobbyPcard);
+					GamePanel.this.mainFrame.sendProtocol (pi);
+					GamePanel.this.mainFrame.setSize (MainFrame.lobbyPwidth, MainFrame.lobbyPheight);
+					GamePanel.this.mainFrame.set_currentCard (MainFrame.lobbyPcard);
+					GamePanel.this.mainFrame.get_card().show (GamePanel.this.mainFrame.getContentPane (), MainFrame.lobbyPcard);
 				}
 			}
 		});
@@ -307,7 +307,7 @@ public class GamePanel extends JPanel
 					ProgressInfo pi = new ProgressInfo ();
 					pi.set_status (ProgressInfo.DRAW);
 					pi.set_pList (pList);
-					GamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.mainFrame.sendProtocol (pi);
 				}
 			}
 		});
@@ -321,7 +321,7 @@ public class GamePanel extends JPanel
 				{
 					ProgressInfo pi = new ProgressInfo ();
 					pi.set_status (ProgressInfo.SELECT_CLEAR);
-					GamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.mainFrame.sendProtocol (pi);
 				}
 			}
 		});
@@ -335,7 +335,7 @@ public class GamePanel extends JPanel
 				{
 					ProgressInfo pi = new ProgressInfo ();
 					pi.set_status (ProgressInfo.SELECT_ERASER);
-					GamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.mainFrame.sendProtocol (pi);
 				}
 			}
 		});
@@ -350,7 +350,7 @@ public class GamePanel extends JPanel
 					ProgressInfo pi = new ProgressInfo ();
 					pi.set_status (ProgressInfo.SELECT_COLOR);
 					pi.set_drawColor (0);
-					GamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.mainFrame.sendProtocol (pi);
 				}
 			}
 		});
@@ -363,7 +363,7 @@ public class GamePanel extends JPanel
 					ProgressInfo pi = new ProgressInfo ();
 					pi.set_status (ProgressInfo.SELECT_COLOR);
 					pi.set_drawColor (1);
-					GamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.mainFrame.sendProtocol (pi);
 				}
 			}
 		});
@@ -376,7 +376,7 @@ public class GamePanel extends JPanel
 					ProgressInfo pi = new ProgressInfo ();
 					pi.set_status (ProgressInfo.SELECT_COLOR);
 					pi.set_drawColor (2);
-					GamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.mainFrame.sendProtocol (pi);
 				}
 			}
 		});
@@ -389,7 +389,7 @@ public class GamePanel extends JPanel
 					ProgressInfo pi = new ProgressInfo ();
 					pi.set_status (ProgressInfo.SELECT_COLOR);
 					pi.set_drawColor (3);
-					GamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.mainFrame.sendProtocol (pi);
 				}
 			}
 		});
@@ -402,7 +402,7 @@ public class GamePanel extends JPanel
 					ProgressInfo pi = new ProgressInfo ();
 					pi.set_status (ProgressInfo.SELECT_COLOR);
 					pi.set_drawColor (4);
-					GamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.mainFrame.sendProtocol (pi);
 				}
 			}
 		});
@@ -415,7 +415,7 @@ public class GamePanel extends JPanel
 					ProgressInfo pi = new ProgressInfo ();
 					pi.set_status (ProgressInfo.SELECT_COLOR);
 					pi.set_drawColor (5);
-					GamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.mainFrame.sendProtocol (pi);
 				}
 			}
 		});
@@ -682,7 +682,7 @@ public class GamePanel extends JPanel
 	// Objective: Inform user that unable to start game because the user is not game master
 	public void startDeniedMaster ()
 	{
-		JOptionPane.showMessageDialog (GamePanel.this.f.getContentPane (), "You are not the game master!");
+		JOptionPane.showMessageDialog (GamePanel.this.mainFrame.getContentPane (), "You are not the game master!");
 	}
 	
 	// INPUT: null
@@ -690,7 +690,7 @@ public class GamePanel extends JPanel
 	// Objective: Inform user that unable to start game because there is not enough player
 	public void startDeniedNum ()
 	{
-		JOptionPane.showMessageDialog (GamePanel.this.f.getContentPane (), "You need at least two players!");
+		JOptionPane.showMessageDialog (GamePanel.this.mainFrame.getContentPane (), "You need at least two players!");
 	}
 	
 	// INPUT: answer of this round, nickname of questioner
@@ -700,7 +700,7 @@ public class GamePanel extends JPanel
 	// For all client, set the timer with game time
 	public void gameStarted (String roundAnswer, String questioner)
 	{
-		if (GamePanel.this.f.get_myNickname ().equals (questioner))
+		if (GamePanel.this.mainFrame.get_myNickname ().equals (questioner))
 		{
 			isQuestioner = true;
 			answer.setText (roundAnswer);
@@ -949,7 +949,7 @@ public class GamePanel extends JPanel
 					// Questioner sends the server to notify that the round ended
 					ProgressInfo pi = new ProgressInfo ();
 					pi.set_status (ProgressInfo.TIMER_EXPIRE);
-					GamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.mainFrame.sendProtocol (pi);
 				}
 			}
 		};
@@ -1005,7 +1005,7 @@ public class GamePanel extends JPanel
 				{
 					ProgressInfo pi = new ProgressInfo ();
 					pi.set_status (ProgressInfo.TIMER_EXPIRE);
-					GamePanel.this.f.sendProtocol (pi);
+					GamePanel.this.mainFrame.sendProtocol (pi);
 				}
 			}
 		}
