@@ -61,6 +61,7 @@ public class ServerClient extends Thread
         	 		else
         	 		{//accept
         	 			ui.set_nickName (s);
+        	 			ui.setSelectImageNum (pi.get_selectImageNum ());
         	 			ui.set_imagePath (pi.get_imagePath ());
         	 			ui.set_status (UserInfo.IN_LOBBY);
         	 			//System.out.println (s);

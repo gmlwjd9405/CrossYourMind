@@ -37,6 +37,7 @@ public class EntryPanel extends JPanel {
 	private JTextField typeNickname;
 
 	private String imagePath;
+	private int selectImageNum;
 	InputActionListener inputActionListener = new InputActionListener();
 
 	// ** CONSTRUCTOR **
@@ -166,6 +167,7 @@ public class EntryPanel extends JPanel {
 			if (i == selected) {
 				// CH[i].setBorder(new LineBorder(Color.white, 5));
 				CH[i].setIcon(charPressedImages.get(i));
+				selectImageNum = i;
 				imagePath = this.mainFrame.getCharImageList().get(i);
 				// CH[i].setBorder(new LineBorder(new Color(91, 155, 213), 8));
 
@@ -197,6 +199,7 @@ public class EntryPanel extends JPanel {
 				ProgressInfo pi = new ProgressInfo();
 				pi.set_status(ProgressInfo.USER_ACCEPT);
 				pi.set_chat(typeNickname.getText());
+				pi.set_selectImageNum(selectImageNum);
 				pi.set_imagePath(imagePath);
 				EntryPanel.this.mainFrame.sendProtocol(pi);
 				typeNickname.setText("");

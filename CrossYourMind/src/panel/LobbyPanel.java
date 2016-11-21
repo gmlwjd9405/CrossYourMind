@@ -46,6 +46,9 @@ public class LobbyPanel extends JPanel {
 
 	private JPanel myInfo, buttonPanel;
 	private JLabel myChar, myNickname;
+	private JLabel [] idLabel;
+    private JLabel [] charNameLabel;
+    private JLabel [] levelLabel;
 	private JButton createButton, backButton;
 	private JDialog createDialog;
 
@@ -113,7 +116,7 @@ public class LobbyPanel extends JPanel {
 		gameList = new JList<String>();
 		gameList.setBackground(new Color(255, 230, 153));
 		gameList.setBorder(new LineBorder(new Color(255, 206, 5), 4));
-		gameList.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 20));
+		gameList.setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 20));
 		gameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		gameListScroll = new JScrollPane(gameList);
 		gameListScroll.setBounds(0, 30, 200, 370);
@@ -127,7 +130,7 @@ public class LobbyPanel extends JPanel {
 		userList = new JList<String>();
 		userList.setBackground(new Color(255, 230, 153));
 		userList.setBorder(new LineBorder(new Color(255, 206, 5), 4));
-		userList.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 20));
+		userList.setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 20));
 		userListScroll = new JScrollPane(userList);
 		userListScroll.setBounds(0, 30, 250, 170);
 		userListPanel.add(userListLabel);
@@ -349,11 +352,50 @@ public class LobbyPanel extends JPanel {
 		myChar.setBounds(5, 5, 100, 120);
 		myChar.setBackground(Color.red);
 		myChar.setOpaque(true);
-		myNickname = new JLabel("  " + this.mainFrame.get_myNickname());
-		myNickname.setBounds(110, 0, 140, 130);
-		myNickname.setFont(new Font(null, Font.PLAIN, 40));
 		myInfo.add(myChar);
-		myInfo.add(myNickname);
+		
+		idLabel = new JLabel[2];
+        for(int i=0; i<idLabel.length; i++) {
+           idLabel[i] = new JLabel("Id:");
+        }
+        
+        idLabel[0].setFont(new Font("12롯데마트드림Light", Font.BOLD, 16));
+        idLabel[0].setBounds(110, 5, 50, 20);
+        myInfo.add(idLabel[0]);
+        
+        idLabel[1].setFont(new Font("12롯데마트드림Light", Font.PLAIN, 14));
+        idLabel[1].setText(this.mainFrame.get_myNickname());
+        idLabel[1].setBounds(110, 20, 135, 20);
+        myInfo.add(idLabel[1]);
+        
+        charNameLabel = new JLabel[2];
+        for(int i=0; i<charNameLabel.length; i++) {
+           charNameLabel[i] = new JLabel("Char:");
+        }
+        
+        charNameLabel[0].setFont(new Font("12롯데마트드림Light", Font.BOLD, 16));
+        charNameLabel[0].setBounds(110, 45, 50, 20);
+        myInfo.add(charNameLabel[0]);
+        
+        charNameLabel[1].setFont(new Font("12롯데마트드림Light", Font.PLAIN, 14));
+        charNameLabel[1].setText("임시charName!");
+        charNameLabel[1].setBounds(110, 60, 135, 20);
+        myInfo.add(charNameLabel[1]);
+        
+        levelLabel = new JLabel[2];
+        for(int i=0; i<levelLabel.length; i++) {
+           levelLabel[i] = new JLabel("Level:");
+        }
+        
+        levelLabel[0].setFont(new Font("12롯데마트드림Light", Font.BOLD, 16));
+        levelLabel[0].setBounds(110, 85, 50, 20);
+        myInfo.add(levelLabel[0]);
+        
+        levelLabel[1].setFont(new Font("12롯데마트드림Light", Font.PLAIN, 14));
+        levelLabel[1].setText("임시level가져와!" + Integer.toString(1));
+        levelLabel[1].setBounds(110, 100, 135, 20);
+        myInfo.add(levelLabel[1]);    
+		
 		myInfo.repaint();
 	}
 }

@@ -362,8 +362,7 @@ public class GamePanel extends JPanel {
 			userChat[3].setText("");
 			userChat[3].setBorder(new LineBorder(Color.black, 2));
 			userChat[3].setEditable(false);
-			userChar[3] = new JLabel(new ImageIcon(usersGame.get(size - 4).get_imagePath().substring(0,
-					usersGame.get(size - 4).get_imagePath().length() - 4) + "H.png"));
+			userChar[3] = new JLabel(new ImageIcon(usersGame.get(size - 4).get_gamecharImagePath()));
 			userChar[3].setPreferredSize(new Dimension(100, 100));
 			StyleContext contextUser4Nickname = new StyleContext();
 			StyledDocument documentUser4Nickname = new DefaultStyledDocument(contextUser4Nickname);
@@ -392,8 +391,7 @@ public class GamePanel extends JPanel {
 			userChat[2].setText("");
 			userChat[2].setBorder(new LineBorder(Color.black, 2));
 			userChat[2].setEditable(false);
-			userChar[2] = new JLabel(new ImageIcon(usersGame.get(size - 3).get_imagePath().substring(0,
-					usersGame.get(size - 3).get_imagePath().length() - 4) + "H.png"));
+			userChar[2] = new JLabel(new ImageIcon(usersGame.get(size - 3).get_gamecharImagePath()));
 			userChar[2].setPreferredSize(new Dimension(100, 100));
 			StyleContext contextUser3Nickname = new StyleContext();
 			StyledDocument documentUser3Nickname = new DefaultStyledDocument(contextUser3Nickname);
@@ -422,8 +420,7 @@ public class GamePanel extends JPanel {
 			userChat[1].setText("");
 			userChat[1].setBorder(new LineBorder(Color.black, 2));
 			userChat[1].setEditable(false);
-			userChar[1] = new JLabel(new ImageIcon(usersGame.get(size - 2).get_imagePath().substring(0,
-					usersGame.get(size - 2).get_imagePath().length() - 4) + "H.png"));
+			userChar[1] = new JLabel(new ImageIcon(usersGame.get(size - 2).get_gamecharImagePath()));
 			userChar[1].setPreferredSize(new Dimension(100, 100));
 			StyleContext contextUser1Nickname = new StyleContext();
 			StyledDocument documentUser1Nickname = new DefaultStyledDocument(contextUser1Nickname);
@@ -452,8 +449,7 @@ public class GamePanel extends JPanel {
 			userChat[0].setText("");
 			userChat[0].setBorder(new LineBorder(Color.black, 2));
 			userChat[0].setEditable(false);
-			userChar[0] = new JLabel(new ImageIcon(usersGame.get(size - 1).get_imagePath().substring(0,
-					usersGame.get(size - 1).get_imagePath().length() - 4) + "H.png"));
+			userChar[0] = new JLabel(new ImageIcon(usersGame.get(size - 1).get_gamecharImagePath()));
 			userChat[0].setPreferredSize(new Dimension(100, 100));
 			StyleContext contextUser1Nickname = new StyleContext();
 			StyledDocument documentUser1Nickname = new DefaultStyledDocument(contextUser1Nickname);

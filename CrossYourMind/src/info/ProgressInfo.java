@@ -69,6 +69,7 @@ public class ProgressInfo implements Serializable
 	private String chat; // typed chatting (lobby or game)
 	private String imagePath;
 	private String lobbyImagePath;
+	private int selectImageNum;
 	//private String proFileImagePath;
 	private String chatImagePath;
 	private String gameCharImagePath;
@@ -117,6 +118,7 @@ public class ProgressInfo implements Serializable
 	public int get_drawColor () { return drawColor; }
 	//public int get_drawingThickness () { return drawingThickness; }
 	public ArrayList<UserPoint> get_pList () { return pList; }
+	public int get_selectImageNum () { return selectImageNum; }
 // ** SET METHOD **
 	public void set_status (int item) { status = item; }
 	public void set_chat (String item) { chat = item; }
@@ -137,4 +139,5 @@ public class ProgressInfo implements Serializable
 	public void set_drawColor (int item) { drawColor = item; }
 	//public void set_drawingThickness (int item) { drawingThickness = item; }
 	public void set_pList (ArrayList<UserPoint> item) { pList = item; }
+	public void set_selectImageNum (int item) { selectImageNum = item; }
 }
