@@ -45,7 +45,7 @@ public class LobbyPanel extends JPanel {
 	private JTextField typeChat;
 
 	private JPanel myInfo, buttonPanel;
-	private JLabel myChar, myNickname;
+	private JLabel myChar;
 	private JLabel [] idLabel;
     private JLabel [] charNameLabel;
     private JLabel [] levelLabel;
@@ -99,7 +99,7 @@ public class LobbyPanel extends JPanel {
 		northPanel.setBackground(new Color(64, 64, 64));
 		titleImage = new JLabel();
 		titleImage.setIcon(new ImageIcon("src/images/titlePanel.png"));
-		titleImage.setBounds(16, 5, 750, 100);
+		titleImage.setBounds(22, 5, 750, 100);
 		northPanel.add(titleImage);
 		this.add(northPanel);
 
@@ -110,7 +110,7 @@ public class LobbyPanel extends JPanel {
 		centerPanel.setOpaque(true);
 
 		gameListPanel = new JPanel(null);
-		gameListPanel.setBounds(5, 0, 200, 400);
+		gameListPanel.setBounds(11, 0, 200, 400);
 		gameListLabel = new JLabel(new ImageIcon("src/images/gameListLabel.png"));
 		gameListLabel.setBounds(0, 0, 200, 30);
 		gameList = new JList<String>();
@@ -124,7 +124,7 @@ public class LobbyPanel extends JPanel {
 		gameListPanel.add(gameListScroll);
 
 		userListPanel = new JPanel(null);
-		userListPanel.setBounds(210, 0, 250, 200);
+		userListPanel.setBounds(216, 0, 250, 200);
 		userListLabel = new JLabel(new ImageIcon("src/images/userListLabel.png"));
 		userListLabel.setBounds(0, 0, 250, 30);
 		userList = new JList<String>();
@@ -138,7 +138,7 @@ public class LobbyPanel extends JPanel {
 
 		// Right of the south panel: Information of this client & buttons
 		infoAndButton = new JPanel(null);
-		infoAndButton.setBounds(210, 205, 250, 210);
+		infoAndButton.setBounds(216, 205, 250, 210);
 		infoAndButton.setBackground(new Color(64, 64, 64));
 		myinfoLabel = new JLabel(new ImageIcon("src/images/myInfoLabel.png"));
 		myinfoLabel.setBounds(0, 0, 250, 30);
@@ -170,7 +170,7 @@ public class LobbyPanel extends JPanel {
 		
 		// Left of the south panel: chats in lobby
 		lobbyChat = new JPanel(null);
-		lobbyChat.setBounds(465, 0, 310, 400);
+		lobbyChat.setBounds(471, 0, 310, 400);
 		lobbyChatLabel = new JLabel(new ImageIcon("src/images/lobbyChatLabel.png"));
 		lobbyChatLabel.setBounds(0, 0, 310, 30);
 		showChat = new JTextArea();

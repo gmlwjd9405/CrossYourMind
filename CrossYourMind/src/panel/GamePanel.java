@@ -45,10 +45,6 @@ public class GamePanel extends JPanel {
 	private JPanel northPanel, centerPanel, drawingPanel, westPanel, eastPanel, southPanel;
 	private JLabel titleImage;
 	private JPanel centerToolPanel, centerCanvasPanel;
-//	private JPanel user1Panel, user2Panel, user3Panel, user4Panel, user5Panel, user6Panel;
-//	private JTextPane user1Chat, user2Chat, user3Chat, user4Chat, user5Chat, user6Chat;
-//	private JLabel user1Char, user2Char, user3Char, user4Char, user5Char, user6Char;
-//	private JTextPane user1Nickname, user2Nickname, user3Nickname, user4Nickname, user5Nickname, user6Nickname;
 	private JPanel[] userPanel = new JPanel[4];
 	private JTextPane[] userChat = new JTextPane[4];
 	private JLabel[] userChar = new JLabel[4];
@@ -56,7 +52,6 @@ public class GamePanel extends JPanel {
 	private JTextField gameChat;
 	private JTextPane answer, timer;
 	private JButton clearAll, eraser, color[];
-	//private JButton color0, color1, color2, color3, color4, color5;
 	private JButton startButton, backButton;
 
 	// For drawing
@@ -105,7 +100,7 @@ public class GamePanel extends JPanel {
 		northPanel.setBackground(new Color(64, 64, 64));
 		titleImage = new JLabel();
 		titleImage.setIcon(new ImageIcon("src/images/titlePanel.png"));
-		titleImage.setBounds(16, 5, 750, 100);
+		titleImage.setBounds(22, 5, 750, 100);
 		northPanel.add(titleImage);
 		this.add(northPanel);
 
@@ -116,13 +111,13 @@ public class GamePanel extends JPanel {
 		centerPanel.setOpaque(true);
 
 		drawingPanel = new JPanel(null);
-		drawingPanel.setBounds(142, 7, 500, 340);
+		drawingPanel.setBounds(145, 7, 501, 340);
 		drawingPanel.setBackground(new Color(64, 64, 64));
 		drawingPanel.setOpaque(true);
 
 		/* For drawing tools */
 		centerToolPanel = new JPanel(null);
-		centerToolPanel.setBounds(0, 0, 500, 33);
+		centerToolPanel.setBounds(0, 0, 501, 33);
 		centerToolPanel.setBorder(new LineBorder(new Color(219,219,219), 2));
 		// centerToolPanel.setAlignmentX (1.0f);
 		// centerToolPanel.setAlignmentY (1.0f);
@@ -170,10 +165,11 @@ public class GamePanel extends JPanel {
 		centerToolPanel.add(timer);
 		// For drawing canvas
 		centerCanvasPanel = new JPanel(null);
-		centerCanvasPanel.setBounds(0, 35, 500, 305);
+		centerCanvasPanel.setBounds(0, 35, 501, 305);
 		centerCanvasPanel.setBorder(new LineBorder(new Color(255, 206, 5), 2));
 		centerCanvasPanel.add(canvas = new Canvas());
 		canvas.setBackground(Color.white);
+		canvas.setBounds(0, 0, 500, 305); //?
 		canvas.setEnabled(true);
 		drawingPanel.add(centerToolPanel);
 		drawingPanel.add(centerCanvasPanel);
@@ -182,7 +178,7 @@ public class GamePanel extends JPanel {
 
 		// For west panel: 2 users
 		westPanel = new JPanel(null);
-		westPanel.setBounds(12, 10, 130, 336);
+		westPanel.setBounds(15, 10, 130, 336);
 		westPanel.setBorder(new LineBorder(new Color(255,206,5), 3));
 		westPanel.setBackground(new Color(255, 230, 156));
 		westPanel.setOpaque(true);
@@ -201,7 +197,7 @@ public class GamePanel extends JPanel {
 
 		// For east panel: 2 users
 		eastPanel = new JPanel(null);
-		eastPanel.setBounds(642, 10, 130, 336);
+		eastPanel.setBounds(646, 10, 130, 336);
 		eastPanel.setBorder(new LineBorder(new Color(255,206,5), 3));
 		eastPanel.setBackground(new Color(255, 230, 156));
 		for(int i=2; i<4; i++){
