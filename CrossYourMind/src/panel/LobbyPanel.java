@@ -359,11 +359,11 @@ public class LobbyPanel extends JPanel {
            idLabel[i] = new JLabel("Id:");
         }
         
-        idLabel[0].setFont(new Font("12롯데마트드림Light", Font.BOLD, 16));
+        idLabel[0].setFont(new Font(ProgressInfo.FONT, Font.BOLD, 16));
         idLabel[0].setBounds(110, 5, 50, 20);
         myInfo.add(idLabel[0]);
         
-        idLabel[1].setFont(new Font("12롯데마트드림Light", Font.PLAIN, 14));
+        idLabel[1].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 14));
         idLabel[1].setText(this.mainFrame.get_myNickname());
         idLabel[1].setBounds(110, 20, 135, 20);
         myInfo.add(idLabel[1]);
@@ -373,11 +373,11 @@ public class LobbyPanel extends JPanel {
            charNameLabel[i] = new JLabel("Char:");
         }
         
-        charNameLabel[0].setFont(new Font("12롯데마트드림Light", Font.BOLD, 16));
+        charNameLabel[0].setFont(new Font(ProgressInfo.FONT, Font.BOLD, 16));
         charNameLabel[0].setBounds(110, 45, 50, 20);
         myInfo.add(charNameLabel[0]);
         
-        charNameLabel[1].setFont(new Font("12롯데마트드림Light", Font.PLAIN, 14));
+        charNameLabel[1].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 14));
         charNameLabel[1].setText("임시charName!");
         charNameLabel[1].setBounds(110, 60, 135, 20);
         myInfo.add(charNameLabel[1]);
@@ -387,11 +387,11 @@ public class LobbyPanel extends JPanel {
            levelLabel[i] = new JLabel("Level:");
         }
         
-        levelLabel[0].setFont(new Font("12롯데마트드림Light", Font.BOLD, 16));
+        levelLabel[0].setFont(new Font(ProgressInfo.FONT, Font.BOLD, 16));
         levelLabel[0].setBounds(110, 85, 50, 20);
         myInfo.add(levelLabel[0]);
         
-        levelLabel[1].setFont(new Font("12롯데마트드림Light", Font.PLAIN, 14));
+        levelLabel[1].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 14));
         levelLabel[1].setText("임시level가져와!" + Integer.toString(1));
         levelLabel[1].setBounds(110, 100, 135, 20);
         myInfo.add(levelLabel[1]);    
