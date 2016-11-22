@@ -1,16 +1,14 @@
 package info;
 
 import java.io.Serializable;
-import java.awt.Color;
 import java.util.ArrayList;
 
 import drawing.UserPoint;
 
-public class ProgressInfo implements Serializable
-{
-// ** STATUS **
+public class ProgressInfo implements Serializable {
+	// ** STATUS **
 	public static final String FONT = "12롯데마트드림Light";
-	
+
 	// in entryPanel
 	public static final int IN_ENTRY = 100;
 	public static final int USER_ENTRY = 101;
@@ -20,8 +18,8 @@ public class ProgressInfo implements Serializable
 	public static final int USER_DUPLICATE = 105;
 	public static final int USER_APPROVE = 106;
 	public static final int EXIT_APPROVE = 107;
-	
-	// in lobbyPanel 
+
+	// in lobbyPanel
 	public static final int IN_LOBBY = 200;
 	public static final int CREATE_GAME_TRY = 201;
 	public static final int CREATE_GAME_APPROVE = 2010;
@@ -36,7 +34,7 @@ public class ProgressInfo implements Serializable
 	public static final int CHAT_LOBBY = 206;
 	public static final int CHAT_LOBBY_UPDATE = 207;
 	public static final int EXIT_LOBBY = 208;
-	
+
 	// in gamePanel
 	public static final int USER_GAME_UPDATE = 300;
 	public static final int EXIT_GAME = 303;
@@ -46,7 +44,7 @@ public class ProgressInfo implements Serializable
 	public static final int START_DENIED_MASTER = 3060;
 	public static final int START_DENIED_NUM = 3061;
 	public static final int TIMER_BROADCAST = 307;
-	
+
 	// for drawing
 	public static final int DRAW = 400;
 	public static final int DRAW_BROADCAST = 4001;
@@ -63,34 +61,32 @@ public class ProgressInfo implements Serializable
 	public static final int CHAT_GAME_UPDATE = 408;
 	public static final int ROUND_TERMINATE = 409;
 
-// ** VARIABLE **	
+	// ** VARIABLE **
 	// for general purpose
 	private int status;
 	private String chat; // typed chatting (lobby or game)
 	private String imagePath;
 	private String lobbyImagePath;
 	private int selectImageNum;
-	//private String proFileImagePath;
+	// private String proFileImagePath;
 	private String chatImagePath;
 	private String gameCharImagePath;
-	
-	
+
 	// for lobby
 	private ArrayList<String> usersLobby;
 	private ArrayList<String> gamesLobby;
 	private String lobbyChat;
-	
+
 	// for game
 	private ArrayList<UserInfo> usersGame;
 	private String[][] chatsGame; // double pointer for each user
 	private int roundTime;
-	
+
 	// for drawing
 	private int drawColor;
 	private ArrayList<UserPoint> pList;
-	
-	public ProgressInfo ()
-	{ 
+
+	public ProgressInfo() {
 		status = 0;
 		chat = "";
 		imagePath = "";
@@ -99,47 +95,128 @@ public class ProgressInfo implements Serializable
 	public String seperateImagePath(String imagePath) {
 		// seperate imageFilename and .png
 		System.out.println("<ProgressInfo> imageFilename " + imagePath);
-		String frontImagePath = imagePath.substring(0, imagePath.length()-4);
+		String frontImagePath = imagePath.substring(0, imagePath.length() - 4);
 		System.out.println("<ProgressInfo> frontImagePath " + frontImagePath);
 		return frontImagePath;
 	}
-	
-// ** GET METHOD **
-	public int get_status () { return status; }
-	public String get_chat () { return chat; }
-	public String get_imagePath () { return imagePath; }
-	public String get_lobbyImagePath() { return lobbyImagePath; }
-	public String get_chatImagePath () { return chatImagePath; }
-	public String get_gameCharImagePath () { return gameCharImagePath; }
-	public ArrayList<String> get_usersLobby () { return usersLobby; }
-	public ArrayList<String> get_gamesLobby () { return gamesLobby; }
-	public String get_lobbyChat () { return lobbyChat; }
-	public ArrayList<UserInfo> get_usersGame () { return usersGame; }
-	public String[][] get_chatsGame () { return chatsGame; }
-	public int get_roundTime () { return roundTime; }
-	public int get_drawColor () { return drawColor; }
-	//public int get_drawingThickness () { return drawingThickness; }
-	public ArrayList<UserPoint> get_pList () { return pList; }
-	public int get_selectImageNum () { return selectImageNum; }
-// ** SET METHOD **
-	public void set_status (int item) { status = item; }
-	public void set_chat (String item) { chat = item; }
+
+	// ** GET METHOD **
+	public int get_status() {
+		return status;
+	}
+
+	public String get_chat() {
+		return chat;
+	}
+
+	public String get_imagePath() {
+		return imagePath;
+	}
+
+	public String get_lobbyImagePath() {
+		return lobbyImagePath;
+	}
+
+	public String get_chatImagePath() {
+		return chatImagePath;
+	}
+
+	public String get_gameCharImagePath() {
+		return gameCharImagePath;
+	}
+
+	public ArrayList<String> get_usersLobby() {
+		return usersLobby;
+	}
+
+	public ArrayList<String> get_gamesLobby() {
+		return gamesLobby;
+	}
+
+	public String get_lobbyChat() {
+		return lobbyChat;
+	}
+
+	public ArrayList<UserInfo> get_usersGame() {
+		return usersGame;
+	}
+
+	public String[][] get_chatsGame() {
+		return chatsGame;
+	}
+
+	public int get_roundTime() {
+		return roundTime;
+	}
+
+	public int get_drawColor() {
+		return drawColor;
+	}
+
+	// public int get_drawingThickness () { return drawingThickness; }
+	public ArrayList<UserPoint> get_pList() {
+		return pList;
+	}
+
+	public int get_selectImageNum() {
+		return selectImageNum;
+	}
+
+	// ** SET METHOD **
+	public void set_status(int item) {
+		status = item;
+	}
+
+	public void set_chat(String item) {
+		System.out.println("<ProgressInfo> setChat chat: " + item);
+		chat = item;
+	}
+
 	public void set_imagePath(String item) {
 		imagePath = item;
 		String frontImagePath = seperateImagePath(item);
 		lobbyImagePath = frontImagePath + "L.png";
-		//proFileImagePath;
-		chatImagePath = frontImagePath + "T.png";;
-		gameCharImagePath = frontImagePath + "H.png";;
+		// proFileImagePath;
+		chatImagePath = frontImagePath + "T.png";
+		;
+		gameCharImagePath = frontImagePath + "H.png";
+		;
 	}
-	public void set_usersLobby (ArrayList<String> item) { usersLobby = item; }
-	public void set_gamesLobby (ArrayList<String> item) { gamesLobby = item; }
-	public void set_lobbyChat (String item) { lobbyChat = item; }
-	public void set_usersGame (ArrayList<UserInfo> item) { usersGame = item; }
-	public void set_chatsGame (String[][] item) { chatsGame = item; }
-	public void set_roundTime (int item) { roundTime = item; }
-	public void set_drawColor (int item) { drawColor = item; }
-	//public void set_drawingThickness (int item) { drawingThickness = item; }
-	public void set_pList (ArrayList<UserPoint> item) { pList = item; }
-	public void set_selectImageNum (int item) { selectImageNum = item; }
+
+	public void set_usersLobby(ArrayList<String> item) {
+		usersLobby = item;
+	}
+
+	public void set_gamesLobby(ArrayList<String> item) {
+		gamesLobby = item;
+	}
+
+	public void set_lobbyChat(String item) {
+		lobbyChat = item;
+	}
+
+	public void set_usersGame(ArrayList<UserInfo> item) {
+		usersGame = item;
+	}
+
+	public void set_chatsGame(String[][] item) {
+		chatsGame = item;
+	}
+
+	public void set_roundTime(int item) {
+		roundTime = item;
+	}
+
+	public void set_drawColor(int item) {
+		drawColor = item;
+	}
+
+	// public void set_drawingThickness (int item) { drawingThickness = item; }
+	public void set_pList(ArrayList<UserPoint> item) {
+		pList = item;
+	}
+
+	public void set_selectImageNum(int item) {
+		selectImageNum = item;
+	}
 }

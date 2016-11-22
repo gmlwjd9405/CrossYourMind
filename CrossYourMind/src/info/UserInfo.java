@@ -2,67 +2,107 @@ package info;
 
 import java.io.Serializable;
 
-public class UserInfo implements Serializable
-{
-// ** STATUS ** 
+public class UserInfo implements Serializable {
+	// ** STATUS **
 	public static final int IN_LOBBY = 100;
 	public static final int IN_GAME = 101;
 	public static final int IN_GAME_QUESTIONER = 102;
 	public static final int IN_GAME_ANSWERER = 103;
 
-// ** VARIABLE **
+	// ** VARIABLE **
 	private int status;
 	private String nickName;
-	private String imagePath;	
+	private String imagePath;
 	private String gameName;
 	private boolean isMaster;
 	private int score;
-	private int level; //random
-	private int selectimageNum; //select character
+	private int level; // random
+	private int selectimageNum; // select character
 	private String characterName;
-	
-// ** CONSTRUCTOR **
-	public UserInfo ()
-	{
+
+	// ** CONSTRUCTOR **
+	public UserInfo() {
 		nickName = "";
 		gameName = "";
 		isMaster = false;
 		score = 0;
-		level = (int)(Math.random() * 30 + 1);
+		level = (int) (Math.random() * 30 + 1);
 	}
-	
-//	public UserInfo (int _status, String _nickName, String _imagePath)
-//	{
-//		status = _status;
-//		nickName = _nickName;
-//		imagePath = _imagePath;
-//		gameName = "";
-//		isMaster = false;
-//		score = 0;
-//	}
-	
-// ** METHOD **
-	//getter
-	public int get_status () { return status; }
-	public String get_nickName () { return nickName; }
-	public String get_gamecharImagePath () {
-		String frontImagePath = imagePath.substring(0, imagePath.length()-4);
+
+	// public UserInfo (int _status, String _nickName, String _imagePath)
+	// {
+	// status = _status;
+	// nickName = _nickName;
+	// imagePath = _imagePath;
+	// gameName = "";
+	// isMaster = false;
+	// score = 0;
+	// }
+
+	// ** METHOD **
+	// getter
+	public int get_status() {
+		return status;
+	}
+
+	public String get_nickName() {
+		return nickName;
+	}
+
+	public String get_gamecharImagePath() {
+		String frontImagePath = imagePath.substring(0, imagePath.length() - 4);
 		return frontImagePath + "H.png";
-    }
-	public String get_gameName () { return gameName; }
-	public boolean get_isMaster () { return isMaster; }
-	public int get_score () { return score; }
-	public int get_level () { return level; }
-	public int getSelectImageNum() {return selectimageNum;	}
-	public String getCharacterName() {return characterName;	}
-	
-	//setter
-	public void set_status (int item) { status = item; }
-	public void set_nickName (String item) { nickName = item; }
-	public void set_imagePath(String item) { imagePath = item;}
-	public void set_gameName (String item) { gameName = item; }
-	public void set_isMaster (Boolean item) { isMaster = item; }
-	public void set_score (int item) { score = item; }
+	}
+
+	public String get_gameName() {
+		return gameName;
+	}
+
+	public boolean get_isMaster() {
+		return isMaster;
+	}
+
+	public int get_score() {
+		return score;
+	}
+
+	public int get_level() {
+		return level;
+	}
+
+	public int getSelectImageNum() {
+		return selectimageNum;
+	}
+
+	public String getCharacterName() {
+		return characterName;
+	}
+
+	// setter
+	public void set_status(int item) {
+		status = item;
+	}
+
+	public void set_nickName(String item) {
+		nickName = item;
+	}
+
+	public void set_imagePath(String item) {
+		imagePath = item;
+	}
+
+	public void set_gameName(String item) {
+		gameName = item;
+	}
+
+	public void set_isMaster(Boolean item) {
+		isMaster = item;
+	}
+
+	public void set_score(int item) {
+		score = item;
+	}
+
 	public void setCharacterName(int item) {
 		switch (item) {
 		case 0:
@@ -82,10 +122,17 @@ public class UserInfo implements Serializable
 			break;
 		}
 	}
+
 	public void setSelectImageNum(int item) {
 		selectimageNum = item;
 		setCharacterName(item);
 	}
-	public void inc_score () { score++; }
-	public void dec_score () { score--; }
+
+	public void inc_score() {
+		score++;
+	}
+
+	public void dec_score() {
+		score--;
+	}
 }

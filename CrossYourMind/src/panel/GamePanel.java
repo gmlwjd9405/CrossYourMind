@@ -1,9 +1,7 @@
 package panel;
 
-import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -49,9 +47,11 @@ public class GamePanel extends JPanel {
 	private JTextPane[] userChat = new JTextPane[4];
 	private JLabel[] userChar = new JLabel[4];
 	private JLabel[] userNickname = new JLabel[4];
+	private JLabel[] userScoreLabel = new JLabel[4];
 	private JLabel[] userScore = new JLabel[4];
+	private JLabel[] userLevelLabel = new JLabel[4];
 	private JLabel[] userLevel = new JLabel[4];
-	private JTextField gameChat;
+	private JTextField gameChatField;
 	private JTextPane answer, timer;
 	private JButton clearAll, eraser, color[];
 	private JButton startButton, backButton;
@@ -169,7 +169,7 @@ public class GamePanel extends JPanel {
 		centerCanvasPanel.setBorder(new LineBorder(new Color(255, 206, 5), 2));
 		centerCanvasPanel.add(canvas = new Canvas());
 		canvas.setBackground(Color.white);
-		canvas.setBounds(0, 0, 500, 305); // ?
+		canvas.setBounds(0, 0, 500, 305); // heee?
 		canvas.setEnabled(true);
 		drawingPanel.add(centerToolPanel);
 		drawingPanel.add(centerCanvasPanel);
@@ -187,8 +187,10 @@ public class GamePanel extends JPanel {
 			userChat[i] = new JTextPane();
 			userChar[i] = new JLabel();
 			userNickname[i] = new JLabel("");
+			userScoreLabel[i] = new JLabel("");
 			userScore[i] = new JLabel("");
 			userLevel[i] = new JLabel("");
+			userLevelLabel[i] = new JLabel("");
 			userPanel[i].setBounds(0, i * 180, 140, 180);
 			westPanel.add(userPanel[i]);
 		}
@@ -217,15 +219,15 @@ public class GamePanel extends JPanel {
 		southPanel = new JPanel(null);
 		southPanel.setBounds(0, 470, 800, 50);
 		southPanel.setBackground(new Color(64, 64, 64));
-		gameChat = new JTextField();
-		gameChat.setBounds(240, 0, 250, 40);
-		gameChat.setFont(new Font(null, Font.BOLD, 30));
-		gameChat.setBorder(new LineBorder(new Color(255, 206, 5), 4));
+		gameChatField = new JTextField();
+		gameChatField.setBounds(240, 0, 250, 40);
+		gameChatField.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 30));
+		gameChatField.setBorder(new LineBorder(new Color(255, 206, 5), 4));
 		startButton = new JButton(new ImageIcon("src/images/startUp.png"));
 		startButton.setBounds(530, 2, 100, 37);
 		backButton = new JButton(new ImageIcon("src/images/backUp.png"));
 		backButton.setBounds(635, 2, 100, 37);
-		southPanel.add(gameChat);
+		southPanel.add(gameChatField);
 		southPanel.add(startButton);
 		southPanel.add(backButton);
 
@@ -238,14 +240,14 @@ public class GamePanel extends JPanel {
 	 */
 	private void setEvent() {
 		// Press enter key to finish typing chat
-		gameChat.addActionListener(new ActionListener() {
+		gameChatField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!isQuestioner) {
 					ProgressInfo pi = new ProgressInfo();
 					pi.set_status(ProgressInfo.CHAT_GAME);
-					pi.set_chat(gameChat.getText());
+					pi.set_chat(gameChatField.getText());
 					GamePanel.this.mainFrame.sendProtocol(pi);
-					gameChat.setText("");
+					gameChatField.setText("");
 				}
 			}
 		});
@@ -376,7 +378,6 @@ public class GamePanel extends JPanel {
 	}
 
 	private void updateMethodPanel(int i) {
-		int size = i;
 		int index = i - 1;
 
 		userPanel[index] = new JPanel(null);
@@ -384,7 +385,6 @@ public class GamePanel extends JPanel {
 		userPanel[index].setBackground(new Color(255, 230, 156));
 		userPanel[index].setOpaque(true);
 
-		// 수정.
 		userChar[index] = new JLabel(new ImageIcon(usersGame.get(index).get_gamecharImagePath()));
 		userChar[index].setBounds(0, 0, 100, 100);
 		StyleContext contextUser = new StyleContext();
@@ -402,22 +402,29 @@ public class GamePanel extends JPanel {
 		userNickname[index].setText(usersGame.get(index).get_nickName());
 		userNickname[index].setBounds(5, 132, 115, 15);
 		userNickname[index].setFont(new Font(ProgressInfo.FONT, Font.BOLD, 15));
+		userScoreLabel[index] = new JLabel();
+		userScoreLabel[index].setText("SCORE:");
+		userScoreLabel[index].setBounds(3, 148, 40, 13);
+		userScoreLabel[index].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 13));
 		userScore[index] = new JLabel();
-		userScore[index].setText("SCORE: " + usersGame.get(index).get_score());
-		userScore[index].setBounds(3, 148, 60, 13);
+		userScore[index].setText(Integer.toString(usersGame.get(index).get_score()));
+		userScore[index].setBounds(45, 148, 15, 13);
 		userScore[index].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 13));
+		userLevelLabel[index].setText("LEVEL:");
+		userLevelLabel[index].setBounds(65, 148, 40, 13);
+		userLevelLabel[index].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 13));
 		userLevel[index] = new JLabel();
-		userLevel[index].setText("LEVEL: " + usersGame.get(index).get_level());
-		userLevel[index].setBounds(65, 148, 60, 13);
+		userLevel[index].setText(Integer.toString(usersGame.get(index).get_level()));
+		userLevel[index].setBounds(107, 148, 15, 13);
 		userLevel[index].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 13));
 
 		userPanel[index].add(userChat[index]);
 		userPanel[index].add(userChar[index]);
 		userPanel[index].add(userNickname[index]);
+		userPanel[index].add(userScoreLabel[index]);
 		userPanel[index].add(userScore[index]);
+		userPanel[index].add(userLevelLabel[index]);
 		userPanel[index].add(userLevel[index]);
-
-		// userPanel size->이메서드, location, add->나가서
 	}
 
 	/**
@@ -436,24 +443,20 @@ public class GamePanel extends JPanel {
 
 		// Update display of score for target user
 		if (!(userNickname[3].getText().equals(""))) {
-			if (userNickname[3].getText().substring(0, userNickname[3].getText().length() - 9).equals(nickName))
-				userNickname[3].setText(userNickname[3].getText().substring(0, userNickname[3].getText().length() - 1)
-						.concat(String.valueOf(score)));
+			if (userNickname[3].getText().equals(nickName))
+				userScore[3].setText(String.valueOf(score));
 		}
 		if (!(userNickname[2].getText().equals(""))) {
-			if (userNickname[2].getText().substring(0, userNickname[2].getText().length() - 9).equals(nickName))
-				userNickname[2].setText(userNickname[2].getText().substring(0, userNickname[2].getText().length() - 1)
-						.concat(String.valueOf(score)));
+			if (userNickname[2].getText().equals(nickName))
+				userScore[2].setText(String.valueOf(score));
 		}
 		if (!(userNickname[1].getText().equals(""))) {
-			if (userNickname[1].getText().substring(0, userNickname[1].getText().length() - 9).equals(nickName))
-				userNickname[1].setText(userNickname[1].getText().substring(0, userNickname[1].getText().length() - 1)
-						.concat(String.valueOf(score)));
+			if (userNickname[1].getText().equals(nickName))
+				userScore[1].setText(String.valueOf(score));
 		}
 		if (!(userNickname[0].getText().equals(""))) {
-			if (userNickname[0].getText().substring(0, userNickname[0].getText().length() - 9).equals(nickName))
-				userNickname[0].setText(userNickname[0].getText().substring(0, userNickname[0].getText().length() - 1)
-						.concat(String.valueOf(score)));
+			if (userNickname[0].getText().equals(nickName))
+				userScore[0].setText(String.valueOf(score));
 		}
 	}
 
@@ -615,19 +618,19 @@ public class GamePanel extends JPanel {
 	 */
 	public void gameChatUpdate(String nickName, String chat) {
 		if (!(userNickname[3].getText().equals(""))) {
-			if (userNickname[3].getText().substring(0, userNickname[3].getText().length() - 9).equals(nickName))
+			if (userNickname[3].getText().equals(nickName))
 				userChat[3].setText(chat);
 		}
 		if (!(userNickname[2].getText().equals(""))) {
-			if (userNickname[2].getText().substring(0, userNickname[2].getText().length() - 9).equals(nickName))
+			if (userNickname[2].getText().equals(nickName))
 				userChat[2].setText(chat);
 		}
 		if (!(userNickname[1].getText().equals(""))) {
-			if (userNickname[1].getText().substring(0, userNickname[1].getText().length() - 9).equals(nickName))
+			if (userNickname[1].getText().equals(nickName))
 				userChat[1].setText(chat);
 		}
 		if (!(userNickname[0].getText().equals(""))) {
-			if (userNickname[0].getText().substring(0, userNickname[0].getText().length() - 9).equals(nickName))
+			if (userNickname[0].getText().equals(nickName))
 				userChat[0].setText(chat);
 		}
 	}
@@ -641,24 +644,20 @@ public class GamePanel extends JPanel {
 		gameStarted = false;
 		String message = "";
 		if (!(userNickname[3].getText().equals(""))) {
-			if (userNickname[3].getText().substring(0, userNickname[3].getText().length() - 9).equals(nickName))
-				message = new String(userNickname[3].getText().substring(0, userNickname[3].getText().length() - 9)
-						+ " got correct!\n" + "ANSWER: " + answer);
+			if (userNickname[3].equals(nickName))
+				message = new String(userNickname[3].getText() + " got correct!\n" + "ANSWER: " + answer);
 		}
 		if (!(userNickname[2].getText().equals(""))) {
-			if (userNickname[2].getText().substring(0, userNickname[2].getText().length() - 9).equals(nickName))
-				message = new String(userNickname[2].getText().substring(0, userNickname[2].getText().length() - 9)
-						+ " got correct!\n" + "ANSWER: " + answer);
+			if (userNickname[2].equals(nickName))
+				message = new String(userNickname[2].getText() + " got correct!\n" + "ANSWER: " + answer);
 		}
 		if (!(userNickname[1].getText().equals(""))) {
-			if (userNickname[1].getText().substring(0, userNickname[1].getText().length() - 9).equals(nickName))
-				message = new String(userNickname[1].getText().substring(0, userNickname[1].getText().length() - 9)
-						+ " got correct!\n" + "ANSWER: " + answer);
+			if (userNickname[1].equals(nickName))
+				message = new String(userNickname[1].getText() + " got correct!\n" + "ANSWER: " + answer);
 		}
 		if (!(userNickname[0].getText().equals(""))) {
-			if (userNickname[0].getText().substring(0, userNickname[0].getText().length() - 9).equals(nickName))
-				message = new String(userNickname[0].getText().substring(0, userNickname[0].getText().length() - 9)
-						+ " got correct!\n" + "ANSWER: " + answer);
+			if (userNickname[0].getText().equals(nickName))
+				message = new String(userNickname[0].getText() + " got correct!\n" + "ANSWER: " + answer);
 		}
 		final JOptionPane optionPane = new JOptionPane(message, JOptionPane.INFORMATION_MESSAGE,
 				JOptionPane.DEFAULT_OPTION, null, new Object[] {}, null);

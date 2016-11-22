@@ -34,7 +34,7 @@ public class EntryPanel extends JPanel {
 	private JButton enterButton;
 	private ArrayList<Icon> charImages = new ArrayList<Icon>();;
 	private ArrayList<Icon> charPressedImages = new ArrayList<Icon>();;
-	private JTextField typeNickname;
+	private JTextField nickNameTextField;
 
 	private String imagePath;
 	private int selectImageNum;
@@ -69,7 +69,7 @@ public class EntryPanel extends JPanel {
 		// For center panel
 		centerPanel = new JPanel(new FlowLayout());
 		centerPanel.setPreferredSize(new Dimension(800, 400));
-		//centerPanel.setBackground(new Color(64, 64, 64));
+		// centerPanel.setBackground(new Color(64, 64, 64));
 		centerPanel.setBackground(Color.gray);
 		initCH();
 		this.add(BorderLayout.CENTER, centerPanel);
@@ -78,17 +78,17 @@ public class EntryPanel extends JPanel {
 		southPanel = new JPanel(new FlowLayout());
 		southPanel.setPreferredSize(new Dimension(800, 50));
 		southPanel.setBackground(new Color(64, 64, 64));
-		typeNickname = new JTextField();
-		typeNickname.setPreferredSize(new Dimension(250, 40));
-		typeNickname.setBackground(new Color(255, 230, 153));
-		typeNickname.setFont(new Font(null, Font.BOLD, 25));
-		typeNickname.setBorder(new LineBorder(new Color(255, 206, 5), 4));
+		nickNameTextField = new JTextField();
+		nickNameTextField.setPreferredSize(new Dimension(250, 40));
+		nickNameTextField.setBackground(new Color(255, 230, 153));
+		nickNameTextField.setFont(new Font(null, Font.BOLD, 25));
+		nickNameTextField.setBorder(new LineBorder(new Color(255, 206, 5), 4));
 		enterButton = new JButton(new ImageIcon("src/images/enterUp.png"));
 		enterButton.setBackground(new Color(64, 64, 64));
 		enterButton.setOpaque(true);
 		enterButton.setPreferredSize(new Dimension(100, 37));
 		// enterButton.setBorder(null);
-		southPanel.add(typeNickname);
+		southPanel.add(nickNameTextField);
 		southPanel.add(enterButton);
 		this.add(BorderLayout.SOUTH, southPanel);
 	}
@@ -124,7 +124,7 @@ public class EntryPanel extends JPanel {
 			}
 		});
 
-		typeNickname.addActionListener(inputActionListener);
+		nickNameTextField.addActionListener(inputActionListener);
 		enterButton.addActionListener(inputActionListener);
 	}
 
@@ -178,32 +178,32 @@ public class EntryPanel extends JPanel {
 	}
 
 	/** Mouse Entered, Exited -> have to modify */
-//	private void selectExited(int selected) {
-//		for (int i = 0; i < 5; i++) {
-//			if (i == selected) {
-//				CH[i].setIcon(charImages.get(i));
-//				// CH[i].setBorder(new LineBorder(new Color(91, 155, 213), 8));
-//				CH[i].setBorder(new LineBorder(Color.black, 4));
-//			}
-//		}
-//	}
+	// private void selectExited(int selected) {
+	// for (int i = 0; i < 5; i++) {
+	// if (i == selected) {
+	// CH[i].setIcon(charImages.get(i));
+	// // CH[i].setBorder(new LineBorder(new Color(91, 155, 213), 8));
+	// CH[i].setBorder(new LineBorder(Color.black, 4));
+	// }
+	// }
+	// }
 
 	/** inner class: check client enter all required information */
 	public class InputActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (typeNickname.getText().equals(""))
+			if (nickNameTextField.getText().equals(""))
 				JOptionPane.showMessageDialog(EntryPanel.this.mainFrame.getContentPane(), "Please enter nickname.");
 			else if (imagePath == "")
 				JOptionPane.showMessageDialog(EntryPanel.this.mainFrame.getContentPane(), "Please select a character.");
 			else {
 				ProgressInfo pi = new ProgressInfo();
 				pi.set_status(ProgressInfo.USER_ACCEPT);
-				pi.set_chat(typeNickname.getText());
+				pi.set_chat(nickNameTextField.getText());
 				pi.set_selectImageNum(selectImageNum);
 				System.out.println("<EntryPanel> call progressInfo SetImagePath");
 				pi.set_imagePath(imagePath);
 				EntryPanel.this.mainFrame.sendProtocol(pi);
-				typeNickname.setText("");
+				nickNameTextField.setText("");
 			}
 		}
 	}

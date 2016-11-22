@@ -1,7 +1,5 @@
 package server;
 
-import java.io.Serializable;
-
 import info.UserInfo;
 import info.GameInfo;
 import info.ProgressInfo;
@@ -571,7 +569,7 @@ public class ALPHAserver extends Thread {
 						pi_ack.set_status(ProgressInfo.START_APPROVE_ANSWERER);
 					}
 					System.out.println("<ALPHAserver startGameAll> call progressInfo SetImagePath");
-					//pi_ack.set_imagePath(questioner);
+					// pi_ack.set_imagePath(questioner);
 					pi_ack.set_imagePath(serverClient.getUserInfo().get_gamecharImagePath());
 					serverClient.lockedWrite(pi_ack);
 				}
@@ -789,7 +787,8 @@ public class ALPHAserver extends Thread {
 					ProgressInfo pi_broadcast = new ProgressInfo();
 					pi_broadcast.set_status(ProgressInfo.CHAT_GAME_UPDATE);
 					pi_broadcast.set_chat(nickName);
-					pi_broadcast.set_imagePath(chat);
+					// heee 원래 코드에서 제거 후 작동 테스트
+					// pi_broadcast.set_imagePath(chat); //?????
 					for (ServerClient sc : serverClientList) {// System.out.println("CHAT");
 						if (sc.getUserInfo().get_gameName().equals(gameName))
 							sc.lockedWrite(pi_broadcast);

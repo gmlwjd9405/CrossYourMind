@@ -42,13 +42,13 @@ public class LobbyPanel extends JPanel {
 	private JList<String> gameList, userList;
 
 	private JTextArea showChat;
-	private JTextField typeChat;
+	private JTextField lobbyChatTextField;
 
 	private JPanel myInfo, buttonPanel;
 	private JLabel myChar;
-	private JLabel [] idLabel;
-    private JLabel [] charNameLabel;
-    private JLabel [] levelLabel;
+	private JLabel[] idLabel;
+	private JLabel[] charNameLabel;
+	private JLabel[] levelLabel;
 	private JButton createButton, backButton;
 	private JDialog createDialog;
 
@@ -167,7 +167,7 @@ public class LobbyPanel extends JPanel {
 		infoAndButton.add(myinfoLabel);
 		infoAndButton.add(myInfo);
 		infoAndButton.add(buttonPanel);
-		
+
 		// Left of the south panel: chats in lobby
 		lobbyChat = new JPanel(null);
 		lobbyChat.setBounds(471, 0, 310, 400);
@@ -179,13 +179,13 @@ public class LobbyPanel extends JPanel {
 		showChat.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 15));
 		showChat.setBorder(new LineBorder(new Color(255, 206, 5), 4));
 		showChat.setEditable(false);
-		typeChat = new JTextField();
-		typeChat.setPreferredSize(new Dimension(400, 60));
-		typeChat.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 30));
-		typeChat.setBorder(new LineBorder(new Color(91, 155, 213), 4));
+		lobbyChatTextField = new JTextField();
+		lobbyChatTextField.setPreferredSize(new Dimension(400, 60));
+		lobbyChatTextField.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 30));
+		lobbyChatTextField.setBorder(new LineBorder(new Color(91, 155, 213), 4));
 		lobbyChat.add(lobbyChatLabel);
 		lobbyChat.add(showChat);
-		lobbyChat.add(typeChat);
+		lobbyChat.add(lobbyChatTextField);
 
 		centerPanel.add(gameListPanel);
 		centerPanel.add(userListPanel);
@@ -203,13 +203,13 @@ public class LobbyPanel extends JPanel {
 	 */
 	private void setEvent() {
 		// Press enter key to finish typing chat
-		typeChat.addActionListener(new ActionListener() {
+		lobbyChatTextField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ProgressInfo pi = new ProgressInfo();
 				pi.set_status(ProgressInfo.CHAT_LOBBY);
-				pi.set_chat(typeChat.getText());
+				pi.set_chat(lobbyChatTextField.getText());
 				LobbyPanel.this.mainFrame.sendProtocol(pi);
-				typeChat.setText("");
+				lobbyChatTextField.setText("");
 			}
 		});
 
@@ -353,49 +353,49 @@ public class LobbyPanel extends JPanel {
 		myChar.setBackground(Color.red);
 		myChar.setOpaque(true);
 		myInfo.add(myChar);
-		
+
 		idLabel = new JLabel[2];
-        for(int i=0; i<idLabel.length; i++) {
-           idLabel[i] = new JLabel("Id:");
-        }
-        
-        idLabel[0].setFont(new Font(ProgressInfo.FONT, Font.BOLD, 16));
-        idLabel[0].setBounds(110, 5, 50, 20);
-        myInfo.add(idLabel[0]);
-        
-        idLabel[1].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 14));
-        idLabel[1].setText(this.mainFrame.get_myNickname());
-        idLabel[1].setBounds(110, 20, 135, 20);
-        myInfo.add(idLabel[1]);
-        
-        charNameLabel = new JLabel[2];
-        for(int i=0; i<charNameLabel.length; i++) {
-           charNameLabel[i] = new JLabel("Char:");
-        }
-        
-        charNameLabel[0].setFont(new Font(ProgressInfo.FONT, Font.BOLD, 16));
-        charNameLabel[0].setBounds(110, 45, 50, 20);
-        myInfo.add(charNameLabel[0]);
-        
-        charNameLabel[1].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 14));
-        charNameLabel[1].setText("임시charName!");
-        charNameLabel[1].setBounds(110, 60, 135, 20);
-        myInfo.add(charNameLabel[1]);
-        
-        levelLabel = new JLabel[2];
-        for(int i=0; i<levelLabel.length; i++) {
-           levelLabel[i] = new JLabel("Level:");
-        }
-        
-        levelLabel[0].setFont(new Font(ProgressInfo.FONT, Font.BOLD, 16));
-        levelLabel[0].setBounds(110, 85, 50, 20);
-        myInfo.add(levelLabel[0]);
-        
-        levelLabel[1].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 14));
-        levelLabel[1].setText("임시level가져와!" + Integer.toString(1));
-        levelLabel[1].setBounds(110, 100, 135, 20);
-        myInfo.add(levelLabel[1]);    
-		
+		for (int i = 0; i < idLabel.length; i++) {
+			idLabel[i] = new JLabel("Id:");
+		}
+
+		idLabel[0].setFont(new Font(ProgressInfo.FONT, Font.BOLD, 16));
+		idLabel[0].setBounds(110, 5, 50, 20);
+		myInfo.add(idLabel[0]);
+
+		idLabel[1].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 14));
+		idLabel[1].setText(this.mainFrame.get_myNickname());
+		idLabel[1].setBounds(110, 20, 135, 20);
+		myInfo.add(idLabel[1]);
+
+		charNameLabel = new JLabel[2];
+		for (int i = 0; i < charNameLabel.length; i++) {
+			charNameLabel[i] = new JLabel("Char:");
+		}
+
+		charNameLabel[0].setFont(new Font(ProgressInfo.FONT, Font.BOLD, 16));
+		charNameLabel[0].setBounds(110, 45, 50, 20);
+		myInfo.add(charNameLabel[0]);
+
+		charNameLabel[1].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 14));
+		charNameLabel[1].setText("임시charName!");
+		charNameLabel[1].setBounds(110, 60, 135, 20);
+		myInfo.add(charNameLabel[1]);
+
+		levelLabel = new JLabel[2];
+		for (int i = 0; i < levelLabel.length; i++) {
+			levelLabel[i] = new JLabel("Level:");
+		}
+
+		levelLabel[0].setFont(new Font(ProgressInfo.FONT, Font.BOLD, 16));
+		levelLabel[0].setBounds(110, 85, 50, 20);
+		myInfo.add(levelLabel[0]);
+
+		levelLabel[1].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 14));
+		levelLabel[1].setText("임시level가져와!" + Integer.toString(1));
+		levelLabel[1].setBounds(110, 100, 135, 20);
+		myInfo.add(levelLabel[1]);
+
 		myInfo.repaint();
 	}
 }
@@ -408,7 +408,7 @@ class CreateDialog extends JPanel {
 	// For inner panels
 	JPanel southPanel;
 	JLabel message;
-	JTextField typeRoomName;
+	JTextField roomNameTextField;
 	JButton createButton, exitButton;
 
 	// ** CONSTRUCTOR **
@@ -434,11 +434,11 @@ class CreateDialog extends JPanel {
 		this.add(BorderLayout.NORTH, message);
 
 		// Textfield for user to type game name
-		typeRoomName = new JTextField();
-		typeRoomName.setPreferredSize(new Dimension(400, 60));
-		typeRoomName.setFont(new Font(null, Font.BOLD, 30));
-		typeRoomName.setBorder(new LineBorder(new Color(91, 155, 213), 4));
-		this.add(BorderLayout.CENTER, typeRoomName);
+		roomNameTextField = new JTextField();
+		roomNameTextField.setPreferredSize(new Dimension(400, 60));
+		roomNameTextField.setFont(new Font(null, Font.BOLD, 30));
+		roomNameTextField.setBorder(new LineBorder(new Color(91, 155, 213), 4));
+		this.add(BorderLayout.CENTER, roomNameTextField);
 
 		// South panel for buttons
 		southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -460,17 +460,17 @@ class CreateDialog extends JPanel {
 	 */
 	private void setEvent() {
 		// Press enter key
-		typeRoomName.addActionListener(new ActionListener() {
+		roomNameTextField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (typeRoomName.getText().equals(""))
+				if (roomNameTextField.getText().equals(""))
 					JOptionPane.showMessageDialog(CreateDialog.this.lp.mainFrame.getContentPane(),
 							"Please enter room name.");
 				else {
 					ProgressInfo pi = new ProgressInfo();
 					pi.set_status(ProgressInfo.CREATE_GAME_TRY);
-					pi.set_chat(typeRoomName.getText());
+					pi.set_chat(roomNameTextField.getText());
 					CreateDialog.this.lp.mainFrame.sendProtocol(pi);
-					typeRoomName.setText("");
+					roomNameTextField.setText("");
 				}
 			}
 		});
@@ -478,15 +478,15 @@ class CreateDialog extends JPanel {
 		// Click the create button to try creating
 		createButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (typeRoomName.getText().equals(""))
+				if (roomNameTextField.getText().equals(""))
 					JOptionPane.showMessageDialog(CreateDialog.this.lp.mainFrame.getContentPane(),
 							"Please enter room name.");
 				else {
 					ProgressInfo pi = new ProgressInfo();
 					pi.set_status(ProgressInfo.CREATE_GAME_TRY);
-					pi.set_chat(typeRoomName.getText());
+					pi.set_chat(roomNameTextField.getText());
 					CreateDialog.this.lp.mainFrame.sendProtocol(pi);
-					typeRoomName.setText("");
+					roomNameTextField.setText("");
 				}
 			}
 		});
@@ -494,7 +494,7 @@ class CreateDialog extends JPanel {
 		// Click the exit button to cancel creating
 		exitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				typeRoomName.setText("");
+				roomNameTextField.setText("");
 				CreateDialog.this.lp.closeCreateDialog();
 			}
 		});
