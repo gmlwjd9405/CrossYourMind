@@ -17,14 +17,14 @@ public class ServerClient extends Thread
 	ObjectOutputStream out;
 	boolean outLock;
 	ObjectInputStream in;
-	UserInfo ui;
+	UserInfo userInfo;
    
 // ** CONSTRUCTOR **
 	public ServerClient(Socket s, ALPHAserver server)
 	{
 		this.s = s;
 		this.server = server;
-		ui = new UserInfo ();
+		userInfo = new UserInfo ();
 		
 		try
 		{	
@@ -60,10 +60,10 @@ public class ServerClient extends Thread
         	 		}
         	 		else
         	 		{//accept
-        	 			ui.set_nickName (s);
-        	 			ui.setSelectImageNum (pi.get_selectImageNum ());
-        	 			ui.set_imagePath (pi.get_imagePath ());
-        	 			ui.set_status (UserInfo.IN_LOBBY);
+        	 			userInfo.set_nickName (s);
+        	 			userInfo.setSelectImageNum (pi.get_selectImageNum ());
+        	 			userInfo.set_imagePath (pi.get_imagePath ());
+        	 			userInfo.set_status (UserInfo.IN_LOBBY);
         	 			//System.out.println (s);
         	 			server.lobbyGameAllUpdate ();
         	 			server.lobbyUserAllUpdate ();
@@ -80,13 +80,13 @@ public class ServerClient extends Thread
         	 	case ProgressInfo.CHAT_LOBBY: // When user types chat in lobby
         	 	{
         	 		String s = pi.get_chat ();
-        	 		server.set_RLC (ui.get_nickName () + ": " + s);
+        	 		server.set_RLC (userInfo.get_nickName () + ": " + s);
         	 		server.lobbyChatUpdateAll ();
         	 		break;
         	 	}
         	 	case ProgressInfo.EXIT_LOBBY: // When user exits lobby
         	 	{
-        	 		ui.set_nickName ("");
+        	 		userInfo.set_nickName ("");
         	 		server.lobbyUserAllUpdate ();
         	 		server.printUsers ();
         	 		break;
@@ -106,9 +106,9 @@ public class ServerClient extends Thread
         	 			System.out.println ("CREATE_GAME_APPROVE");
         	 			server.newGame (pi.get_chat ());
             	 		server.lobbyGameAllUpdate ();
-            	 		ui.set_status (UserInfo.IN_GAME);
-            	 		ui.set_gameName (pi.get_chat ());
-            	 		ui.set_isMaster (true);
+            	 		userInfo.set_status (UserInfo.IN_GAME);
+            	 		userInfo.set_gameName (pi.get_chat ());
+            	 		userInfo.set_isMaster (true);
             	 		ProgressInfo pi_ack = new ProgressInfo ();
             	 		pi_ack.set_status (ProgressInfo.CREATE_GAME_APPROVE);
             	 		pi_ack.set_usersGame(server.getUsersGame (pi.get_chat ()));
@@ -128,9 +128,9 @@ public class ServerClient extends Thread
         	 		}
         	 		else
         	 		{
-        	 			ui.set_status (UserInfo.IN_GAME);
-        	 			ui.set_isMaster(false);
-            	 		ui.set_gameName (pi.get_chat ());
+        	 			userInfo.set_status (UserInfo.IN_GAME);
+        	 			userInfo.set_isMaster(false);
+            	 		userInfo.set_gameName (pi.get_chat ());
         	 			ProgressInfo pi_ack = new ProgressInfo ();
         	 			pi_ack.set_status (ProgressInfo.JOIN_GAME_APPROVE);
         	 			pi_ack.set_chat (pi.get_chat ());
@@ -142,16 +142,16 @@ public class ServerClient extends Thread
         	 	case ProgressInfo.JOIN_GAME: // When user succeeds to join a game
         	 	{
         	 		System.out.println ("JOIN_GAME");
-        	 		server.userJoinGame (ui.get_nickName (), ui.get_gameName ());
+        	 		server.userJoinGame (userInfo.get_nickName (), userInfo.get_gameName ());
         	 		server.lobbyUserAllUpdate ();
         	 		break;
         	 	}
         	 	case ProgressInfo.EXIT_GAME: // When user exits the game
         	 	{
         	 		System.out.println ("EXIT_GAME");
-        	 		String gameName = ui.get_gameName();
-        	 		ui.set_gameName("");
-        	 		ui.set_status (UserInfo.IN_LOBBY);
+        	 		String gameName = userInfo.get_gameName();
+        	 		userInfo.set_gameName("");
+        	 		userInfo.set_status (UserInfo.IN_LOBBY);
         	 		server.userExitGame (gameName);
         	 		server.lobbyUserAllUpdate ();
         	 		server.gameUserAllUpdate (gameName);
@@ -164,10 +164,10 @@ public class ServerClient extends Thread
         	 		System.out.println ("START_TRY");
         	 		pi = new ProgressInfo ();
         	 		
-        	 		if (ui.get_isMaster ())
+        	 		if (userInfo.get_isMaster ())
         	 		{
-        	 			if (server.startAvailable (ui.get_gameName ()))
-        	 				server.startGameAll (ui.get_gameName ());
+        	 			if (server.startAvailable (userInfo.get_gameName ()))
+        	 				server.startGameAll (userInfo.get_gameName ());
         	 			else
         	 				pi.set_status (ProgressInfo.START_DENIED_NUM);
         	 		}
@@ -179,34 +179,34 @@ public class ServerClient extends Thread
         	 	case ProgressInfo.DRAW: // When questioner draws to canvas
         	 	{
         	 		System.out.println ("DRAW");
-        	 		server.drawBroadcast (ui.get_gameName (), pi.get_pList ());
+        	 		server.drawBroadcast (userInfo.get_gameName (), pi.get_pList ());
         	 		break;
         	 	}
         	 	case ProgressInfo.SELECT_CLEAR: // When user selects clear button
         	 	{
-        	 		server.clearBroadcast (ui.get_gameName ());
+        	 		server.clearBroadcast (userInfo.get_gameName ());
         	 		break;
         	 	}
         	 	case ProgressInfo.SELECT_ERASER: // When user selects eraser button
         	 	{
-        	 		server.eraserBroadcast (ui.get_gameName ());
+        	 		server.eraserBroadcast (userInfo.get_gameName ());
         	 		break;
         	 	}
         	 	case ProgressInfo.SELECT_COLOR: // When user selects color button
         	 	{
-        	 		server.colorBroadcast (ui.get_gameName (), pi.get_drawColor ());
+        	 		server.colorBroadcast (userInfo.get_gameName (), pi.get_drawColor ());
         	 		break;
         	 	}
         	 	case ProgressInfo.TIMER_EXPIRE: // When the round timer becomes zero in playing game
         	 	{
         	 		//System.out.println ("TIMER_EXPIRE: " + ui.get_nickName ());
-        	 		server.timerExpireBroadcast (ui.get_gameName (), ui.get_nickName());
+        	 		server.timerExpireBroadcast (userInfo.get_gameName (), userInfo.get_nickName());
         	 		break;
         	 	}
         	 	case ProgressInfo.CHAT_GAME: // When user types chat in game
         	 	{
         	 		System.out.println ("CHAT_GAME");
-        	 		server.checkAnswer (ui.get_gameName (), ui.get_nickName (), pi.get_chat ());
+        	 		server.checkAnswer (userInfo.get_gameName (), userInfo.get_nickName (), pi.get_chat ());
         	 		break;
         	 	}
         	 	case ProgressInfo.EXIT_ENTRY: // When user exits in entry panel: Closes the connection and destroy data structures
@@ -257,22 +257,22 @@ public class ServerClient extends Thread
    //Get methods
    public UserInfo getUserInfo ()
    {
-	   return ui;
+	   return userInfo;
    }
    
    public int getUserStatus ()
    {
-	   return ui.get_status ();
+	   return userInfo.get_status ();
    }
    
    public String getUserNickname ()
    {
-	   return ui.get_nickName ();
+	   return userInfo.get_nickName ();
    }
    
    public boolean userInLobby ()
    {
-	   return ui.get_status() == UserInfo.IN_LOBBY;
+	   return userInfo.get_status() == UserInfo.IN_LOBBY;
    }
    
    public Socket getSocket ()
