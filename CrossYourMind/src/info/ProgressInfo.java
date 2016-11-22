@@ -98,7 +98,9 @@ public class ProgressInfo implements Serializable
 
 	public String seperateImagePath(String imagePath) {
 		// seperate imageFilename and .png
+		System.out.println("<ProgressInfo> imageFilename " + imagePath);
 		String frontImagePath = imagePath.substring(0, imagePath.length()-4);
+		System.out.println("<ProgressInfo> frontImagePath " + frontImagePath);
 		return frontImagePath;
 	}
 	

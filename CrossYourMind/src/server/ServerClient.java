@@ -70,6 +70,7 @@ public class ServerClient extends Thread
         	 			ProgressInfo pi_ack = new ProgressInfo ();
         	 			pi_ack.set_status (ProgressInfo.USER_APPROVE);
         	 			pi_ack.set_chat (pi.get_chat ());
+        	 			System.out.println("<ServerClient> call progressInfo SetImagePath");
         	 			pi_ack.set_imagePath (pi.get_imagePath ());
         	 			lockedWrite (pi_ack);
         	 			server.printUsers ();

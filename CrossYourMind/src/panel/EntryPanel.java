@@ -200,6 +200,7 @@ public class EntryPanel extends JPanel {
 				pi.set_status(ProgressInfo.USER_ACCEPT);
 				pi.set_chat(typeNickname.getText());
 				pi.set_selectImageNum(selectImageNum);
+				System.out.println("<EntryPanel> call progressInfo SetImagePath");
 				pi.set_imagePath(imagePath);
 				EntryPanel.this.mainFrame.sendProtocol(pi);
 				typeNickname.setText("");

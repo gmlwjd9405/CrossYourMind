@@ -501,6 +501,7 @@ public class ALPHAserver extends Thread
 						sc.getUserInfo ().set_status(UserInfo.IN_GAME_ANSWERER);
 						pi_ack.set_status (ProgressInfo.START_APPROVE_ANSWERER);
 					}
+					System.out.println("<ALPHAserver startGameAll> call progressInfo SetImagePath");
 					pi_ack.set_imagePath (questioner);
 					sc.lockedWrite (pi_ack);
 				}
@@ -644,6 +645,7 @@ public class ALPHAserver extends Thread
 								if (sc.getUserInfo ().get_gameName ().equals (gameName))
 								{
 									ProgressInfo pi_ack = new ProgressInfo ();
+									System.out.println("<ALPHAserver timerExpireBroadcast> call progressInfo SetImagePath");
 									pi_ack.set_imagePath (nextQuestioner);
 									if (sc.getUserInfo ().get_nickName ().equals (nextQuestioner))
 									{System.out.println ("IN if");
@@ -750,6 +752,7 @@ public class ALPHAserver extends Thread
 					ProgressInfo pi_broadcast = new ProgressInfo ();
 					pi_broadcast.set_status (ProgressInfo.CORRECT_ANSWER);
 					pi_broadcast.set_chat (nickName);
+					System.out.println("<ALPHAserver> call progressInfo SetImagePath");
 					pi_broadcast.set_imagePath (chat);
 					for (ServerClient sc: scList)
 					{

@@ -336,7 +336,7 @@ public class GamePanel extends JPanel {
 		westPanel.removeAll();
 		eastPanel.removeAll();
 		int size = usersGame.size();
-		
+
 		// Initialize score of each player
 		for (UserInfo ui : usersGame) {
 			ui.set_score(0);
@@ -346,29 +346,27 @@ public class GamePanel extends JPanel {
 
 		// Re-draw userNpanel according the number of users currently in game
 		switch (size) {
-		case  1 : {
-			updateMethodPanel(1);
-			userPanel[0].setLocation(3, 3);
-			westPanel.add(userPanel[0]);
-			
-		}
-		case  2 : {
-			updateMethodPanel(2);
-			userPanel[1].setLocation(3, 3);
-			eastPanel.add(userPanel[1]);
-			
-		}
-		case  3 : {
-			updateMethodPanel(3);
-			userPanel[2].setLocation(3, 168);
-			westPanel.add(userPanel[2]);
-			
-		}
-		case  4 : {
+
+		case 4: {
 			updateMethodPanel(4);
 			userPanel[3].setLocation(3, 168);
 			eastPanel.add(userPanel[3]);
-			
+		}
+		case 3: {
+			updateMethodPanel(3);
+			userPanel[2].setLocation(3, 168);
+			westPanel.add(userPanel[2]);
+		}
+		case 2: {
+			updateMethodPanel(2);
+			userPanel[1].setLocation(3, 3);
+			eastPanel.add(userPanel[1]);
+
+		}
+		case 1: {
+			updateMethodPanel(1);
+			userPanel[0].setLocation(3, 3);
+			westPanel.add(userPanel[0]);
 		}
 		}
 		eastPanel.revalidate();
@@ -378,17 +376,16 @@ public class GamePanel extends JPanel {
 	}
 
 	private void updateMethodPanel(int i) {
-		System.out.println("updateMethodPanel 실행됨: > "+ i);
 		int size = i;
 		int index = i - 1;
-		
+
 		userPanel[index] = new JPanel(null);
 		userPanel[index].setSize(123, 164);
 		userPanel[index].setBackground(new Color(255, 230, 156));
 		userPanel[index].setOpaque(true);
-		
+
 		// 수정.
-		userChar[index] = new JLabel(new ImageIcon(usersGame.get(0).get_gamecharImagePath()));
+		userChar[index] = new JLabel(new ImageIcon(usersGame.get(index).get_gamecharImagePath()));
 		userChar[index].setBounds(0, 0, 100, 100);
 		StyleContext contextUser = new StyleContext();
 		StyledDocument documentUser = new DefaultStyledDocument(contextUser);
@@ -402,24 +399,24 @@ public class GamePanel extends JPanel {
 		userChat[index].setEditable(false);
 
 		userNickname[index] = new JLabel();
-		userNickname[index].setText(usersGame.get(0).get_nickName());
+		userNickname[index].setText(usersGame.get(index).get_nickName());
 		userNickname[index].setBounds(5, 132, 115, 15);
 		userNickname[index].setFont(new Font(ProgressInfo.FONT, Font.BOLD, 15));
 		userScore[index] = new JLabel();
-		userScore[index].setText("SCORE: " + usersGame.get(0).get_score());
+		userScore[index].setText("SCORE: " + usersGame.get(index).get_score());
 		userScore[index].setBounds(3, 148, 60, 13);
 		userScore[index].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 13));
 		userLevel[index] = new JLabel();
-		userLevel[index].setText("LEVEL: " + usersGame.get(0).get_level());
+		userLevel[index].setText("LEVEL: " + usersGame.get(index).get_level());
 		userLevel[index].setBounds(65, 148, 60, 13);
 		userLevel[index].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 13));
-		
+
 		userPanel[index].add(userChat[index]);
 		userPanel[index].add(userChar[index]);
 		userPanel[index].add(userNickname[index]);
 		userPanel[index].add(userScore[index]);
 		userPanel[index].add(userLevel[index]);
-		
+
 		// userPanel size->이메서드, location, add->나가서
 	}
 
