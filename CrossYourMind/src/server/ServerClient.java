@@ -201,7 +201,7 @@ public class ServerClient extends Thread {
 				case ProgressInfo.CHAT_GAME: // When user types chat in game
 				{
 					System.out.println("CHAT_GAME");
-					server.checkAnswer(userInfo.get_gameName(), userInfo.get_nickName(), pi.get_chat());
+					server.checkAnswer(userInfo.get_gameName(), userInfo.get_nickName(), pi.get_chattingSentence());
 					break;
 				}
 				case ProgressInfo.EXIT_ENTRY: // When user exits in entry panel:

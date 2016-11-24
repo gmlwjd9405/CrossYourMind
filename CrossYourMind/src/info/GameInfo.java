@@ -40,6 +40,7 @@ public class GameInfo implements Serializable {
 	}
 
 	public String get_roundAnswer() {
+		System.out.println("<GameInfo> roundAnswer" + roundAnswer);
 		return roundAnswer;
 	}
 

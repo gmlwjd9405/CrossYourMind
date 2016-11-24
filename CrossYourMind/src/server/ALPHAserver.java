@@ -17,13 +17,13 @@ import javax.swing.Timer;
 public class ALPHAserver extends Thread {
 	// ** VARIABLE **
 	// For connection
-	ServerSocket serverSocket;
-	ArrayList<ServerClient> serverClientList;
-	ArrayList<GameInfo> gameInfoList;
-	ArrayList<String> wordList;
+	private ServerSocket serverSocket;
+	private ArrayList<ServerClient> serverClientList;
+	private ArrayList<GameInfo> gameInfoList;
+	private ArrayList<String> wordList;
 
-	String recentLobbyChat;
-	Random random;
+	private String recentLobbyChat;
+	private Random random;
 
 	// For timer management
 	long startTime;
@@ -769,14 +769,21 @@ public class ALPHAserver extends Thread {
 	// correct
 	// If not correct, just update the chats in game
 	public void checkAnswer(String gameName, String nickName, String chat) {
+		System.out.println("<ALPHAserver>");
+		System.out.println("gameName: " + gameName);
+		System.out.println("nickName: " + nickName);
+		System.out.println("chat: " + chat);
 		for (GameInfo gameInfo : gameInfoList) {
 			if (gameInfo.get_gameName().equals(gameName)) {
 				if (gameInfo.get_roundAnswer().equals(chat)) {// System.out.println("CORRECT");
 					ProgressInfo pi_broadcast = new ProgressInfo();
 					pi_broadcast.set_status(ProgressInfo.CORRECT_ANSWER);
+					System.out.println("<ALPHAserver_checkAnswer> call progressInfo set_chat(nickName): " + nickName);
 					pi_broadcast.set_chat(nickName);
-					System.out.println("<ALPHAserver> call progressInfo SetImagePath");
-					pi_broadcast.set_imagePath(chat);
+					System.out.println("<ALPHAserver_checkAnswer> call progressInfo set_chattingSentence(chat): " + chat);
+					// heee 
+					pi_broadcast.set_chattingSentence(chat); //?????
+					//pi_broadcast.set_imagePath(chat);
 					for (ServerClient serverClient : serverClientList) {
 						if (serverClient.getUserInfo().get_gameName().equals(gameName))
 							serverClient.lockedWrite(pi_broadcast);
@@ -786,10 +793,12 @@ public class ALPHAserver extends Thread {
 				} else {
 					ProgressInfo pi_broadcast = new ProgressInfo();
 					pi_broadcast.set_status(ProgressInfo.CHAT_GAME_UPDATE);
+					System.out.println("<ALPHAserver_checkAnswer> call progressInfo set_chat(nickName): " + nickName);
 					pi_broadcast.set_chat(nickName);
-					// heee 원래 코드에서 제거 후 작동 테스트
-					// pi_broadcast.set_imagePath(chat); //?????
-					for (ServerClient sc : serverClientList) {// System.out.println("CHAT");
+					// heee 
+					pi_broadcast.set_chattingSentence(chat); //?????
+					//pi_broadcast.set_imagePath(chat); //?????
+					for (ServerClient sc : serverClientList) {
 						if (sc.getUserInfo().get_gameName().equals(gameName))
 							sc.lockedWrite(pi_broadcast);
 					}

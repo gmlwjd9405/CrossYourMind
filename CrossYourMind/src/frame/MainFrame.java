@@ -127,7 +127,7 @@ public class MainFrame extends JFrame implements Runnable {
 					System.out.println("USER_DUPLICATE");
 					break;
 				}
-					/* When user's nickname is available */
+				/* When user's nickname is available */
 				case ProgressInfo.USER_APPROVE: {
 					System.out.println("USER_APPROVE");
 					set_myNickname(progressInfo.get_chat());
@@ -138,73 +138,73 @@ public class MainFrame extends JFrame implements Runnable {
 					lobbyP.myInfoUpdate();
 					break;
 				}
-					/* When there is new chatting in lobby */
+				/* When there is new chatting in lobby */
 				case ProgressInfo.CHAT_LOBBY_UPDATE: {
 					System.out.println("CHAT_LOBBY_UPDATE");
 					lobbyP.updateLobbyChat(progressInfo.get_lobbyChat());
 					break;
 				}
-					/* When there is new game created */
+				/* When there is new game created */
 				case ProgressInfo.GAME_LOBBY_UPDATE: {
 					System.out.println("GAME_LOBBY_UPDATE");
 					lobbyP.updateLobbyGame(progressInfo.get_gamesLobby());
 					break;
 				}
-					/*
-					 * When there is a user entered lobby / exited lobby /
-					 * created game / joined game
-					 */
+				/*
+				 * When there is a user entered lobby / exited lobby / created
+				 * game / joined game
+				 */
 				case ProgressInfo.USER_LOBBY_UPDATE: {
 					System.out.println("USER_LOBBY_UPDATE");
 					lobbyP.updateLobbyUser(progressInfo.get_usersLobby());
 					break;
 				}
-					/* When creating game succeeds */
+				/* When creating game succeeds */
 				case ProgressInfo.CREATE_GAME_APPROVE: {
 					System.out.println("CREATE_GAME_APPROVE");
 					lobbyP.createApproved();
 					gameP.createApproved(progressInfo.get_usersGame());
 					break;
 				}
-					/* When creating game fails */
+				/* When creating game fails */
 				case ProgressInfo.CREATE_GAME_DENIED: {
 					System.out.println("CREATE_GAME_DENIED");
 					JOptionPane.showMessageDialog(getContentPane(), "Game name duplicated.\nTry another one!");
 					break;
 				}
-					/*
-					 * When try to join game succeeds: for user trying to join
-					 */
+				/*
+				 * When try to join game succeeds: for user trying to join
+				 */
 				case ProgressInfo.JOIN_GAME_APPROVE: {
 					System.out.println("JOIN_GAME_APPROVE");
 					lobbyP.joinApproved(progressInfo.get_chat());
 					gameP.joinApproved(progressInfo.get_usersGame());
 					break;
 				}
-					/* When new player enters game: for user already in game */
+				/* When new player enters game: for user already in game */
 				case ProgressInfo.JOIN_GAME_NEW: {
 					System.out.println("JOIN_GAME_NEW");
 					gameP.joinApproved(progressInfo.get_usersGame());
 					break;
 				}
-					/* When joining game fails because the game is full */
+				/* When joining game fails because the game is full */
 				case ProgressInfo.JOIN_GAME_DENIED: {
 					System.out.println("JOIN_GAME_DENIED");
 					lobbyP.joinDenied();
 					break;
 				}
-					/*
-					 * When a player exited game, update the users in the game
-					 */
+				/*
+				 * When a player exited game, update the users in the game
+				 */
 				case ProgressInfo.USER_GAME_UPDATE: {
 					System.out.println("USER_GAME_UPDATE");
 					gameP.joinApproved(progressInfo.get_usersGame());
 					break;
 				}
-					/*
-					 * When game is started or a round ended, starts game as a
-					 * questioner
-					 */
+				/*
+				 * When game is started or a round ended, starts game as a
+				 * questioner
+				 */
 				case ProgressInfo.START_APPROVE_QUESTIONER: {
 					System.out.println("START_APPROVE_QUESTIONER");
 					gameP.clearBroadcasted();
@@ -212,10 +212,10 @@ public class MainFrame extends JFrame implements Runnable {
 					gameP.quetionerBorder(progressInfo.get_imagePath());
 					break;
 				}
-					/*
-					 * When game is started or a round ended, starts game as a
-					 * answerer
-					 */
+				/*
+				 * When game is started or a round ended, starts game as a
+				 * answerer
+				 */
 				case ProgressInfo.START_APPROVE_ANSWERER: {
 					System.out.println("START_APPROVE_ANSWERER");
 					gameP.clearBroadcasted();
@@ -223,77 +223,82 @@ public class MainFrame extends JFrame implements Runnable {
 					gameP.quetionerBorder(progressInfo.get_imagePath());
 					break;
 				}
-					/*
-					 * When starting a game fails because user trying to start
-					 * is not game master
-					 */
+				/*
+				 * When starting a game fails because user trying to start is
+				 * not game master
+				 */
 				case ProgressInfo.START_DENIED_MASTER: {
 					gameP.startDeniedMaster();
 					break;
 				}
-					/*
-					 * When starting a game fails because there is not enough
-					 * player
-					 */
+				/*
+				 * When starting a game fails because there is not enough player
+				 */
 				case ProgressInfo.START_DENIED_NUM: {
 					gameP.startDeniedNum();
 					break;
 				}
-					/* When questioner draws */
+				/* When questioner draws */
 				case ProgressInfo.DRAW_BROADCAST: {
 					System.out.println("DRAW_BROADCAST");
 					gameP.drawBroadcasted(progressInfo.get_pList());
 					break;
 				}
-					/* When questioner selects clear button */
+				/* When questioner selects clear button */
 				case ProgressInfo.SELECT_CLEAR_BROADCAST: {
 					System.out.println("SELECT_CLEAR_BROADCAST");
 					gameP.clearBroadcasted();
 					break;
 				}
-					/* When questioner selects eraser button */
+				/* When questioner selects eraser button */
 				case ProgressInfo.SELECT_ERASER_BROADCAST: {
 					System.out.println("SELECT_ERASER_BROADCAST");
 					gameP.eraserBroadcasted();
 					break;
 				}
-					/* When questioner selects color button */
+				/* When questioner selects color button */
 				case ProgressInfo.SELECT_COLOR_BROADCAST: {
 					System.out.println("SELECT_COLOR_BROADCAST");
 					gameP.colorBroadcasted(progressInfo.get_drawColor());
 					break;
 				}
-					/* When server's timer elapsed 1 second */
+				/* When server's timer elapsed 1 second */
 				case ProgressInfo.TIMER_BROADCAST: {
 					// System.out.println ("TIMER_BROADCAST");
 					gameP.timerBroadcasted();
 					break;
 				}
-					/* When there is a new chat in game */
+				/* When there is a new chat in game */
 				case ProgressInfo.CHAT_GAME_UPDATE: {
 					System.out.println("CHAT_GAME_UPDATE");
-					gameP.gameChatUpdate(progressInfo.get_chat(), progressInfo.get_imagePath());
+					System.out.println("<CHAT_GAME_UPDATE> get_chat: " + progressInfo.get_chat());
+					System.out
+							.println("<CHAT_GAME_UPDATE> get_chattingSentence: " + progressInfo.get_chattingSentence());
+					// heee
+					gameP.gameChatUpdate(progressInfo.get_chat(), progressInfo.get_chattingSentence());
 					break;
 				}
-					/* When a user got correct by its chat */
+				/* When a user got correct by its chat */
 				case ProgressInfo.CORRECT_ANSWER: {
 					System.out.println("CORRECT_ANSWER");
-					gameP.gameChatUpdate(progressInfo.get_chat(), progressInfo.get_imagePath());
-					gameP.correctAnswer(progressInfo.get_chat(), progressInfo.get_imagePath());
+					gameP.gameChatUpdate(progressInfo.get_chat(), progressInfo.get_chattingSentence());
+					// heee
+					// 수정 필요!!
+					//gameP.correctAnswer(progressInfo.get_chat(), progressInfo.get_imagePath());
+					gameP.correctAnswer(progressInfo.get_chat(), progressInfo.get_chattingSentence());
 					gameP.scoreUpdate(progressInfo.get_chat());
 					break;
 				}
-					/* When all the rounds finished for game */
+				/* When all the rounds finished for game */
 				case ProgressInfo.ROUND_TERMINATE: {
 					System.out.println("ROUND_TERMINATE");
 					gameP.clearBroadcasted();
 					gameP.roundTerminated(progressInfo.get_chat());
 					break;
 				}
-					/*
-					 * When user exits game by clicking close button in entry
-					 * panel
-					 */
+				/*
+				 * When user exits game by clicking close button in entry panel
+				 */
 				case ProgressInfo.EXIT_APPROVE: {
 					System.out.println("EXIT_APPROVE");
 					exitGame();
@@ -316,9 +321,10 @@ public class MainFrame extends JFrame implements Runnable {
 	}
 
 	// ** METHOD **
-	// INPUT: null
-	// OUTPUT: null
-	// Objective: Initialize the path of image resources
+	/**
+	 * INPUT: null, OUTPUT: null, Objective: Initialize the path of image
+	 * resources
+	 */
 	private void initCharImageList() {
 		entrycharImageList = new ArrayList<String>();
 		entryEnteredcharImageList = new ArrayList<String>();
@@ -334,9 +340,10 @@ public class MainFrame extends JFrame implements Runnable {
 		}
 	}
 
-	// INPUT: progressInfo to send from this client to the server
-	// OUTPUT: null
-	// Objective: Send object using connection
+	/**
+	 * INPUT: progressInfo to send from this client to the server, OUTPUT: null,
+	 * Objective: Send object using connection
+	 */
 	public void sendProtocol(ProgressInfo pi) {
 		try {
 			out.writeObject(pi);
@@ -346,17 +353,18 @@ public class MainFrame extends JFrame implements Runnable {
 		}
 	}
 
-	// INPUT: null
-	// OUTPUT: current card layout object
-	// Objective: Access the layout
+	/**
+	 * INPUT: null, OUTPUT: current card layout object, Objective: Access the
+	 * layout
+	 */
 	public CardLayout get_card() {
 		return card;
 	}
 
-	// INPUT: null
-	// OUTPUT: null
-	// Objective: This client to exit the game in entry panel and disconnect
-	// from the server
+	/**
+	 * INPUT: null, OUTPUT: null, Objective: This client to exit the game in
+	 * entry panel and disconnect from the server
+	 */
 	public void exitGame() {
 		try {
 			in.close();
@@ -381,9 +389,10 @@ public class MainFrame extends JFrame implements Runnable {
 		return currentCard;
 	}
 
-	// INPUT: null
-	// OUTPUT: the list of path of image resources
-	// Objective: Access the image resource
+	/**
+	 * INPUT: null, OUTPUT: the list of path of image resources, Objective:
+	 * Access the image resource
+	 */
 	public ArrayList<String> getCharImageList() {
 		return entrycharImageList;
 	}
@@ -391,11 +400,6 @@ public class MainFrame extends JFrame implements Runnable {
 	public ArrayList<String> getCharEnteredImageList() {
 		return entryEnteredcharImageList;
 	}
-	// public ArrayList<String> getLobbyCharImageList() {return lobbyImageList;}
-	// public ArrayList<String> getTalkCharImageList() {return
-	// talkcharImageList;}
-	// public ArrayList<String> getGameCharImageList() {return
-	// gamecharImageList;}
 
 	/* Set methods */
 	public void set_myNickname(String item) {

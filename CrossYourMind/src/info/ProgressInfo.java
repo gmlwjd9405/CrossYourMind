@@ -65,6 +65,7 @@ public class ProgressInfo implements Serializable {
 	// for general purpose
 	private int status;
 	private String chat; // typed chatting (lobby or game)
+	private String chattingSentence; // typed chatting (lobby or game)
 	private String imagePath;
 	private String lobbyImagePath;
 	private int selectImageNum;
@@ -107,6 +108,10 @@ public class ProgressInfo implements Serializable {
 
 	public String get_chat() {
 		return chat;
+	}
+
+	public String get_chattingSentence() {
+		return chattingSentence;
 	}
 
 	public String get_imagePath() {
@@ -168,11 +173,17 @@ public class ProgressInfo implements Serializable {
 	}
 
 	public void set_chat(String item) {
-		System.out.println("<ProgressInfo> setChat chat: " + item);
+		System.out.println("<ProgressInfo> set_chat chat: " + item);
 		chat = item;
 	}
 
+	public void set_chattingSentence(String item) {
+		System.out.println("<ProgressInfo> set_chattingSentence chattingSentence: " + item);
+		chattingSentence = item;
+	}
+
 	public void set_imagePath(String item) {
+		System.out.println("<ProgressInfo> set_imagePath imagePath: " + item);
 		imagePath = item;
 		String frontImagePath = seperateImagePath(item);
 		lobbyImagePath = frontImagePath + "L.png";

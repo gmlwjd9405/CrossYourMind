@@ -245,7 +245,9 @@ public class GamePanel extends JPanel {
 				if (!isQuestioner) {
 					ProgressInfo pi = new ProgressInfo();
 					pi.set_status(ProgressInfo.CHAT_GAME);
-					pi.set_chat(gameChatField.getText());
+					// heee
+					pi.set_chattingSentence(gameChatField.getText());
+					//pi.set_chat(gameChatField.getText());// ????필요한가????
 					GamePanel.this.mainFrame.sendProtocol(pi);
 					gameChatField.setText("");
 				}
@@ -393,7 +395,7 @@ public class GamePanel extends JPanel {
 		StyleConstants.setAlignment(styleUser, StyleConstants.ALIGN_CENTER);
 		userChat[index] = new JTextPane(documentUser);
 		userChat[index].setBounds(0, 100, 123, 30);
-		userChat[index].setFont(new Font(ProgressInfo.FONT, Font.BOLD, 20));
+		userChat[index].setFont(new Font(ProgressInfo.FONT, Font.BOLD, 15));
 		userChat[index].setText("");
 		userChat[index].setBorder(new LineBorder(Color.black, 2));
 		userChat[index].setEditable(false);
@@ -616,22 +618,22 @@ public class GamePanel extends JPanel {
 	 * INPUT: nickname of the chat's owner, contents of chat, OUTPUT: null,
 	 * Objective: Update the chat fields for the players in game
 	 */
-	public void gameChatUpdate(String nickName, String chat) {
+	public void gameChatUpdate(String nickName, String chattingSentence) {
 		if (!(userNickname[3].getText().equals(""))) {
 			if (userNickname[3].getText().equals(nickName))
-				userChat[3].setText(chat);
+				userChat[3].setText(chattingSentence);
 		}
 		if (!(userNickname[2].getText().equals(""))) {
 			if (userNickname[2].getText().equals(nickName))
-				userChat[2].setText(chat);
+				userChat[2].setText(chattingSentence);
 		}
 		if (!(userNickname[1].getText().equals(""))) {
 			if (userNickname[1].getText().equals(nickName))
-				userChat[1].setText(chat);
+				userChat[1].setText(chattingSentence);
 		}
 		if (!(userNickname[0].getText().equals(""))) {
 			if (userNickname[0].getText().equals(nickName))
-				userChat[0].setText(chat);
+				userChat[0].setText(chattingSentence);
 		}
 	}
 
