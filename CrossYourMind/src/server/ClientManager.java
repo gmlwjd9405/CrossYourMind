@@ -7,10 +7,10 @@ import java.net.Socket;
 import info.ProgressInfo;
 import info.UserInfo;
 
-public class ServerClient extends Thread {
+public class ClientManager extends Thread {
 	// ** VARIABLE **
 	// Connects to the common server
-	ALPHAserver server;
+	Server server;
 	// For connection
 	Socket s;
 	ObjectOutputStream out;
@@ -19,7 +19,7 @@ public class ServerClient extends Thread {
 	UserInfo userInfo;
 
 	// ** CONSTRUCTOR **
-	public ServerClient(Socket s, ALPHAserver server) {
+	public ClientManager(Socket s, Server server) {
 		this.s = s;
 		this.server = server;
 		userInfo = new UserInfo();
@@ -39,32 +39,36 @@ public class ServerClient extends Thread {
 		try {
 			loop: while (true) {
 				ProgressInfo pi = (ProgressInfo) in.readObject();
+				
 				switch (pi.get_status()) {
-				case ProgressInfo.USER_ACCEPT: // When user tries to enter the
-												// game
+				// When user tries to enter the	game
+				case ProgressInfo.USER_ACCEPT: 
 				{
-					String s = pi.get_chat();
-					if (server.checkDuplicateUser(s)) {// duplicate
+					//heee
+					//String s = pi.get_chat();
+					String nickName = pi.getNickName();
+					// duplicate
+					if (server.checkDuplicateUser(nickName)) {
 						ProgressInfo pi_ack = new ProgressInfo();
-						pi_ack.set_status(ProgressInfo.USER_DUPLICATE); // The
-																		// typed
-																		// nickname
-																		// is
-																		// already
-																		// in
-																		// use
+						// The typed nickname is already in use
+						pi_ack.set_status(ProgressInfo.USER_DUPLICATE); 
 						lockedWrite(pi_ack);
-					} else {// accept
-						userInfo.set_nickName(s);
+					}
+					// accept
+					else {
+						userInfo.set_nickName(nickName);
 						userInfo.setSelectImageNum(pi.get_selectImageNum());
+						userInfo.set_level(pi.getLevel());
 						userInfo.set_imagePath(pi.get_imagePath());
 						userInfo.set_status(UserInfo.IN_LOBBY);
-						// System.out.println (s);
+						
 						server.lobbyGameAllUpdate();
 						server.lobbyUserAllUpdate();
 						ProgressInfo pi_ack = new ProgressInfo();
 						pi_ack.set_status(ProgressInfo.USER_APPROVE);
-						pi_ack.set_chat(pi.get_chat());
+						//heee
+						pi_ack.setNickName(pi.getNickName());
+						pi_ack.set_chat(pi.get_chat()); //???πª¿˙¿Â???
 						System.out.println("<ServerClient> call progressInfo SetImagePath");
 						pi_ack.set_imagePath(pi.get_imagePath());
 						lockedWrite(pi_ack);

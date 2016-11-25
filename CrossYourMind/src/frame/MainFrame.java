@@ -130,7 +130,7 @@ public class MainFrame extends JFrame implements Runnable {
 				/* When user's nickname is available */
 				case ProgressInfo.USER_APPROVE: {
 					System.out.println("USER_APPROVE");
-					set_myNickname(progressInfo.get_chat());
+					set_myNickname(progressInfo.getNickName());
 					set_myLobbyImagePath(progressInfo.get_lobbyImagePath());
 					this.setSize(lobbyPwidth, lobbyPheight);
 					this.set_currentCard(lobbyPcard);
@@ -208,6 +208,8 @@ public class MainFrame extends JFrame implements Runnable {
 				case ProgressInfo.START_APPROVE_QUESTIONER: {
 					System.out.println("START_APPROVE_QUESTIONER");
 					gameP.clearBroadcasted();
+					System.out.println("<MainFrame> roundAnswer: " + progressInfo.get_chat());
+					System.out.println("<MainFrame> questioner: " + progressInfo.get_imagePath());
 					gameP.gameStarted(progressInfo.get_chat(), progressInfo.get_imagePath());
 					gameP.quetionerBorder(progressInfo.get_imagePath());
 					break;

@@ -64,14 +64,21 @@ public class ProgressInfo implements Serializable {
 	// ** VARIABLE **
 	// for general purpose
 	private int status;
+	
 	private String chat; // typed chatting (lobby or game)
-	private String chattingSentence; // typed chatting (lobby or game)
+	private String chattingSentence; // chatting sentence in chat
+	
 	private String imagePath;
 	private String lobbyImagePath;
 	private int selectImageNum;
 	// private String proFileImagePath;
 	private String chatImagePath;
 	private String gameCharImagePath;
+	
+	//for UserInfo
+	private String nickName;
+	private String charName;
+	private int level;
 
 	// for lobby
 	private ArrayList<String> usersLobby;
@@ -131,6 +138,10 @@ public class ProgressInfo implements Serializable {
 	}
 
 	public ArrayList<String> get_usersLobby() {
+		System.out.println("<ProgressInfo_get_usersLobby> userList: ");
+		for(int i=0; i<usersLobby.size(); i++){
+			System.out.print(usersLobby.get(i) + " ");
+		}
 		return usersLobby;
 	}
 
@@ -166,6 +177,18 @@ public class ProgressInfo implements Serializable {
 	public int get_selectImageNum() {
 		return selectImageNum;
 	}
+	
+	public String getNickName(){
+		return this.nickName;
+	}
+	
+	public String getCharName(){
+		return this.charName;
+	}
+	
+	public int getLevel(){
+		return this.level;
+	}
 
 	// ** SET METHOD **
 	public void set_status(int item) {
@@ -189,9 +212,9 @@ public class ProgressInfo implements Serializable {
 		lobbyImagePath = frontImagePath + "L.png";
 		// proFileImagePath;
 		chatImagePath = frontImagePath + "T.png";
-		;
+		
 		gameCharImagePath = frontImagePath + "H.png";
-		;
+		
 	}
 
 	public void set_usersLobby(ArrayList<String> item) {
@@ -229,5 +252,34 @@ public class ProgressInfo implements Serializable {
 
 	public void set_selectImageNum(int item) {
 		selectImageNum = item;
+		setCharName(item);
+	}
+	
+	public void setNickName(String item){
+		this.nickName = item;		
+	}
+	
+	public void setCharName(int item) {
+		switch (item) {
+		case 0:
+			charName = "Shrek";
+			break;
+		case 1:
+			charName = "Ironman";
+			break;
+		case 2:
+			charName = "Captain America";
+			break;
+		case 3:
+			charName = "Batman";
+			break;
+		case 4:
+			charName = "Spiderman";
+			break;
+		}
+	}
+	
+	public void setLevel(int item){
+		this.level = item;		
 	}
 }

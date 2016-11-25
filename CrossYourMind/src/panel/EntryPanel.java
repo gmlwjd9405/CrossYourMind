@@ -198,10 +198,14 @@ public class EntryPanel extends JPanel {
 			else {
 				ProgressInfo pi = new ProgressInfo();
 				pi.set_status(ProgressInfo.USER_ACCEPT);
-				pi.set_chat(nickNameTextField.getText());
-				pi.set_selectImageNum(selectImageNum);
+				
+				//heee
+				pi.setNickName(nickNameTextField.getText()); //닉네임에 세팅
+				//pi.set_chat(nickNameTextField.getText()); //chat에 닉네임..??
+				pi.setLevel((int) (Math.random() * 30 + 1)); //랜덤으로 레벨 세팅
+				pi.set_selectImageNum(selectImageNum); //캐릭터 번호 세팅(+캐릭터 이름도)
+				pi.set_imagePath(imagePath); //OK
 				System.out.println("<EntryPanel> call progressInfo SetImagePath");
-				pi.set_imagePath(imagePath);
 				EntryPanel.this.mainFrame.sendProtocol(pi);
 				nickNameTextField.setText("");
 			}

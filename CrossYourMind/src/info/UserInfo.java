@@ -11,6 +11,7 @@ public class UserInfo implements Serializable {
 
 	// ** VARIABLE **
 	private int status;
+	
 	private String nickName;
 	private String imagePath;
 	private String gameName;
@@ -26,7 +27,7 @@ public class UserInfo implements Serializable {
 		gameName = "";
 		isMaster = false;
 		score = 0;
-		level = (int) (Math.random() * 30 + 1);
+		level = 0;
 	}
 
 	// public UserInfo (int _status, String _nickName, String _imagePath)
@@ -101,6 +102,10 @@ public class UserInfo implements Serializable {
 
 	public void set_score(int item) {
 		score = item;
+	}
+	
+	public void set_level(int item) {
+		level = item;
 	}
 
 	public void setCharacterName(int item) {

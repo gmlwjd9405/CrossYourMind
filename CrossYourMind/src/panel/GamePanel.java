@@ -285,6 +285,7 @@ public class GamePanel extends JPanel {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				if (SwingUtilities.isLeftMouseButton(e) && isQuestioner) {
+					System.out.println("<GamePanel> canvasEvent µé¾î¿È");
 					pList = new ArrayList<UserPoint>();
 					pList.add(new UserPoint(e.getX(), e.getY()));
 					ProgressInfo pi = new ProgressInfo();
@@ -503,6 +504,8 @@ public class GamePanel extends JPanel {
 	 * panel with the round answer For all client, set the timer with game time
 	 */
 	public void gameStarted(String roundAnswer, String questioner) {
+		System.out.println("<GamePanel_gameStarted> roundAnswer: " + roundAnswer);
+		System.out.println("<GamePanel_gameStarted> questioner: " + questioner);
 		if (GamePanel.this.mainFrame.get_myNickname().equals(questioner)) {
 			isQuestioner = true;
 			answer.setText(roundAnswer);

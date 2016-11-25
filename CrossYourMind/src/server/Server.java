@@ -14,11 +14,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
-public class ALPHAserver extends Thread {
+public class Server extends Thread {
 	// ** VARIABLE **
 	// For connection
 	private ServerSocket serverSocket;
-	private ArrayList<ServerClient> serverClientList;
+	private ArrayList<ClientManager> serverClientList;
 	private ArrayList<GameInfo> gameInfoList;
 	private ArrayList<String> wordList;
 
@@ -33,10 +33,10 @@ public class ALPHAserver extends Thread {
 	static final int ROUND_NUM = 7;
 
 	// **CONSTRUCTOR **
-	public ALPHAserver() {
+	public Server() {
 		// Initialize data
 		recentLobbyChat = new String();
-		serverClientList = new ArrayList<ServerClient>();
+		serverClientList = new ArrayList<ClientManager>();
 		gameInfoList = new ArrayList<GameInfo>();
 
 		ActionListener action = new ActionListener() {
@@ -57,7 +57,7 @@ public class ALPHAserver extends Thread {
 
 	// ** METHOD **
 	public static void main(String[] args) {
-		new ALPHAserver().start();
+		new Server().start();
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class ALPHAserver extends Thread {
 			try {
 				Socket socket = serverSocket.accept();
 				System.out.println("Client connected!");
-				ServerClient serverClient = new ServerClient(socket, this);
+				ClientManager serverClient = new ClientManager(socket, this);
 				serverClientList.add(serverClient);
 				serverClient.start();
 			} catch (Exception e) {
@@ -85,210 +85,13 @@ public class ALPHAserver extends Thread {
 		wordList.add("네트워크");
 		wordList.add("지곡회관");
 		wordList.add("학생회관");
-		wordList.add("78계단");
-		wordList.add("제2공학관");
-		wordList.add("스낵바라면");
-		wordList.add("개강");
-		wordList.add("CC");
-		wordList.add("종강");
-		wordList.add("MT");
-		wordList.add("탄소");
-		wordList.add("수소");
-		wordList.add("산소");
-		wordList.add("질소");
-		wordList.add("이산화탄소");
-		wordList.add("미적분학");
-		wordList.add("일반화학");
-		wordList.add("프로그래밍과문제해결");
-		wordList.add("일반생명과학");
-		wordList.add("일반물리실험");
-		wordList.add("장학금");
-		wordList.add("장짤");
-		wordList.add("영짤");
-		wordList.add("대나무");
-		wordList.add("열매");
-		wordList.add("출석");
-		wordList.add("결석");
-		wordList.add("지각");
-		wordList.add("중간고사");
-		wordList.add("기말고사");
-		wordList.add("기숙사");
-		wordList.add("동아리");
-		wordList.add("체육관");
-		wordList.add("RC");
-		wordList.add("지곡연못");
-		wordList.add("버거킹");
-		wordList.add("학생식당");
-		wordList.add("육일콜");
-		wordList.add("포스로이드");
-		wordList.add("포비스");
-		wordList.add("모네");
-		wordList.add("세리오");
-		wordList.add("플랑크");
-		wordList.add("뉴턴");
-		wordList.add("패러데이");
-		wordList.add("튜링");
-		wordList.add("페이스북");
-		wordList.add("카카오톡");
-		wordList.add("구글");
-		wordList.add("알파고");
-		wordList.add("포카전");
-		wordList.add("해맞이한마당");
-		wordList.add("박태준학술정보관");
-		wordList.add("학고새");
-		wordList.add("대자보");
-		wordList.add("뒤풀이");
-		wordList.add("상남관");
-		wordList.add("트위터");
-		wordList.add("매점");
-		wordList.add("전야제");
-		wordList.add("조별과제");
-		wordList.add("대학원");
-		wordList.add("야식");
-		wordList.add("분수");
-		wordList.add("개구리밥");
-		wordList.add("교환학생");
-		wordList.add("리그오브레전드");
-		wordList.add("셧다운제");
-		wordList.add("아침수업");
-		wordList.add("제주감귤");
-		wordList.add("공강");
-		wordList.add("연강");
-		wordList.add("에너지드링크");
-		wordList.add("식곤증");
-		wordList.add("작심삼일");
-		wordList.add("수강신청");
-		wordList.add("파티스");
-		wordList.add("듀이펙트");
-		wordList.add("치킨");
-		wordList.add("레포트");
-		wordList.add("질문");
-		wordList.add("컵라면");
-		wordList.add("다이어트");
-		wordList.add("LMS");
-		wordList.add("오픈북");
-		wordList.add("쿠폰");
-		wordList.add("스마트폰");
-		wordList.add("폭풍의언덕");
-		wordList.add("전자출결");
-		wordList.add("대리출석");
-		wordList.add("LINQ");
-		wordList.add("데스크탑");
-		wordList.add("소화기");
-		wordList.add("자동제세동기");
-		wordList.add("헬조선");
-		wordList.add("학생회장");
-		wordList.add("계절학기");
-		wordList.add("여름방학");
-		wordList.add("겨울방학");
-		wordList.add("대체공휴일");
-		wordList.add("통나무집");
-		wordList.add("보드마카");
-		wordList.add("문화콜로퀴움");
-		wordList.add("인문과예술의세계");
-		wordList.add("과사통");
-		wordList.add("메로나");
-		wordList.add("조교");
-		wordList.add("보조배터리");
-		wordList.add("초코에몽");
-		wordList.add("빼뺴로");
-		wordList.add("한스드림");
-		wordList.add("롯데마트");
-		wordList.add("홈플러스");
-		wordList.add("시외버스터미널");
-		wordList.add("고속버스터미널");
-		wordList.add("베스킨라빈스");
-		wordList.add("물회");
-		wordList.add("포항북부해수욕장");
-		wordList.add("폭설");
-		wordList.add("연지");
-		wordList.add("포스트잇");
-		wordList.add("국토기행");
-		wordList.add("과외");
-		wordList.add("아르바이트");
-		wordList.add("스쿠터");
-		wordList.add("새내기배움터");
-		wordList.add("태블릿");
-		wordList.add("충전기");
-		wordList.add("보고서");
-		wordList.add("학사경고");
-		wordList.add("쌍권총");
-		wordList.add("신선동");
-		wordList.add("대청소");
-		wordList.add("GSR");
-		wordList.add("청암포탈");
-		wordList.add("효자시장");
-		wordList.add("블루투스");
-		wordList.add("와이파이");
-		wordList.add("에어컨");
-		wordList.add("포스플렉스");
-		wordList.add("원자가속기");
-		wordList.add("노트필기");
-		wordList.add("택배");
-		wordList.add("담배");
-		wordList.add("자전거");
-		wordList.add("난폭운전");
-		wordList.add("비밀번호");
-		wordList.add("기지개");
-		wordList.add("하품");
-		wordList.add("포크레인");
-		wordList.add("소방관");
-		wordList.add("전공서적");
-		wordList.add("풋살");
-		wordList.add("자퇴");
-		wordList.add("휴학");
-		wordList.add("군대");
-		wordList.add("김치");
-		wordList.add("핫식스");
-		wordList.add("배달음식");
-		wordList.add("쿨러");
-		wordList.add("크리스마스");
-		wordList.add("동아리연합회");
-		wordList.add("대항해시대");
-		wordList.add("구끼리");
-		wordList.add("고담9동");
-		wordList.add("한화");
-		wordList.add("인스턴트커피");
-		wordList.add("참뼈");
-		wordList.add("새천년노래방");
-		wordList.add("마인츠돔");
-		wordList.add("전기장판");
-		wordList.add("버너");
-		wordList.add("블라인드");
-		wordList.add("커튼");
-		wordList.add("고무동력기");
-		wordList.add("터미네이터");
-		wordList.add("송중기");
-		wordList.add("태양의후예");
-		wordList.add("냉장고를부탁해");
-		wordList.add("창렬");
-		wordList.add("응용선형대수학");
-		wordList.add("양꼬치엔칭따오");
-		wordList.add("옵티머스프라임");
-		wordList.add("아이언맨");
-		wordList.add("조커");
-		wordList.add("캡틴아메리카");
-		wordList.add("송아지");
-		wordList.add("송혜교");
-		wordList.add("고기뷔페");
-		wordList.add("보라카이");
-		wordList.add("라바");
-		wordList.add("미니언");
-		wordList.add("캐러비안의해적");
-		wordList.add("말할수없는비밀");
-		wordList.add("쏘우");
-		wordList.add("절규");
-		wordList.add("소나무");
-		wordList.add("장갑차");
-		wordList.add("스타벅스");
-		wordList.add("포항공과대학교");
 	}
 
 	// INPUT: null
 	// OUTPUT: null
 	// Objective: For all the clients, update chats in lobby panel
 	public void lobbyChatUpdateAll() {
-		for (ServerClient sc : serverClientList) {
+		for (ClientManager sc : serverClientList) {
 			try {
 				if (sc.userInLobby()) {
 					ProgressInfo pi_ack = new ProgressInfo();
@@ -307,7 +110,7 @@ public class ALPHAserver extends Thread {
 	// Objective: For debugging
 	public void printUsers() {
 		System.out.println("USERS:");
-		for (ServerClient sc : serverClientList) {
+		for (ClientManager sc : serverClientList) {
 			System.out.println("| " + sc.getUserNickname());
 		}
 	}
@@ -326,7 +129,7 @@ public class ALPHAserver extends Thread {
 	// OUTPUT: null
 	// Objective: Check if the nickname is already in use
 	public boolean checkDuplicateUser(String new_nickName) {
-		for (ServerClient serverClient : serverClientList) {
+		for (ClientManager serverClient : serverClientList) {
 			if (serverClient.userInfo.get_nickName().equals(new_nickName))
 				return true;
 		}
@@ -355,7 +158,7 @@ public class ALPHAserver extends Thread {
 	// OUTPUT: null
 	// Objective: For all the clients, update list of games in lobby panel
 	public void lobbyGameAllUpdate() {
-		for (ServerClient serverClient : serverClientList) {
+		for (ClientManager serverClient : serverClientList) {
 			try {
 				ProgressInfo pi_ack = new ProgressInfo();
 				pi_ack.set_status(ProgressInfo.GAME_LOBBY_UPDATE);
@@ -371,7 +174,7 @@ public class ALPHAserver extends Thread {
 	// OUTPUT: null
 	// Objective: For all the clients, update list of users in lobby panel
 	public void lobbyUserAllUpdate() {
-		for (ServerClient serverClient : serverClientList) {
+		for (ClientManager serverClient : serverClientList) {
 			try {
 				ProgressInfo pi_ack = new ProgressInfo();
 				pi_ack.set_status(ProgressInfo.USER_LOBBY_UPDATE);
@@ -388,7 +191,7 @@ public class ALPHAserver extends Thread {
 	// Objective: For all the clients in the game, update list of users in game
 	// panel
 	public void gameUserAllUpdate(String gameName) {
-		for (ServerClient serverClient : serverClientList) {
+		for (ClientManager serverClient : serverClientList) {
 			try {
 				if (serverClient.getUserInfo().get_gameName().equals(gameName)) {
 					ProgressInfo pi_ack = new ProgressInfo();
@@ -443,7 +246,7 @@ public class ALPHAserver extends Thread {
 			}
 		}
 
-		for (ServerClient serverClient : serverClientList) {
+		for (ClientManager serverClient : serverClientList) {
 			try {
 				System.out.println(
 						serverClient.getUserInfo().get_nickName() + " : " + serverClient.getUserInfo().get_gameName());
@@ -503,7 +306,7 @@ public class ALPHAserver extends Thread {
 	// Objective: Get the list of users for given game name
 	public ArrayList<UserInfo> getUsersGame(String gameName) {
 		ArrayList<UserInfo> ui = new ArrayList<UserInfo>();
-		for (ServerClient serverClient : serverClientList) {
+		for (ClientManager serverClient : serverClientList) {
 			if (serverClient.getUserInfo().get_gameName().equals(gameName)) {
 				ui.add(serverClient.getUserInfo());
 			}
@@ -545,7 +348,7 @@ public class ALPHAserver extends Thread {
 			}
 		}
 		String questioner = "";
-		for (ServerClient serverClient : serverClientList) {
+		for (ClientManager serverClient : serverClientList) {
 			try {
 				if (serverClient.getUserInfo().get_gameName().equals(gameName)) {
 					ProgressInfo pi_ack = new ProgressInfo();
@@ -584,7 +387,7 @@ public class ALPHAserver extends Thread {
 	// Objective: If questioner draws to canvas, broadcast the drawing to the
 	// users in the game
 	public void drawBroadcast(String gameName, ArrayList<UserPoint> pList) {
-		for (ServerClient serverClient : serverClientList) {
+		for (ClientManager serverClient : serverClientList) {
 			try {
 				if (serverClient.getUserInfo().get_gameName().equals(gameName)) {
 					ProgressInfo pi_broadcast = new ProgressInfo();
@@ -602,7 +405,7 @@ public class ALPHAserver extends Thread {
 	// OUTPUT: null
 	// Objective: For all the clients in the game, clear the canvas
 	public void clearBroadcast(String gameName) {
-		for (ServerClient serverClient : serverClientList) {
+		for (ClientManager serverClient : serverClientList) {
 			try {
 				if (serverClient.getUserInfo().get_gameName().equals(gameName)) {
 					ProgressInfo pi_broadcast = new ProgressInfo();
@@ -619,7 +422,7 @@ public class ALPHAserver extends Thread {
 	// OUTPUT: null
 	// Objective: For all the clients in the game, set the eraser mode
 	public void eraserBroadcast(String gameName) {
-		for (ServerClient serverClient : serverClientList) {
+		for (ClientManager serverClient : serverClientList) {
 			try {
 				if (serverClient.getUserInfo().get_gameName().equals(gameName)) {
 					ProgressInfo pi_broadcast = new ProgressInfo();
@@ -637,7 +440,7 @@ public class ALPHAserver extends Thread {
 	// Objective: For all the clients in the game, change the color as
 	// questioner selected
 	public void colorBroadcast(String gameName, int drawingColor) {
-		for (ServerClient serverClient : serverClientList) {
+		for (ClientManager serverClient : serverClientList) {
 			try {
 				if (serverClient.getUserInfo().get_gameName().equals(gameName)) {
 					ProgressInfo pi_broadcast = new ProgressInfo();
@@ -676,7 +479,7 @@ public class ALPHAserver extends Thread {
 					if (gameInfo.get_roundNum() > 0) {
 						gameInfo.set_roundNum(gameInfo.get_roundNum() - 1);
 						System.out.println("roundNum : " + gameInfo.get_roundNum() + "in timer expired");
-						for (ServerClient serverClient : serverClientList) {
+						for (ClientManager serverClient : serverClientList) {
 							try {
 								if (serverClient.getUserInfo().get_gameName().equals(gameName)) {
 									ProgressInfo pi_ack = new ProgressInfo();
@@ -709,7 +512,7 @@ public class ALPHAserver extends Thread {
 						ProgressInfo pi_broadcast = new ProgressInfo();
 						pi_broadcast.set_status(ProgressInfo.ROUND_TERMINATE);
 						pi_broadcast.set_chat(findWinner(gameName));
-						for (ServerClient sc : serverClientList) {
+						for (ClientManager sc : serverClientList) {
 							if (sc.getUserInfo().get_gameName().equals(gameName)) {
 								sc.lockedWrite(pi_broadcast);
 								sc.getUserInfo().set_score(0);
@@ -731,11 +534,11 @@ public class ALPHAserver extends Thread {
 	private String findWinner(String gameName) {
 		String winner = "";
 		int scoreMax = 0;
-		for (ServerClient serverClient : serverClientList) {
+		for (ClientManager serverClient : serverClientList) {
 			if (serverClient.getUserInfo().get_score() >= scoreMax)
 				scoreMax = serverClient.getUserInfo().get_score();
 		}
-		for (ServerClient sc : serverClientList) {
+		for (ClientManager sc : serverClientList) {
 			System.out.println(sc.getUserNickname() + ": " + sc.getUserInfo().get_score());
 			if (sc.getUserInfo().get_score() == scoreMax)
 				winner += (sc.getUserNickname() + " ");
@@ -784,7 +587,7 @@ public class ALPHAserver extends Thread {
 					// heee 
 					pi_broadcast.set_chattingSentence(chat); //?????
 					//pi_broadcast.set_imagePath(chat);
-					for (ServerClient serverClient : serverClientList) {
+					for (ClientManager serverClient : serverClientList) {
 						if (serverClient.getUserInfo().get_gameName().equals(gameName))
 							serverClient.lockedWrite(pi_broadcast);
 						if (serverClient.getUserInfo().get_nickName().equals(nickName))
@@ -798,7 +601,7 @@ public class ALPHAserver extends Thread {
 					// heee 
 					pi_broadcast.set_chattingSentence(chat); //?????
 					//pi_broadcast.set_imagePath(chat); //?????
-					for (ServerClient sc : serverClientList) {
+					for (ClientManager sc : serverClientList) {
 						if (sc.getUserInfo().get_gameName().equals(gameName))
 							sc.lockedWrite(pi_broadcast);
 					}
@@ -811,7 +614,7 @@ public class ALPHAserver extends Thread {
 	// OUTPUT: null
 	// Objective: Close the connection and remove server client
 	public void exitUser(Socket s) {
-		for (ServerClient serverClient : serverClientList) {
+		for (ClientManager serverClient : serverClientList) {
 			if (serverClient.getSocket() == s) {
 				try {
 					// sc.destroy ();
@@ -831,7 +634,7 @@ public class ALPHAserver extends Thread {
 	public void timerBroadcast() {
 		ProgressInfo pi_broadcast = new ProgressInfo();
 		pi_broadcast.set_status(ProgressInfo.TIMER_BROADCAST);
-		for (ServerClient serverClient : serverClientList) {
+		for (ClientManager serverClient : serverClientList) {
 			try {
 				serverClient.lockedWrite(pi_broadcast);
 				// System.out.println ("AFTER lockedWrite - timer broadcast: " +
