@@ -208,10 +208,10 @@ public class MainFrame extends JFrame implements Runnable {
 				case ProgressInfo.START_APPROVE_QUESTIONER: {
 					System.out.println("START_APPROVE_QUESTIONER");
 					gameP.clearBroadcasted();
-					System.out.println("<MainFrame> roundAnswer: " + progressInfo.get_chat());
-					System.out.println("<MainFrame> questioner: " + progressInfo.get_imagePath());
-					gameP.gameStarted(progressInfo.get_chat(), progressInfo.get_imagePath());
-					gameP.quetionerBorder(progressInfo.get_imagePath());
+					//heeee
+					//gameP.gameStarted(progressInfo.get_chat(), progressInfo.get_imagePath());
+					gameP.gameStarted(progressInfo.get_chat(), progressInfo.getNickName());
+					gameP.quetionerBorder(progressInfo.getNickName());
 					break;
 				}
 				/*
@@ -221,8 +221,8 @@ public class MainFrame extends JFrame implements Runnable {
 				case ProgressInfo.START_APPROVE_ANSWERER: {
 					System.out.println("START_APPROVE_ANSWERER");
 					gameP.clearBroadcasted();
-					gameP.gameStarted("", progressInfo.get_imagePath());
-					gameP.quetionerBorder(progressInfo.get_imagePath());
+					gameP.gameStarted("", progressInfo.getNickName());
+					gameP.quetionerBorder(progressInfo.getNickName());
 					break;
 				}
 				/*

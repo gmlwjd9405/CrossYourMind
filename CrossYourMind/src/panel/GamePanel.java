@@ -319,18 +319,66 @@ public class GamePanel extends JPanel {
 		});
 
 		// Click color buttons to change select drawing color
-		for (k = 0; k < color.length; k++) {
-			color[k].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if (isQuestioner) {
-						ProgressInfo pi = new ProgressInfo();
-						pi.set_status(ProgressInfo.SELECT_COLOR);
-						pi.set_drawColor(k);
-						GamePanel.this.mainFrame.sendProtocol(pi);
-					}
+		color[0].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (isQuestioner) {
+					ProgressInfo pi = new ProgressInfo();
+					pi.set_status(ProgressInfo.SELECT_COLOR);
+					pi.set_drawColor(0);
+					GamePanel.this.mainFrame.sendProtocol(pi);
 				}
-			});
-		}
+			}
+		});
+		color[1].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (isQuestioner) {
+					ProgressInfo pi = new ProgressInfo();
+					pi.set_status(ProgressInfo.SELECT_COLOR);
+					pi.set_drawColor(1);
+					GamePanel.this.mainFrame.sendProtocol(pi);
+				}
+			}
+		});
+		color[2].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (isQuestioner) {
+					ProgressInfo pi = new ProgressInfo();
+					pi.set_status(ProgressInfo.SELECT_COLOR);
+					pi.set_drawColor(2);
+					GamePanel.this.mainFrame.sendProtocol(pi);
+				}
+			}
+		});
+		color[3].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (isQuestioner) {
+					ProgressInfo pi = new ProgressInfo();
+					pi.set_status(ProgressInfo.SELECT_COLOR);
+					pi.set_drawColor(3);
+					GamePanel.this.mainFrame.sendProtocol(pi);
+				}
+			}
+		});
+		color[4].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (isQuestioner) {
+					ProgressInfo pi = new ProgressInfo();
+					pi.set_status(ProgressInfo.SELECT_COLOR);
+					pi.set_drawColor(4);
+					GamePanel.this.mainFrame.sendProtocol(pi);
+				}
+			}
+		});
+		color[5].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (isQuestioner) {
+					ProgressInfo pi = new ProgressInfo();
+					pi.set_status(ProgressInfo.SELECT_COLOR);
+					pi.set_drawColor(5);
+					GamePanel.this.mainFrame.sendProtocol(pi);
+				}
+			}
+		});
 	}
 
 	/**
@@ -505,7 +553,7 @@ public class GamePanel extends JPanel {
 	 */
 	public void gameStarted(String roundAnswer, String questioner) {
 		System.out.println("<GamePanel_gameStarted> roundAnswer: " + roundAnswer);
-		System.out.println("<GamePanel_gameStarted> questioner: " + questioner);
+		System.out.println("<GamePanel_gameStarted> questioner Nickname: " + questioner);
 		if (GamePanel.this.mainFrame.get_myNickname().equals(questioner)) {
 			isQuestioner = true;
 			answer.setText(roundAnswer);
@@ -545,6 +593,7 @@ public class GamePanel extends JPanel {
 
 		for (UserPoint p : pList) {
 			System.out.println("(" + p.get_pointX() + ", " + p.get_pointY() + ")");
+			System.out.println("<GamePanel> drawColor: " + drawColor);
 			g.setColor(drawColor);
 			g.fillOval(p.get_pointX(), p.get_pointY(), drawThick, drawThick);
 		}

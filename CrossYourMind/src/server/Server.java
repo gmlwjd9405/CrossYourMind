@@ -83,7 +83,7 @@ public class Server extends Thread {
 	private void initWordList() {
 		wordList = new ArrayList<String>();
 		wordList.add("네트워크");
-		wordList.add("지곡회관");
+		wordList.add("귓속말");
 		wordList.add("학생회관");
 	}
 
@@ -373,6 +373,7 @@ public class Server extends Thread {
 					}
 					System.out.println("<ALPHAserver startGameAll> call progressInfo SetImagePath");
 					// pi_ack.set_imagePath(questioner);
+					pi_ack.setNickName(questioner);
 					pi_ack.set_imagePath(serverClient.getUserInfo().get_gamecharImagePath());
 					serverClient.lockedWrite(pi_ack);
 				}
@@ -485,7 +486,9 @@ public class Server extends Thread {
 									ProgressInfo pi_ack = new ProgressInfo();
 									System.out.println(
 											"<ALPHAserver timerExpireBroadcast> call progressInfo SetImagePath");
-									pi_ack.set_imagePath(nextQuestioner);
+									pi_ack.set_imagePath(nextQuestioner); // ??????
+									pi_ack.setNickName(nextQuestioner);
+
 									if (serverClient.getUserInfo().get_nickName().equals(nextQuestioner)) {
 										System.out.println("IN if");
 										serverClient.getUserInfo().set_status(UserInfo.IN_GAME_QUESTIONER);
@@ -560,7 +563,9 @@ public class Server extends Thread {
 	// OUTPUT: round answer
 	// Objective: Get random word from word list
 	private String getRandomWord() {
-		return wordList.get(random.nextInt(199));
+		//heeee
+		//return wordList.get(random.nextInt(199));
+		return wordList.get(random.nextInt(3));
 	}
 
 	// INPUT: name of the target game, nickname of chat's owner, contents of
@@ -583,10 +588,11 @@ public class Server extends Thread {
 					pi_broadcast.set_status(ProgressInfo.CORRECT_ANSWER);
 					System.out.println("<ALPHAserver_checkAnswer> call progressInfo set_chat(nickName): " + nickName);
 					pi_broadcast.set_chat(nickName);
-					System.out.println("<ALPHAserver_checkAnswer> call progressInfo set_chattingSentence(chat): " + chat);
-					// heee 
-					pi_broadcast.set_chattingSentence(chat); //?????
-					//pi_broadcast.set_imagePath(chat);
+					System.out
+							.println("<ALPHAserver_checkAnswer> call progressInfo set_chattingSentence(chat): " + chat);
+					// heee
+					pi_broadcast.set_chattingSentence(chat); // ?????
+					// pi_broadcast.set_imagePath(chat);
 					for (ClientManager serverClient : serverClientList) {
 						if (serverClient.getUserInfo().get_gameName().equals(gameName))
 							serverClient.lockedWrite(pi_broadcast);
@@ -598,9 +604,9 @@ public class Server extends Thread {
 					pi_broadcast.set_status(ProgressInfo.CHAT_GAME_UPDATE);
 					System.out.println("<ALPHAserver_checkAnswer> call progressInfo set_chat(nickName): " + nickName);
 					pi_broadcast.set_chat(nickName);
-					// heee 
-					pi_broadcast.set_chattingSentence(chat); //?????
-					//pi_broadcast.set_imagePath(chat); //?????
+					// heee
+					pi_broadcast.set_chattingSentence(chat); // ?????
+					// pi_broadcast.set_imagePath(chat); //?????
 					for (ClientManager sc : serverClientList) {
 						if (sc.getUserInfo().get_gameName().equals(gameName))
 							sc.lockedWrite(pi_broadcast);

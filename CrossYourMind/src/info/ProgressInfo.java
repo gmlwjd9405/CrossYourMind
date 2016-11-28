@@ -242,6 +242,7 @@ public class ProgressInfo implements Serializable {
 	}
 
 	public void set_drawColor(int item) {
+		System.out.println("<ProgressInfo> set_drawColor item int: " + item);
 		drawColor = item;
 	}
 

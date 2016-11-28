@@ -68,9 +68,8 @@ public class ClientManager extends Thread {
 						pi_ack.set_status(ProgressInfo.USER_APPROVE);
 						//heee
 						pi_ack.setNickName(pi.getNickName());
-						pi_ack.set_chat(pi.get_chat()); //???πª¿˙¿Â???
 						System.out.println("<ServerClient> call progressInfo SetImagePath");
-						pi_ack.set_imagePath(pi.get_imagePath());
+						pi_ack.set_imagePath(pi.get_imagePath()); //OK
 						lockedWrite(pi_ack);
 						server.printUsers();
 					}
@@ -173,6 +172,7 @@ public class ClientManager extends Thread {
 				case ProgressInfo.DRAW: // When questioner draws to canvas
 				{
 					System.out.println("DRAW");
+					System.out.println("userInfo.get_gameName(): " + userInfo.get_gameName());
 					server.drawBroadcast(userInfo.get_gameName(), pi.get_pList());
 					break;
 				}
@@ -191,6 +191,7 @@ public class ClientManager extends Thread {
 				case ProgressInfo.SELECT_COLOR: // When user selects color
 												// button
 				{
+					System.out.println("<ClientManager> SELECT_COLOR nickname: " + userInfo.get_gameName() );
 					server.colorBroadcast(userInfo.get_gameName(), pi.get_drawColor());
 					break;
 				}
