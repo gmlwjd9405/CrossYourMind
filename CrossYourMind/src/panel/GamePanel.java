@@ -4,10 +4,12 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -35,6 +37,8 @@ import info.UserInfo;
 public class GamePanel extends JPanel {
 	// ** DEFINE **
 	public static final int ROUND_TIME = 60;
+	public UserPoint p1;
+	public UserPoint p2;
 
 	// ** VARIABLE **
 	// Connect its parent frame
@@ -162,7 +166,7 @@ public class GamePanel extends JPanel {
 		for (int i = 0; i < 6; i++) {
 			centerToolPanel.add(color[i]);
 		}
-		centerToolPanel.add(timer);
+		//centerToolPanel.add(timer);
 		// For drawing canvas
 		centerCanvasPanel = new JPanel(null);
 		centerCanvasPanel.setBounds(0, 35, 501, 305);
@@ -590,12 +594,24 @@ public class GamePanel extends JPanel {
 	 */
 	public void drawBroadcasted(ArrayList<UserPoint> pList) {
 		Graphics g = canvas.getGraphics();
+		Graphics2D g2 = (Graphics2D) g;
+		Line2D line;
 
 		for (UserPoint p : pList) {
 			System.out.println("(" + p.get_pointX() + ", " + p.get_pointY() + ")");
 			System.out.println("<GamePanel> drawColor: " + drawColor);
 			g.setColor(drawColor);
-			g.fillOval(p.get_pointX(), p.get_pointY(), drawThick, drawThick);
+			//g.fillOval(p.get_pointX(), p.get_pointY(), drawThick, drawThick);
+			
+//			p2 = p;
+//			g.drawLine(p1.get_pointX(), p1.get_pointY(), p2.get_pointX(), p2.get_pointY());
+//			p1 = p;
+			
+			p2 = p;
+			line = new Line2D.Float(p1.get_pointX(), p1.get_pointY(), p2.get_pointX(), p2.get_pointY());
+			g2.draw(line);
+			p1 = p;
+			
 		}
 	}
 

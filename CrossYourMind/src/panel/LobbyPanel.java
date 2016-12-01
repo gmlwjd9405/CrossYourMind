@@ -83,7 +83,7 @@ public class LobbyPanel extends JPanel {
 		createDialog = new JDialog();
 		CreateDialog cd = new CreateDialog(this);
 		createDialog.setContentPane(cd);
-		createDialog.setBounds(400, 300, 400, 300);
+		createDialog.setBounds(400, 300, 350, 150);
 		createDialog.setResizable(false);
 		createDialog.setVisible(false);
 	}
@@ -426,29 +426,28 @@ class CreateDialog extends JPanel {
 		this.setLayout(new BorderLayout());
 		// Inform user to enter the game name
 		message = new JLabel("Enter the name of game room.");
-		message.setPreferredSize(new Dimension(400, 100));
-		message.setBackground(new Color(222, 235, 247));
-		message.setFont(new Font(null, Font.PLAIN, 25));
+		message.setPreferredSize(new Dimension(200, 30));
+		message.setBackground(new Color(255, 230, 153));
+		message.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 20));
 		message.setHorizontalAlignment(JLabel.CENTER);
 		message.setVerticalAlignment(JLabel.CENTER);
 		this.add(BorderLayout.NORTH, message);
 
 		// Textfield for user to type game name
 		roomNameTextField = new JTextField();
-		roomNameTextField.setPreferredSize(new Dimension(400, 60));
+		roomNameTextField.setPreferredSize(new Dimension(200, 60));
 		roomNameTextField.setFont(new Font(null, Font.BOLD, 30));
-		roomNameTextField.setBorder(new LineBorder(new Color(91, 155, 213), 4));
+		roomNameTextField.setBorder(new LineBorder(new Color(255, 206, 5), 4));
 		this.add(BorderLayout.CENTER, roomNameTextField);
 
 		// South panel for buttons
 		southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		southPanel.setPreferredSize(new Dimension(400, 100));
-		southPanel.setBackground(Color.green);
-		southPanel.setBackground(new Color(222, 235, 247));
-		createButton = new JButton(new ImageIcon("src/images/createButton.png"));
-		createButton.setPreferredSize(new Dimension(180, 80));
-		exitButton = new JButton(new ImageIcon("src/images/backButton.png"));
-		exitButton.setPreferredSize(new Dimension(180, 80));
+		southPanel.setPreferredSize(new Dimension(150, 50));
+		southPanel.setBackground(new Color(219, 219, 219));
+		createButton = new JButton(new ImageIcon("src/images/createUp.png"));
+		createButton.setPreferredSize(new Dimension(100, 37));
+		exitButton = new JButton(new ImageIcon("src/images/backUp.png"));
+		exitButton.setPreferredSize(new Dimension(100, 37));
 		southPanel.add(createButton);
 		southPanel.add(exitButton);
 		this.add(BorderLayout.SOUTH, southPanel);
