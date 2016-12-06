@@ -39,37 +39,39 @@ public class ClientManager extends Thread {
 		try {
 			loop: while (true) {
 				ProgressInfo pi = (ProgressInfo) in.readObject();
-				
+
 				switch (pi.get_status()) {
-				// When user tries to enter the	game
-				case ProgressInfo.USER_ACCEPT: 
-				{
-					//heee
-					//String s = pi.get_chat();
+				// When user tries to enter the game
+				case ProgressInfo.USER_ACCEPT: {
+					// heee
+					// String s = pi.get_chat();
 					String nickName = pi.getNickName();
-					// duplicate
-					if (server.checkDuplicateUser(nickName)) {
+
+					if (server.checkDuplicateUser(nickName)) { /* duplicate */
 						ProgressInfo pi_ack = new ProgressInfo();
 						// The typed nickname is already in use
-						pi_ack.set_status(ProgressInfo.USER_DUPLICATE); 
+						pi_ack.set_status(ProgressInfo.USER_DUPLICATE);
 						lockedWrite(pi_ack);
 					}
-					// accept
-					else {
+					else { /* accept */
 						userInfo.set_nickName(nickName);
 						userInfo.setSelectImageNum(pi.get_selectImageNum());
 						userInfo.set_level(pi.getLevel());
 						userInfo.set_imagePath(pi.get_imagePath());
 						userInfo.set_status(UserInfo.IN_LOBBY);
-						
+
 						server.lobbyGameAllUpdate();
 						server.lobbyUserAllUpdate();
+						
 						ProgressInfo pi_ack = new ProgressInfo();
 						pi_ack.set_status(ProgressInfo.USER_APPROVE);
-						//heee
-						pi_ack.setNickName(pi.getNickName());
+						// heee
+						pi_ack.setNickName(pi.getNickName()); //닉네임 세팅
+						pi_ack.set_selectImageNum(pi.get_selectImageNum()); //캐릭터 이름 세팅
+						pi_ack.setLevel(pi.getLevel()); //레벨 세팅
+						pi_ack.set_imagePath(pi.get_imagePath()); 
 						System.out.println("<ServerClient> call progressInfo SetImagePath");
-						pi_ack.set_imagePath(pi.get_imagePath()); //OK
+						
 						lockedWrite(pi_ack);
 						server.printUsers();
 					}
@@ -191,15 +193,15 @@ public class ClientManager extends Thread {
 				case ProgressInfo.SELECT_COLOR: // When user selects color
 												// button
 				{
-					System.out.println("<ClientManager> SELECT_COLOR nickname: " + userInfo.get_gameName() );
+					System.out.println("<ClientManager> SELECT_COLOR nickname: " + userInfo.get_gameName());
 					server.colorBroadcast(userInfo.get_gameName(), pi.get_drawColor());
 					break;
 				}
 				case ProgressInfo.TIMER_EXPIRE: // When the round timer becomes
 												// zero in playing game
 				{
-					 System.out.println("<ClientManager> TIMER_EXPIRE get_gameName(): " + userInfo.get_gameName());
-					 System.out.println("<ClientManager> TIMER_EXPIRE get_nickName(): " + userInfo.get_nickName());
+					System.out.println("<ClientManager> TIMER_EXPIRE get_gameName(): " + userInfo.get_gameName());
+					System.out.println("<ClientManager> TIMER_EXPIRE get_nickName(): " + userInfo.get_nickName());
 					server.timerExpireBroadcast(userInfo.get_gameName(), userInfo.get_nickName());
 					break;
 				}

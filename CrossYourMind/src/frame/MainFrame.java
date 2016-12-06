@@ -58,6 +58,8 @@ public class MainFrame extends JFrame implements Runnable {
 
 	private String myNickname;
 	private String myLobbyImagePath; // seleced charNum
+	private int myLevel;
+	private String myCharName;
 
 	private Object read;
 
@@ -130,8 +132,16 @@ public class MainFrame extends JFrame implements Runnable {
 				/* When user's nickname is available */
 				case ProgressInfo.USER_APPROVE: {
 					System.out.println("USER_APPROVE");
+					System.out.println("----------------");
+					System.out.println(progressInfo.getNickName());
+					System.out.println(progressInfo.getCharName());
+					System.out.println(progressInfo.getLevel());
+					System.out.println("----------------");
 					set_myNickname(progressInfo.getNickName());
 					set_myLobbyImagePath(progressInfo.get_lobbyImagePath());
+					set_myCharName(progressInfo.getCharName());
+					set_myLevel(progressInfo.getLevel());
+
 					this.setSize(lobbyPwidth, lobbyPheight);
 					this.set_currentCard(lobbyPcard);
 					card.show(getContentPane(), lobbyPcard);
@@ -208,8 +218,9 @@ public class MainFrame extends JFrame implements Runnable {
 				case ProgressInfo.START_APPROVE_QUESTIONER: {
 					System.out.println("START_APPROVE_QUESTIONER");
 					gameP.clearBroadcasted();
-					//heeee
-					//gameP.gameStarted(progressInfo.get_chat(), progressInfo.get_imagePath());
+					// heeee
+					// gameP.gameStarted(progressInfo.get_chat(),
+					// progressInfo.get_imagePath());
 					gameP.gameStarted(progressInfo.get_chat(), progressInfo.getNickName());
 					gameP.quetionerBorder(progressInfo.getNickName());
 					break;
@@ -266,17 +277,12 @@ public class MainFrame extends JFrame implements Runnable {
 				}
 				/* When server's timer elapsed 1 second */
 				case ProgressInfo.TIMER_BROADCAST: {
-					// System.out.println ("TIMER_BROADCAST");
 					gameP.timerBroadcasted();
 					break;
 				}
 				/* When there is a new chat in game */
 				case ProgressInfo.CHAT_GAME_UPDATE: {
 					System.out.println("CHAT_GAME_UPDATE");
-					System.out.println("<CHAT_GAME_UPDATE> get_chat: " + progressInfo.get_chat());
-					System.out
-							.println("<CHAT_GAME_UPDATE> get_chattingSentence: " + progressInfo.get_chattingSentence());
-					// heee
 					gameP.gameChatUpdate(progressInfo.get_chat(), progressInfo.get_chattingSentence());
 					break;
 				}
@@ -284,9 +290,9 @@ public class MainFrame extends JFrame implements Runnable {
 				case ProgressInfo.CORRECT_ANSWER: {
 					System.out.println("CORRECT_ANSWER");
 					gameP.gameChatUpdate(progressInfo.get_chat(), progressInfo.get_chattingSentence());
-					// heee
-					// 수정 필요!!
-					//gameP.correctAnswer(progressInfo.get_chat(), progressInfo.get_imagePath());
+					// heee 수정 필요!!
+					// gameP.correctAnswer(progressInfo.get_chat(),
+					// progressInfo.get_imagePath());
 					gameP.correctAnswer(progressInfo.get_chat(), progressInfo.get_chattingSentence());
 					gameP.scoreUpdate(progressInfo.get_chat());
 					break;
@@ -387,6 +393,14 @@ public class MainFrame extends JFrame implements Runnable {
 		return myLobbyImagePath;
 	}
 
+	public int get_myLevel() {
+		return myLevel;
+	}
+
+	public String get_myCharName() {
+		return myCharName;
+	}
+
 	public String get_currentCard() {
 		return currentCard;
 	}
@@ -404,12 +418,24 @@ public class MainFrame extends JFrame implements Runnable {
 	}
 
 	/* Set methods */
-	public void set_myNickname(String item) {
-		myNickname = item;
-	}
-
 	public void set_myLobbyImagePath(String item) {
 		myLobbyImagePath = item;
+	}
+
+	public void set_myNickname(String item) {
+
+		this.myNickname = item;
+		System.out.println("<MainFrame> set_myNickname: " + this.myNickname);
+	}
+
+	public void set_myLevel(int item) {
+		this.myLevel = item;
+		System.out.println("<MainFrame> set_myLevel: " + this.myLevel);
+	}
+
+	public void set_myCharName(String item) {
+		this.myCharName = item;
+		System.out.println("<MainFrame> set_myCharName: " + this.myCharName);
 	}
 
 	public void set_currentCard(String item) {

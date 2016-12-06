@@ -30,16 +30,6 @@ public class UserInfo implements Serializable {
 		level = 0;
 	}
 
-	// public UserInfo (int _status, String _nickName, String _imagePath)
-	// {
-	// status = _status;
-	// nickName = _nickName;
-	// imagePath = _imagePath;
-	// gameName = "";
-	// isMaster = false;
-	// score = 0;
-	// }
-
 	// ** METHOD **
 	// getter
 	public int get_status() {

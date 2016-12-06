@@ -255,7 +255,7 @@ public class GamePanel extends JPanel {
 					pi.set_status(ProgressInfo.CHAT_GAME);
 					// heee
 					pi.set_chattingSentence(gameChatField.getText());
-					//pi.set_chat(gameChatField.getText());// ????필요한가????
+					// pi.set_chat(gameChatField.getText());// ????필요한가????
 					GamePanel.this.mainFrame.sendProtocol(pi);
 					gameChatField.setText("");
 				}
@@ -296,7 +296,7 @@ public class GamePanel extends JPanel {
 					System.out.println("<GamePanel> canvasEvent mouseDragged 들어옴");
 					pList = new ArrayList<UserPoint>();
 					pList.add(new UserPoint(e.getX(), e.getY()));
-					
+
 					ProgressInfo pi = new ProgressInfo();
 					pi.set_status(ProgressInfo.DRAW);
 					pi.set_pList(pList);
@@ -304,15 +304,15 @@ public class GamePanel extends JPanel {
 				}
 			}
 		});
-		
+
 		canvas.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseReleased(MouseEvent e){
+			public void mouseReleased(MouseEvent e) {
 				if (SwingUtilities.isLeftMouseButton(e) && isQuestioner) {
 					System.out.println("<GamePanel> canvasEvent mouseRelease 들어옴");
 					pList = new ArrayList<UserPoint>();
 					pList.add(null);
-					
+
 					ProgressInfo pi = new ProgressInfo();
 					pi.set_status(ProgressInfo.DRAW);
 					pi.set_pList(pList);
@@ -320,7 +320,6 @@ public class GamePanel extends JPanel {
 				}
 			}
 		});
-	
 
 		// Click clear button to erase the whole canvas
 		clearAll.addActionListener(new ActionListener() {
@@ -616,26 +615,27 @@ public class GamePanel extends JPanel {
 	 */
 	public void drawBroadcasted(ArrayList<UserPoint> pList) {
 		Graphics g = canvas.getGraphics();
-		Graphics2D g2 = (Graphics2D)g;
+		Graphics2D g2 = (Graphics2D) g;
 
 		for (UserPoint p : pList) {
 			System.out.println("<GamePanel> drawColor: " + drawColor);
 			g2.setColor(drawColor);
 			g2.setStroke(new BasicStroke(5));
-			//g.setColor(drawColor);
+			// g.setColor(drawColor);
 
 			p2 = p;
-			
+
 			if (p2 == null) {
 				p2 = p1;
 			}
 			if (p1 == null) {
 				p1 = p;
 			}
-			
-			//g.drawLine(p1.get_pointX(), p1.get_pointY(), p2.get_pointX(), p2.get_pointY());
+
+			// g.drawLine(p1.get_pointX(), p1.get_pointY(), p2.get_pointX(),
+			// p2.get_pointY());
 			g2.draw(new Line2D.Float(p1.get_pointX(), p1.get_pointY(), p2.get_pointX(), p2.get_pointY()));
-			
+
 			p1 = p;
 		}
 	}

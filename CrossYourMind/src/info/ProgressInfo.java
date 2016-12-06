@@ -64,18 +64,18 @@ public class ProgressInfo implements Serializable {
 	// ** VARIABLE **
 	// for general purpose
 	private int status;
-	
+
 	private String chat; // typed chatting (lobby or game)
 	private String chattingSentence; // chatting sentence in chat
-	
+
 	private String imagePath;
 	private String lobbyImagePath;
 	private int selectImageNum;
 	// private String proFileImagePath;
 	private String chatImagePath;
 	private String gameCharImagePath;
-	
-	//for UserInfo
+
+	// for UserInfo
 	private String nickName;
 	private String charName;
 	private int level;
@@ -139,7 +139,7 @@ public class ProgressInfo implements Serializable {
 
 	public ArrayList<String> get_usersLobby() {
 		System.out.println("<ProgressInfo_get_usersLobby> userList: ");
-		for(int i=0; i<usersLobby.size(); i++){
+		for (int i = 0; i < usersLobby.size(); i++) {
 			System.out.print(usersLobby.get(i) + " ");
 		}
 		return usersLobby;
@@ -177,16 +177,19 @@ public class ProgressInfo implements Serializable {
 	public int get_selectImageNum() {
 		return selectImageNum;
 	}
-	
-	public String getNickName(){
+
+	public String getNickName() {
+		System.out.println("<ProgressInfo> getNickName: " + this.nickName);
 		return this.nickName;
 	}
-	
-	public String getCharName(){
+
+	public String getCharName() {
+		System.out.println("<ProgressInfo> getCharName: " + this.charName);
 		return this.charName;
 	}
-	
-	public int getLevel(){
+
+	public int getLevel() {
+		System.out.println("<ProgressInfo> getLevel: " + this.level);
 		return this.level;
 	}
 
@@ -212,9 +215,9 @@ public class ProgressInfo implements Serializable {
 		lobbyImagePath = frontImagePath + "L.png";
 		// proFileImagePath;
 		chatImagePath = frontImagePath + "T.png";
-		
+
 		gameCharImagePath = frontImagePath + "H.png";
-		
+
 	}
 
 	public void set_usersLobby(ArrayList<String> item) {
@@ -255,11 +258,12 @@ public class ProgressInfo implements Serializable {
 		selectImageNum = item;
 		setCharName(item);
 	}
-	
-	public void setNickName(String item){
-		this.nickName = item;		
+
+	public void setNickName(String item) {
+		this.nickName = item;
+		System.out.println("<ProgressInfo> setNickName: " + this.nickName);
 	}
-	
+
 	public void setCharName(int item) {
 		switch (item) {
 		case 0:
@@ -278,9 +282,12 @@ public class ProgressInfo implements Serializable {
 			charName = "Spiderman";
 			break;
 		}
+
+		System.out.println("<ProgressInfo> setCharName: " + charName);
 	}
-	
-	public void setLevel(int item){
-		this.level = item;		
+
+	public void setLevel(int item) {
+		this.level = item;
+		System.out.println("<ProgressInfo> setLevel: " + this.level);
 	}
 }

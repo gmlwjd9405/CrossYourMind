@@ -378,7 +378,7 @@ public class LobbyPanel extends JPanel {
 		myInfo.add(charNameLabel[0]);
 
 		charNameLabel[1].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 14));
-		charNameLabel[1].setText("임시charName!");
+		charNameLabel[1].setText(this.mainFrame.get_myCharName());
 		charNameLabel[1].setBounds(110, 60, 135, 20);
 		myInfo.add(charNameLabel[1]);
 
@@ -392,7 +392,7 @@ public class LobbyPanel extends JPanel {
 		myInfo.add(levelLabel[0]);
 
 		levelLabel[1].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 14));
-		levelLabel[1].setText("임시level가져와!" + Integer.toString(1));
+		levelLabel[1].setText(Integer.toString(this.mainFrame.get_myLevel()));
 		levelLabel[1].setBounds(110, 100, 135, 20);
 		myInfo.add(levelLabel[1]);
 

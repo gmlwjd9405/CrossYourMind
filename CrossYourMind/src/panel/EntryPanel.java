@@ -50,9 +50,7 @@ public class EntryPanel extends JPanel {
 	}
 
 	// ** METHOD **
-	/**
-	 * INPUT: null, OUTPUT: null, Objective: Initialize the panels
-	 */
+	/** Initialize the panels */
 	private void setPanel() {
 		this.setLayout(new BorderLayout());
 
@@ -69,7 +67,6 @@ public class EntryPanel extends JPanel {
 		// For center panel
 		centerPanel = new JPanel(new FlowLayout());
 		centerPanel.setPreferredSize(new Dimension(800, 400));
-		// centerPanel.setBackground(new Color(64, 64, 64));
 		centerPanel.setBackground(Color.gray);
 		initCH();
 		this.add(BorderLayout.CENTER, centerPanel);
@@ -87,15 +84,12 @@ public class EntryPanel extends JPanel {
 		enterButton.setBackground(new Color(64, 64, 64));
 		enterButton.setOpaque(true);
 		enterButton.setPreferredSize(new Dimension(100, 37));
-		// enterButton.setBorder(null);
 		southPanel.add(nickNameTextField);
 		southPanel.add(enterButton);
 		this.add(BorderLayout.SOUTH, southPanel);
 	}
 
-	/**
-	 * INPUT: null, OUTPUT: null, Objective: Initialize reactions in this panel
-	 */
+	/** Initialize reactions in this panel */
 	private void setEvent() {
 		// Click buttons for each character to select
 		CH[0].addActionListener(new ActionListener() {
@@ -128,9 +122,7 @@ public class EntryPanel extends JPanel {
 		enterButton.addActionListener(inputActionListener);
 	}
 
-	/**
-	 * INPUT: null, OUTPUT: null, Objective: Initialize buttons for characters
-	 */
+	/** Initialize buttons for characters */
 	private void initCH() {
 		CH = new JButton[5];
 		for (int i = 0; i < 5; i++) {
@@ -141,9 +133,7 @@ public class EntryPanel extends JPanel {
 		}
 	}
 
-	/**
-	 * INPUT: null OUTPUT: null Objective: Initialize images for characters
-	 */
+	/** Initialize images for characters */
 	private void initCharImages() {
 		ArrayList<String> imagePath = new ArrayList<String>();
 		ArrayList<String> imagePathBtnPressed = new ArrayList<String>();
@@ -158,21 +148,15 @@ public class EntryPanel extends JPanel {
 		}
 	}
 
-	/**
-	 * INPUT: null, OUTPUT: null, Objective: Display only the selected character
-	 * with blue border, others with black border
-	 */
+	/** Display only the selected character with blue border, others with black border */
 	private void selectMaster(int selected) {
 		for (int i = 0; i < 5; i++) {
 			if (i == selected) {
-				// CH[i].setBorder(new LineBorder(Color.white, 5));
 				CH[i].setIcon(charPressedImages.get(i));
 				selectImageNum = i;
 				imagePath = this.mainFrame.getCharImageList().get(i);
-				// CH[i].setBorder(new LineBorder(new Color(91, 155, 213), 8));
 
 			} else
-				// CH[i].setBorder(new LineBorder(Color.black, 4));
 				CH[i].setIcon(charImages.get(i));
 		}
 	}
@@ -199,13 +183,12 @@ public class EntryPanel extends JPanel {
 				ProgressInfo pi = new ProgressInfo();
 				pi.set_status(ProgressInfo.USER_ACCEPT);
 				
-				//heee
 				pi.setNickName(nickNameTextField.getText()); //닉네임에 세팅
-				//pi.set_chat(nickNameTextField.getText()); //chat에 닉네임..??
-				pi.setLevel((int) (Math.random() * 30 + 1)); //랜덤으로 레벨 세팅
-				pi.set_selectImageNum(selectImageNum); //캐릭터 번호 세팅(+캐릭터 이름도)
-				pi.set_imagePath(imagePath); //OK
-				System.out.println("<EntryPanel> call progressInfo SetImagePath");
+				pi.setLevel((int) (Math.random() * 30 + 1)); // 랜덤으로 레벨 세팅
+				pi.set_selectImageNum(selectImageNum); // 캐릭터 번호 세팅(+캐릭터 이름도)
+				pi.set_imagePath(imagePath);
+				
+				System.out.println("<EntryPanel> call progressInfo setting all info");
 				EntryPanel.this.mainFrame.sendProtocol(pi);
 				nickNameTextField.setText("");
 			}

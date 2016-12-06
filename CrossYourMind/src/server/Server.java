@@ -563,8 +563,8 @@ public class Server extends Thread {
 	// OUTPUT: round answer
 	// Objective: Get random word from word list
 	private String getRandomWord() {
-		//heeee
-		//return wordList.get(random.nextInt(199));
+		// heeee
+		// return wordList.get(random.nextInt(199));
 		return wordList.get(random.nextInt(3));
 	}
 
@@ -577,7 +577,7 @@ public class Server extends Thread {
 	// correct
 	// If not correct, just update the chats in game
 	public void checkAnswer(String gameName, String nickName, String chat) {
-		System.out.println("<ALPHAserver>");
+		System.out.println("<SERVER>");
 		System.out.println("gameName: " + gameName);
 		System.out.println("nickName: " + nickName);
 		System.out.println("chat: " + chat);
