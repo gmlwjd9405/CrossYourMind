@@ -372,7 +372,6 @@ public class Server extends Thread {
 						pi_ack.set_status(ProgressInfo.START_APPROVE_ANSWERER);
 					}
 					System.out.println("<ALPHAserver startGameAll> call progressInfo SetImagePath");
-					// pi_ack.set_imagePath(questioner);
 					pi_ack.setNickName(questioner);
 					pi_ack.set_imagePath(serverClient.getUserInfo().get_gamecharImagePath());
 					serverClient.lockedWrite(pi_ack);
@@ -473,20 +472,20 @@ public class Server extends Thread {
 				break;
 			}
 		}
-		// System.out.println ("SERVER: Out while");
 		for (GameInfo gameInfo : gameInfoList) {
 			try {
 				if (gameInfo.get_gameName().equals(gameName)) {
 					if (gameInfo.get_roundNum() > 0) {
 						gameInfo.set_roundNum(gameInfo.get_roundNum() - 1);
+						
 						System.out.println("roundNum : " + gameInfo.get_roundNum() + "in timer expired");
+						
 						for (ClientManager serverClient : serverClientList) {
 							try {
 								if (serverClient.getUserInfo().get_gameName().equals(gameName)) {
 									ProgressInfo pi_ack = new ProgressInfo();
-									System.out.println(
-											"<ALPHAserver timerExpireBroadcast> call progressInfo SetImagePath");
-									pi_ack.set_imagePath(nextQuestioner); // ??????
+									System.out.println("<SERVER timerExpireBroadcast>");
+									//pi_ack.set_imagePath(nextQuestioner); // ??????
 									pi_ack.setNickName(nextQuestioner);
 
 									if (serverClient.getUserInfo().get_nickName().equals(nextQuestioner)) {

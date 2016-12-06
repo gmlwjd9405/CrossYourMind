@@ -45,6 +45,7 @@ public class GamePanel extends JPanel {
 	// ** VARIABLE **
 	// Connect its parent frame
 	MainFrame mainFrame;
+	
 	// For inner panels
 	private JPanel northPanel, centerPanel, drawingPanel, westPanel, eastPanel, southPanel;
 	private JLabel titleImage;
@@ -243,9 +244,7 @@ public class GamePanel extends JPanel {
 		this.add(southPanel);
 	}
 
-	/**
-	 * INPUT: null, OUTPUT: null, Objective: Initialize reactions in this panel
-	 */
+	/** Initialize reactions in this panel */
 	private void setEvent() {
 		// Press enter key to finish typing chat
 		gameChatField.addActionListener(new ActionListener() {
@@ -290,7 +289,7 @@ public class GamePanel extends JPanel {
 
 		// Mouse drag to draw
 		canvas.addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
+			@Override 
 			public void mouseDragged(MouseEvent e) {
 				if (SwingUtilities.isLeftMouseButton(e) && isQuestioner) {
 					System.out.println("<GamePanel> canvasEvent mouseDragged µé¾î¿È");
@@ -319,7 +318,22 @@ public class GamePanel extends JPanel {
 					GamePanel.this.mainFrame.sendProtocol(pi);
 				}
 			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (SwingUtilities.isLeftMouseButton(e) && isQuestioner) {
+					System.out.println("<GamePanel> canvasEvent mouseClicked µé¾î¿È");
+					pList = new ArrayList<UserPoint>();
+					pList.add(new UserPoint(e.getX(), e.getY()));
+
+					ProgressInfo pi = new ProgressInfo();
+					pi.set_status(ProgressInfo.DRAW);
+					pi.set_pList(pList);
+					GamePanel.this.mainFrame.sendProtocol(pi);
+				}
+			}
 		});
+		
 
 		// Click clear button to erase the whole canvas
 		clearAll.addActionListener(new ActionListener() {
@@ -406,10 +420,7 @@ public class GamePanel extends JPanel {
 		});
 	}
 
-	/**
-	 * INPUT: null, OUTPUT: null, Objective: When a new user enters game,
-	 * updates the west&east panel with updated user list in game
-	 */
+	/** When a new user enters game, updates the west&east panel with updated user list in game	 */
 	private void updatePanel() {
 		westPanel.removeAll();
 		eastPanel.removeAll();
@@ -504,8 +515,10 @@ public class GamePanel extends JPanel {
 	}
 
 	/**
-	 * INPUT: nickname of target user to update score, OUTPUT: null, Objective:
 	 * Update score of user who got correct answer
+	 * 
+	 * @param nickname
+	 *            of target user to update score
 	 */
 	public void scoreUpdate(String nickName) {
 		int score = 0;
@@ -536,9 +549,8 @@ public class GamePanel extends JPanel {
 		}
 	}
 
-	/**
-	 * INPUT: list of the users in this game, OUTPUT: null, Objective: Invoke
-	 * updatePanel function to redraw west&east panel
+	/** Invoke updatePanel function to redraw west&east panel
+	 * @param list of the users in this game
 	 */
 	public void joinApproved(ArrayList<UserInfo> usersGame) {
 		this.usersGame = usersGame;
@@ -546,35 +558,26 @@ public class GamePanel extends JPanel {
 		updatePanel();
 	}
 
-	/**
-	 * INPUT: list of the users in this game, OUTPUT: null, Objective: Invoke
-	 * updatePanel function to draw west&east panel at first
+	/**Invoke updatePanel function to draw west&east panel at first
+	 * @param list of the users in this game
 	 */
 	public void createApproved(ArrayList<UserInfo> usersGame) {
 		this.usersGame = usersGame;
 		updatePanel();
 	}
 
-	/**
-	 * INPUT: null, OUTPUT: null, Objective: Inform user that unable to start
-	 * game because the user is not game master
-	 */
+	/** Inform user that unable to start game because the user is not game master */
 	public void startDeniedMaster() {
 		JOptionPane.showMessageDialog(GamePanel.this.mainFrame.getContentPane(), "You are not the game master!");
 	}
 
-	/**
-	 * INPUT: null, OUTPUT: null, Objective: Inform user that unable to start
-	 * game because there is not enough player
-	 */
+	/** Inform user that unable to start game because there is not enough player */
 	public void startDeniedNum() {
 		JOptionPane.showMessageDialog(GamePanel.this.mainFrame.getContentPane(), "You need at least two players!");
 	}
 
-	/**
-	 * INPUT: answer of this round, nickname of questioner, OUTPUT: null,
-	 * Objective: Start the game. If the client is questioner, set the answer
-	 * panel with the round answer For all client, set the timer with game time
+	/** Start the game. If the client is questioner, set the answer panel with the round answer For all client, set the timer with game time
+	 * @param answer of this round, nickname of questioner
 	 */
 	public void gameStarted(String roundAnswer, String questioner) {
 		System.out.println("<GamePanel_gameStarted> roundAnswer: " + roundAnswer);
@@ -609,9 +612,8 @@ public class GamePanel extends JPanel {
 		dialog.setVisible(true);
 	}
 
-	/**
-	 * INPUT: list of points drawn by questioner, OUTPUT: null, Objective: Draw
-	 * the canvas with point list, selected color
+	/** Draw the canvas with point list, selected color 
+	 * @param list of points drawn by questioner
 	 */
 	public void drawBroadcasted(ArrayList<UserPoint> pList) {
 		Graphics g = canvas.getGraphics();
@@ -634,40 +636,36 @@ public class GamePanel extends JPanel {
 
 			// g.drawLine(p1.get_pointX(), p1.get_pointY(), p2.get_pointX(),
 			// p2.get_pointY());
+			
+			System.out.println(p2.get_pointX() + ", " + p2.get_pointY());
+			System.out.println(p1.get_pointX() + ", " + p1.get_pointY());
 			g2.draw(new Line2D.Float(p1.get_pointX(), p1.get_pointY(), p2.get_pointX(), p2.get_pointY()));
 
 			p1 = p;
 		}
 	}
 
-	/**
-	 * INPUT: null, OUTPUT: null, Objective: Clear the canvas
-	 */
+	/** Clear the canvas */
 	public void clearBroadcasted() {
 		canvas.repaint();
 	}
 
-	/**
-	 * INPUT: null, OUTPUT: null, Objective: Questioner selected eraser. Set the
-	 * color as white and set the eraser thickness
-	 */
+	/** Questioner selected eraser. Set the color as white and set the eraser thickness	 */
 	public void eraserBroadcasted() {
 		set_drawColor(6);
 		set_drawThick(25);
 	}
 
-	/**
-	 * INPUT: index of selected color, OUTPUT: null, Objective: Questioner
-	 * selected color. Set the color as selected
+	/** Questioner selected color. Set the color as selected
+	 * @param index of selected color
 	 */
 	public void colorBroadcasted(int drawingColor) {
 		set_drawColor(drawingColor);
 		set_drawThick(10);
 	}
 
-	/**
-	 * INPUT: nickname of questioner, OUTPUT: null, Objective: Set border of the
-	 * questioner with blue, set with black for others
+	/** Set border of the questioner with blue, set with black for others
+	 * @param nickname of questioner
 	 */
 	public void quetionerBorder(String questioner) {
 		int size = usersGame.size();
@@ -707,9 +705,8 @@ public class GamePanel extends JPanel {
 		}
 	}
 
-	/**
-	 * INPUT: nickname of the chat's owner, contents of chat, OUTPUT: null,
-	 * Objective: Update the chat fields for the players in game
+	/** Update the chat fields for the players in game
+	 * @param nickname of the chat's owner, contents of chat
 	 */
 	public void gameChatUpdate(String nickName, String chattingSentence) {
 		if (!(userNickname[3].getText().equals(""))) {
@@ -730,10 +727,8 @@ public class GamePanel extends JPanel {
 		}
 	}
 
-	/**
-	 * INPUT: nickname of the correct chat's owner, contents of answer, OUTPUT:
-	 * null, Objective: Inform all the clients the answer and that the chat's
-	 * owner got correct
+	/** Inform all the clients the answer and that the chat's owner got correct
+	 * @param nickname of the correct chat's owner, contents of answer
 	 */
 	public void correctAnswer(String nickName, String answer) {
 		gameStarted = false;
@@ -780,9 +775,8 @@ public class GamePanel extends JPanel {
 		dialog.setVisible(true);
 	}
 
-	/**
-	 * INPUT: message noticing that the game ended, OUTPUT: null, Objective:
-	 * Redraw all the panel as waiting state (not started)
+	/** Redraw all the panel as waiting state (not started)
+	 *  @param message noticing that the game ended
 	 */
 	public void roundTerminated(String message) {
 		gameStarted = false;
@@ -806,11 +800,7 @@ public class GamePanel extends JPanel {
 		dialog.setVisible(true);
 	}
 
-	/**
-	 * INPUT: null, OUTPUT: null, Objective: When the server notifies that 1
-	 * second elapsed If game is playing, decrement the in-game timer If in-game
-	 * timer becomes zero, notice the server that the round ended
-	 */
+	/** When the server notifies that 1 second elapsed If game is playing, decrement the in-game timer If in-game timer becomes zero, notice the server that the round ended */
 	public void timerBroadcasted() {
 		if (gameStarted) {
 			gameTime--;

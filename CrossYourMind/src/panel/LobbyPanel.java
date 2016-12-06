@@ -1,29 +1,32 @@
 package panel;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.FlowLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
-import javax.swing.JOptionPane;
-import javax.swing.JDialog;
-import javax.swing.JList;
-import javax.swing.ImageIcon;
-import javax.swing.border.LineBorder;
-
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.LineBorder;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 import frame.MainFrame;
 import info.ProgressInfo;
@@ -37,11 +40,12 @@ public class LobbyPanel extends JPanel {
 	private JLabel titleImage;
 	private JLabel gameListLabel, userListLabel, myinfoLabel, lobbyChatLabel;
 
-	private JPanel gameListPanel, userListPanel, lobbyChat, infoAndButton;
-	private JScrollPane gameListScroll, userListScroll;
+	private JPanel gameListPanel, userListPanel, lobbyChatPanel, infoAndButton;
+	private JScrollPane gameListScroll, userListScroll, chattingScroll;
 	private JList<String> gameList, userList;
 
-	private JTextArea showChat;
+	// private JTextArea showChat;
+	private JTextPane ChattingPane;
 	private JTextField lobbyChatTextField;
 
 	private JPanel myInfo, buttonPanel;
@@ -52,28 +56,18 @@ public class LobbyPanel extends JPanel {
 	private JButton createButton, backButton;
 	private JDialog createDialog;
 
-	private String[] recent8Chat, gamesLobby, usersLobby;
+	// private String[] recent8Chat;
+	private String[] gamesLobby, usersLobby;
 
 	// ** CONSTRUCTOR **
 	public LobbyPanel(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
-		recent8Chat = new String[8]; // In lobby, show only recent 8 chats
-		initR8C();
 		initCreateDialog();
 		setPanel();
 		setEvent();
 	}
 
 	// ** METHOD **
-	/**
-	 * INPUT: null, OUTPUT: null, Objective: Initialize the 8 recent chats in
-	 * lobby as empty strings
-	 */
-	private void initR8C() {
-		for (int i = 0; i < 8; i++) {
-			recent8Chat[i] = "";
-		}
-	}
 
 	/**
 	 * INPUT: null OUTPUT: null Objective: Initialize the dialog box for
@@ -169,30 +163,34 @@ public class LobbyPanel extends JPanel {
 		infoAndButton.add(buttonPanel);
 
 		// Left of the south panel: chats in lobby
-		lobbyChat = new JPanel(null);
-		lobbyChat.setBounds(471, 0, 310, 400);
+		lobbyChatPanel = new JPanel(null);
+		lobbyChatPanel.setBounds(471, 0, 310, 400);
 		lobbyChatLabel = new JLabel(new ImageIcon("src/images/lobbyChatLabel.png"));
 		lobbyChatLabel.setBounds(0, 0, 310, 30);
-		showChat = new JTextArea();
-		showChat.setBounds(0, 30, 310, 335);
-		showChat.setBackground(new Color(255, 230, 153));
-		showChat.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 15));
-		showChat.setBorder(new LineBorder(new Color(255, 206, 5), 4));
-		showChat.setEditable(false);
+
+		chattingScroll = new JScrollPane();
+		chattingScroll.setBounds(0, 30, 310, 335);
+		ChattingPane = new JTextPane();
+		chattingScroll.setViewportView(ChattingPane);
+		ChattingPane.setDisabledTextColor(new Color(0, 0, 0));
+		ChattingPane.setBackground(new Color(255, 230, 153));
+		ChattingPane.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 15));
+		ChattingPane.setBorder(new LineBorder(new Color(255, 206, 5), 4));
+		ChattingPane.setEditable(false);
+
 		lobbyChatTextField = new JTextField();
-		lobbyChatTextField.setPreferredSize(new Dimension(400, 60));
-		lobbyChatTextField.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 30));
-		lobbyChatTextField.setBorder(new LineBorder(new Color(91, 155, 213), 4));
-		lobbyChat.add(lobbyChatLabel);
-		lobbyChat.add(showChat);
-		lobbyChat.add(lobbyChatTextField);
+		lobbyChatTextField.setBounds(1, 360, 240, 40);
+		lobbyChatTextField.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 20));
+		lobbyChatTextField.setBorder(new LineBorder(new Color(255, 206, 5), 4));
+		lobbyChatPanel.add(lobbyChatLabel);
+		lobbyChatPanel.add(chattingScroll);
+		lobbyChatPanel.add(lobbyChatTextField);
 
 		centerPanel.add(gameListPanel);
 		centerPanel.add(userListPanel);
 		this.add(centerPanel);
-		centerPanel.add(lobbyChat);
+		centerPanel.add(lobbyChatPanel);
 		centerPanel.add(infoAndButton);
-		// this.add(BorderLayout.SOUTH, southPanel);
 
 		repaint();
 		invalidate();
@@ -282,13 +280,19 @@ public class LobbyPanel extends JPanel {
 	 * the list of 8 recent chat and display it to lobby chat panel
 	 */
 	public void updateLobbyChat(String lobbyChat) {
-		for (int i = 7; i > 0; i--) {
-			recent8Chat[i] = recent8Chat[i - 1];
+
+		if (lobbyChat.contains(this.mainFrame.get_myNickname() + ":")) {
+			ChattingPane.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 15));
+			SimpleAttributeSet attribs = new SimpleAttributeSet();
+			StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_RIGHT);
+			ChattingPane.setParagraphAttributes(attribs, true);
 		}
-		recent8Chat[0] = lobbyChat;
-		showChat.setText("");
-		for (int i = 7; i >= 0; i--) {
-			showChat.append("  " + recent8Chat[i] + "\r\n");
+
+		try {
+			Document doc = ChattingPane.getDocument();
+			doc.insertString(doc.getLength(), lobbyChat + "\n", null);
+		} catch (BadLocationException exc) {
+			exc.printStackTrace();
 		}
 	}
 
@@ -378,6 +382,7 @@ public class LobbyPanel extends JPanel {
 		myInfo.add(charNameLabel[0]);
 
 		charNameLabel[1].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 14));
+		System.out.println(this.mainFrame.get_myCharName() + "***************************");
 		charNameLabel[1].setText(this.mainFrame.get_myCharName());
 		charNameLabel[1].setBounds(110, 60, 135, 20);
 		myInfo.add(charNameLabel[1]);

@@ -329,10 +329,7 @@ public class MainFrame extends JFrame implements Runnable {
 	}
 
 	// ** METHOD **
-	/**
-	 * INPUT: null, OUTPUT: null, Objective: Initialize the path of image
-	 * resources
-	 */
+	/** Initialize the path of image resources */
 	private void initCharImageList() {
 		entrycharImageList = new ArrayList<String>();
 		entryEnteredcharImageList = new ArrayList<String>();
@@ -348,10 +345,8 @@ public class MainFrame extends JFrame implements Runnable {
 		}
 	}
 
-	/**
-	 * INPUT: progressInfo to send from this client to the server, OUTPUT: null,
-	 * Objective: Send object using connection
-	 */
+	/** Send object using connection
+	 * @param progressInfo to send from this client to the server */
 	public void sendProtocol(ProgressInfo pi) {
 		try {
 			out.writeObject(pi);
@@ -361,18 +356,13 @@ public class MainFrame extends JFrame implements Runnable {
 		}
 	}
 
-	/**
-	 * INPUT: null, OUTPUT: current card layout object, Objective: Access the
-	 * layout
-	 */
+	/** Access the layout
+	 * @return current card layout object */
 	public CardLayout get_card() {
 		return card;
 	}
 
-	/**
-	 * INPUT: null, OUTPUT: null, Objective: This client to exit the game in
-	 * entry panel and disconnect from the server
-	 */
+	/** This client to exit the game in entry panel and disconnect from the server	 */
 	public void exitGame() {
 		try {
 			in.close();
@@ -405,10 +395,8 @@ public class MainFrame extends JFrame implements Runnable {
 		return currentCard;
 	}
 
-	/**
-	 * INPUT: null, OUTPUT: the list of path of image resources, Objective:
-	 * Access the image resource
-	 */
+	/** Access the image resource
+	 * @return the list of path of image resources	 */
 	public ArrayList<String> getCharImageList() {
 		return entrycharImageList;
 	}
