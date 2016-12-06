@@ -427,7 +427,8 @@ class CreateDialog extends JPanel {
 		// Inform user to enter the game name
 		message = new JLabel("Enter the name of game room.");
 		message.setPreferredSize(new Dimension(200, 30));
-		message.setBackground(new Color(255, 230, 153));
+		message.setBackground(new Color(242, 242, 242));
+		message.setOpaque(true);
 		message.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 20));
 		message.setHorizontalAlignment(JLabel.CENTER);
 		message.setVerticalAlignment(JLabel.CENTER);
@@ -443,7 +444,7 @@ class CreateDialog extends JPanel {
 		// South panel for buttons
 		southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		southPanel.setPreferredSize(new Dimension(150, 50));
-		southPanel.setBackground(new Color(219, 219, 219));
+		southPanel.setBackground(new Color(242, 242, 242));
 		createButton = new JButton(new ImageIcon("src/images/createUp.png"));
 		createButton.setPreferredSize(new Dimension(100, 37));
 		exitButton = new JButton(new ImageIcon("src/images/backUp.png"));

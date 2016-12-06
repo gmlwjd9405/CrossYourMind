@@ -198,8 +198,8 @@ public class ClientManager extends Thread {
 				case ProgressInfo.TIMER_EXPIRE: // When the round timer becomes
 												// zero in playing game
 				{
-					// System.out.println ("TIMER_EXPIRE: " + ui.get_nickName
-					// ());
+					 System.out.println("<ClientManager> TIMER_EXPIRE get_gameName(): " + userInfo.get_gameName());
+					 System.out.println("<ClientManager> TIMER_EXPIRE get_nickName(): " + userInfo.get_nickName());
 					server.timerExpireBroadcast(userInfo.get_gameName(), userInfo.get_nickName());
 					break;
 				}

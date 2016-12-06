@@ -1,5 +1,6 @@
 package panel;
 
+import java.awt.BasicStroke;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
@@ -7,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Line2D;
@@ -131,18 +133,20 @@ public class GamePanel extends JPanel {
 		StyleConstants.setAlignment(styleAnswer, StyleConstants.ALIGN_CENTER);
 		answer = new JTextPane(documentAnswer);
 		answer.setBounds(0, 0, 150, 35);
-		answer.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 15));
+		answer.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 20));
 		answer.setText("ANSWER");
 		answer.setBorder(new LineBorder(new Color(64, 64, 64), 2));
 		answer.setEditable(false);
-		clearAll = new JButton("CLEAR");
-		clearAll.setBounds(152, 0, 50, 35);
-		eraser = new JButton("ERASER");
-		eraser.setBounds(202, 0, 40, 35);
+		clearAll = new JButton(new ImageIcon("src/images/canvas.png"));
+		clearAll.setBounds(150, 0, 37, 35);
+		clearAll.setContentAreaFilled(false);
+		eraser = new JButton(new ImageIcon("src/images/eraser.png"));
+		eraser.setBounds(187, 0, 35, 35);
+		eraser.setContentAreaFilled(false);
 		color = new JButton[6];
 		for (int i = 0; i < color.length; i++) {
 			color[i] = new JButton();
-			color[i].setBounds(245 + i * 32, 0, 30, 35);
+			color[i].setBounds(221 + i * 31, 0, 30, 35);
 		}
 		color[0].setBackground(Color.black);
 		color[1].setBackground(Color.red);
@@ -155,8 +159,8 @@ public class GamePanel extends JPanel {
 		Style styleTimer = contextTimer.getStyle(StyleContext.DEFAULT_STYLE);
 		StyleConstants.setAlignment(styleTimer, StyleConstants.ALIGN_CENTER);
 		timer = new JTextPane(documentTimer);
-		timer.setBounds(440, 0, 60, 35); // ?
-		timer.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 15));
+		timer.setBounds(440, 0, 60, 35);
+		timer.setFont(new Font(ProgressInfo.FONT, Font.BOLD, 17));
 		timer.setText("TIMER");
 		timer.setBorder(new LineBorder(Color.black, 2));
 		timer.setEditable(false);
@@ -166,7 +170,7 @@ public class GamePanel extends JPanel {
 		for (int i = 0; i < 6; i++) {
 			centerToolPanel.add(color[i]);
 		}
-		//centerToolPanel.add(timer);
+		centerToolPanel.add(timer);
 		// For drawing canvas
 		centerCanvasPanel = new JPanel(null);
 		centerCanvasPanel.setBounds(0, 35, 501, 305);
@@ -289,9 +293,10 @@ public class GamePanel extends JPanel {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				if (SwingUtilities.isLeftMouseButton(e) && isQuestioner) {
-					System.out.println("<GamePanel> canvasEvent µé¾î¿È");
+					System.out.println("<GamePanel> canvasEvent mouseDragged µé¾î¿È");
 					pList = new ArrayList<UserPoint>();
 					pList.add(new UserPoint(e.getX(), e.getY()));
+					
 					ProgressInfo pi = new ProgressInfo();
 					pi.set_status(ProgressInfo.DRAW);
 					pi.set_pList(pList);
@@ -299,6 +304,23 @@ public class GamePanel extends JPanel {
 				}
 			}
 		});
+		
+		canvas.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e){
+				if (SwingUtilities.isLeftMouseButton(e) && isQuestioner) {
+					System.out.println("<GamePanel> canvasEvent mouseRelease µé¾î¿È");
+					pList = new ArrayList<UserPoint>();
+					pList.add(null);
+					
+					ProgressInfo pi = new ProgressInfo();
+					pi.set_status(ProgressInfo.DRAW);
+					pi.set_pList(pList);
+					GamePanel.this.mainFrame.sendProtocol(pi);
+				}
+			}
+		});
+	
 
 		// Click clear button to erase the whole canvas
 		clearAll.addActionListener(new ActionListener() {
@@ -594,24 +616,27 @@ public class GamePanel extends JPanel {
 	 */
 	public void drawBroadcasted(ArrayList<UserPoint> pList) {
 		Graphics g = canvas.getGraphics();
-		Graphics2D g2 = (Graphics2D) g;
-		Line2D line;
+		Graphics2D g2 = (Graphics2D)g;
 
 		for (UserPoint p : pList) {
-			System.out.println("(" + p.get_pointX() + ", " + p.get_pointY() + ")");
 			System.out.println("<GamePanel> drawColor: " + drawColor);
-			g.setColor(drawColor);
-			//g.fillOval(p.get_pointX(), p.get_pointY(), drawThick, drawThick);
-			
-//			p2 = p;
-//			g.drawLine(p1.get_pointX(), p1.get_pointY(), p2.get_pointX(), p2.get_pointY());
-//			p1 = p;
-			
+			g2.setColor(drawColor);
+			g2.setStroke(new BasicStroke(5));
+			//g.setColor(drawColor);
+
 			p2 = p;
-			line = new Line2D.Float(p1.get_pointX(), p1.get_pointY(), p2.get_pointX(), p2.get_pointY());
-			g2.draw(line);
-			p1 = p;
 			
+			if (p2 == null) {
+				p2 = p1;
+			}
+			if (p1 == null) {
+				p1 = p;
+			}
+			
+			//g.drawLine(p1.get_pointX(), p1.get_pointY(), p2.get_pointX(), p2.get_pointY());
+			g2.draw(new Line2D.Float(p1.get_pointX(), p1.get_pointY(), p2.get_pointX(), p2.get_pointY()));
+			
+			p1 = p;
 		}
 	}
 
