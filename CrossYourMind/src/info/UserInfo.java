@@ -101,19 +101,19 @@ public class UserInfo implements Serializable {
 	public void setCharacterName(int item) {
 		switch (item) {
 		case 0:
-			characterName = "Shrek";
+			characterName = "Spiderman";
 			break;
 		case 1:
-			characterName = "Ironman";
+			characterName = "Batman";
 			break;
 		case 2:
 			characterName = "Captain America";
 			break;
 		case 3:
-			characterName = "Batman";
+			characterName = "Hurk";
 			break;
 		case 4:
-			characterName = "Spiderman";
+			characterName = "Ironman";
 			break;
 		}
 	}

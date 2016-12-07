@@ -123,6 +123,7 @@ public class MainFrame extends JFrame implements Runnable {
 				read = in.readObject();
 				ProgressInfo progressInfo = (ProgressInfo) read;
 				switch (progressInfo.get_status()) {
+				
 				/* When user's nickname is unavailable */
 				case ProgressInfo.USER_DUPLICATE: {
 					JOptionPane.showMessageDialog(getContentPane(), "Nickname duplicated.\nTry another one!");
@@ -131,12 +132,6 @@ public class MainFrame extends JFrame implements Runnable {
 				}
 				/* When user's nickname is available */
 				case ProgressInfo.USER_APPROVE: {
-					System.out.println("USER_APPROVE");
-					System.out.println("----------------");
-					System.out.println(progressInfo.getNickName());
-					System.out.println(progressInfo.getCharName());
-					System.out.println(progressInfo.getLevel());
-					System.out.println("----------------");
 					set_myNickname(progressInfo.getNickName());
 					set_myLobbyImagePath(progressInfo.get_lobbyImagePath());
 					set_myCharName(progressInfo.getCharName());
@@ -187,7 +182,9 @@ public class MainFrame extends JFrame implements Runnable {
 				 */
 				case ProgressInfo.JOIN_GAME_APPROVE: {
 					System.out.println("JOIN_GAME_APPROVE");
-					lobbyP.joinApproved(progressInfo.get_chat());
+					System.out.println("<MainFrame> JOIN_GAME_APPROVE get_RoomName: " + progressInfo.get_RoomName());
+					//lobbyP.joinApproved(progressInfo.get_chat()); //게임방 이름을 얻어온다.
+					lobbyP.joinApproved(progressInfo.get_RoomName()); //게임방 이름을 얻어온다.
 					gameP.joinApproved(progressInfo.get_usersGame());
 					break;
 				}
@@ -221,6 +218,7 @@ public class MainFrame extends JFrame implements Runnable {
 					// heeee
 					// gameP.gameStarted(progressInfo.get_chat(),
 					// progressInfo.get_imagePath());
+					System.out.println("<MainFrame> START_APPROVE_QUESTIONER get_chat: " + progressInfo.get_chat());
 					gameP.gameStarted(progressInfo.get_chat(), progressInfo.getNickName());
 					gameP.quetionerBorder(progressInfo.getNickName());
 					break;
@@ -283,25 +281,29 @@ public class MainFrame extends JFrame implements Runnable {
 				/* When there is a new chat in game */
 				case ProgressInfo.CHAT_GAME_UPDATE: {
 					System.out.println("CHAT_GAME_UPDATE");
-					gameP.gameChatUpdate(progressInfo.get_chat(), progressInfo.get_chattingSentence());
+					//heee
+					//gameP.gameChatUpdate(progressInfo.get_chat(), progressInfo.get_chattingSentence());
+					gameP.gameChatUpdate(progressInfo.getNickName(), progressInfo.get_chattingSentence());
 					break;
 				}
 				/* When a user got correct by its chat */
 				case ProgressInfo.CORRECT_ANSWER: {
 					System.out.println("CORRECT_ANSWER");
-					gameP.gameChatUpdate(progressInfo.get_chat(), progressInfo.get_chattingSentence());
-					// heee 수정 필요!!
-					// gameP.correctAnswer(progressInfo.get_chat(),
-					// progressInfo.get_imagePath());
-					gameP.correctAnswer(progressInfo.get_chat(), progressInfo.get_chattingSentence());
-					gameP.scoreUpdate(progressInfo.get_chat());
+					// heee
+					// gameP.gameChatUpdate(progressInfo.get_chat(), progressInfo.get_chattingSentence());
+					// gameP.correctAnswer(progressInfo.get_chat(), progressInfo.get_imagePath());
+					// gameP.scoreUpdate(progressInfo.get_chat());
+					gameP.gameChatUpdate(progressInfo.getNickName(), progressInfo.get_chattingSentence());
+					gameP.correctAnswer(progressInfo.getNickName(), progressInfo.get_chattingSentence());
+					gameP.scoreUpdate(progressInfo.getNickName());
 					break;
 				}
 				/* When all the rounds finished for game */
 				case ProgressInfo.ROUND_TERMINATE: {
 					System.out.println("ROUND_TERMINATE");
 					gameP.clearBroadcasted();
-					gameP.roundTerminated(progressInfo.get_chat());
+					//gameP.roundTerminated(progressInfo.get_chat());
+					gameP.roundTerminated(progressInfo.getNickName());
 					break;
 				}
 				/*
@@ -345,8 +347,12 @@ public class MainFrame extends JFrame implements Runnable {
 		}
 	}
 
-	/** Send object using connection
-	 * @param progressInfo to send from this client to the server */
+	/**
+	 * Send object using connection
+	 * 
+	 * @param progressInfo
+	 *            to send from this client to the server
+	 */
 	public void sendProtocol(ProgressInfo pi) {
 		try {
 			out.writeObject(pi);
@@ -356,13 +362,19 @@ public class MainFrame extends JFrame implements Runnable {
 		}
 	}
 
-	/** Access the layout
-	 * @return current card layout object */
+	/**
+	 * Access the layout
+	 * 
+	 * @return current card layout object
+	 */
 	public CardLayout get_card() {
 		return card;
 	}
 
-	/** This client to exit the game in entry panel and disconnect from the server	 */
+	/**
+	 * This client to exit the game in entry panel and disconnect from the
+	 * server
+	 */
 	public void exitGame() {
 		try {
 			in.close();
@@ -395,8 +407,11 @@ public class MainFrame extends JFrame implements Runnable {
 		return currentCard;
 	}
 
-	/** Access the image resource
-	 * @return the list of path of image resources	 */
+	/**
+	 * Access the image resource
+	 * 
+	 * @return the list of path of image resources
+	 */
 	public ArrayList<String> getCharImageList() {
 		return entrycharImageList;
 	}

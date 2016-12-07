@@ -70,8 +70,7 @@ public class LobbyPanel extends JPanel {
 	// ** METHOD **
 
 	/**
-	 * INPUT: null OUTPUT: null Objective: Initialize the dialog box for
-	 * creating a new game
+	 * Initialize the dialog box for creating a new game
 	 */
 	public void initCreateDialog() {
 		createDialog = new JDialog();
@@ -197,7 +196,7 @@ public class LobbyPanel extends JPanel {
 	}
 
 	/**
-	 * INPUT: null, OUTPUT: null, Objective: Initialize reactions in this panel
+	 * Initialize reactions in this panel
 	 */
 	private void setEvent() {
 		// Press enter key to finish typing chat
@@ -205,7 +204,7 @@ public class LobbyPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				ProgressInfo pi = new ProgressInfo();
 				pi.set_status(ProgressInfo.CHAT_LOBBY);
-				pi.set_chat(lobbyChatTextField.getText());
+				pi.set_chat(lobbyChatTextField.getText()); //lobby 채팅입력
 				LobbyPanel.this.mainFrame.sendProtocol(pi);
 				lobbyChatTextField.setText("");
 			}
@@ -240,10 +239,12 @@ public class LobbyPanel extends JPanel {
 					if (gameList.getSelectedIndex() == -1) {
 						JOptionPane.showMessageDialog(LobbyPanel.this.mainFrame.getContentPane(), "Select the room.");
 					} else {
-						System.out.println("I'm here!");
+						System.out.println("<LobbyPanel> join the game(gameList double click)");
 						ProgressInfo pi = new ProgressInfo();
 						pi.set_status(ProgressInfo.JOIN_GAME_TRY);
-						pi.set_chat(gameList.getSelectedValue().trim());
+						//pi.set_chat(gameList.getSelectedValue().trim()); //들어갈 게임방의 이름
+						pi.set_RoomName(gameList.getSelectedValue().trim()); //들어갈 게임방의 이름
+						System.out.println("<LobbyPanel> set_RoomName: " + gameList.getSelectedValue().trim());
 						LobbyPanel.this.mainFrame.sendProtocol(pi);
 					}
 				}
@@ -252,8 +253,10 @@ public class LobbyPanel extends JPanel {
 	}
 
 	/**
-	 * INPUT: updated list of users in lobby, OUTPUT: null, Objective: Update
-	 * the list of user in lobby: Right of center panel
+	 * Update the list of user in lobby: Right of center panel
+	 * 
+	 * @param updated
+	 *            list of users in lobby
 	 */
 	public void updateLobbyUser(ArrayList<String> updated) {
 		usersLobby = new String[updated.size()];
@@ -264,8 +267,10 @@ public class LobbyPanel extends JPanel {
 	}
 
 	/**
-	 * INPUT: updated list of games in lobby, OUTPUT: null, Objective: Update
-	 * the list of game in lobby: Left of center panel
+	 * Update the list of game in lobby: Left of center panel
+	 * 
+	 * @param updated
+	 *            list of games in lobby
 	 */
 	public void updateLobbyGame(ArrayList<String> updated) {
 		gamesLobby = new String[updated.size()];
@@ -276,8 +281,10 @@ public class LobbyPanel extends JPanel {
 	}
 
 	/**
-	 * INPUT: most recent chat by user in lobby, OUTPUT: null, Objective: Update
-	 * the list of 8 recent chat and display it to lobby chat panel
+	 * Update the list of 8 recent chat and display it to lobby chat panel
+	 * 
+	 * @param most
+	 *            recent chat by user in lobby
 	 */
 	public void updateLobbyChat(String lobbyChat) {
 
@@ -297,21 +304,25 @@ public class LobbyPanel extends JPanel {
 	}
 
 	/**
-	 * INPUT: null OUTPUT: null Objective: Invoked when user clicked the create
-	 * room button, show the dialog box
+	 * Invoked when user clicked the create room button, show the dialog box
 	 */
 	public void showCreateDialog() {
 		createDialog.setVisible(true);
 	}
 
 	/**
-	 * INPUT: name of the game to join OUTPUT: null Objective: Change the
-	 * client's display to game panel when joining game succeeds
+	 * Change the client's display to game panel when joining game succeeds
+	 * 
+	 * @param name
+	 *            of the game to join
 	 */
 	public void joinApproved(String gameName) {
 		ProgressInfo pi = new ProgressInfo();
 		pi.set_status(ProgressInfo.JOIN_GAME);
-		pi.set_chat(gameName);
+		System.out.println("<LobbyPanel> set_RoomName gameName: " + gameName);
+		//heee
+		//pi.set_chat(gameName);
+		pi.set_RoomName(gameName);
 		LobbyPanel.this.mainFrame.sendProtocol(pi);
 		LobbyPanel.this.mainFrame.setSize(MainFrame.gamePwidth, MainFrame.gamePheight);
 		LobbyPanel.this.mainFrame.set_currentCard(MainFrame.gamePcard);
@@ -319,8 +330,8 @@ public class LobbyPanel extends JPanel {
 	}
 
 	/**
-	 * INPUT: null OUTPUT: null Objective: Notice the client that joining game
-	 * failed because the game is full or already started
+	 * Notice the client that joining game failed because the game is full or
+	 * already started
 	 */
 	public void joinDenied() {
 		JOptionPane.showMessageDialog(LobbyPanel.this.mainFrame.getContentPane(),
@@ -339,16 +350,15 @@ public class LobbyPanel extends JPanel {
 	}
 
 	/**
-	 * INPUT: null, OUTPUT: null, Objective: Close the dialog box for creating a
-	 * new game when user ,succeeds of cancels creating
+	 * Close the dialog box for creating a new game when user ,succeeds of
+	 * cancels creating
 	 */
 	public void closeCreateDialog() {
 		createDialog.setVisible(false);
 	}
 
 	/**
-	 * INPUT: null, OUTPUT: null, Objective: Display the client's information in
-	 * South-right panel
+	 * Display the client's information in South-right panel
 	 */
 	public void myInfoUpdate() {
 		myInfo.removeAll();
@@ -382,7 +392,6 @@ public class LobbyPanel extends JPanel {
 		myInfo.add(charNameLabel[0]);
 
 		charNameLabel[1].setFont(new Font(ProgressInfo.FONT, Font.PLAIN, 14));
-		System.out.println(this.mainFrame.get_myCharName() + "***************************");
 		charNameLabel[1].setText(this.mainFrame.get_myCharName());
 		charNameLabel[1].setBounds(110, 60, 135, 20);
 		myInfo.add(charNameLabel[1]);
@@ -460,8 +469,7 @@ class CreateDialog extends JPanel {
 	}
 
 	/**
-	 * INPUT: null, OUTPUT: null, Objective: Initialize reactions in this dialog
-	 * box
+	 * Initialize reactions in this dialog box
 	 */
 	private void setEvent() {
 		// Press enter key
@@ -473,7 +481,8 @@ class CreateDialog extends JPanel {
 				else {
 					ProgressInfo pi = new ProgressInfo();
 					pi.set_status(ProgressInfo.CREATE_GAME_TRY);
-					pi.set_chat(roomNameTextField.getText());
+					//pi.set_chat(roomNameTextField.getText()); //room 이름 설정
+					pi.set_RoomName(roomNameTextField.getText()); //room 이름 설정
 					CreateDialog.this.lp.mainFrame.sendProtocol(pi);
 					roomNameTextField.setText("");
 				}
@@ -489,7 +498,8 @@ class CreateDialog extends JPanel {
 				else {
 					ProgressInfo pi = new ProgressInfo();
 					pi.set_status(ProgressInfo.CREATE_GAME_TRY);
-					pi.set_chat(roomNameTextField.getText());
+					//pi.set_chat(roomNameTextField.getText()); //room 이름 설정
+					pi.set_RoomName(roomNameTextField.getText()); //room 이름 설정
 					CreateDialog.this.lp.mainFrame.sendProtocol(pi);
 					roomNameTextField.setText("");
 				}

@@ -66,8 +66,10 @@ public class ProgressInfo implements Serializable {
 	private int status;
 
 	private String chat; // typed chatting (lobby or game)
+	private String roomName;
 	private String chattingSentence; // chatting sentence in chat
 
+	// for image
 	private String imagePath;
 	private String lobbyImagePath;
 	private int selectImageNum;
@@ -114,7 +116,13 @@ public class ProgressInfo implements Serializable {
 	}
 
 	public String get_chat() {
+		System.out.println("***********************************<ProgressInfo> get_chat: " + chat);
 		return chat;
+	}
+	
+	public String get_RoomName(){
+		System.out.println("<ProgressInfo> get_RoomName: " + this.roomName);
+		return roomName;
 	}
 
 	public String get_chattingSentence() {
@@ -138,10 +146,13 @@ public class ProgressInfo implements Serializable {
 	}
 
 	public ArrayList<String> get_usersLobby() {
-		System.out.println("<ProgressInfo_get_usersLobby> userList: ");
+		System.out.println("------------------------------------------------------");
+		System.out.print("<ProgressInfo_get_usersLobby> userList: ");
 		for (int i = 0; i < usersLobby.size(); i++) {
 			System.out.print(usersLobby.get(i) + " ");
 		}
+		System.out.println();
+		System.out.println("------------------------------------------------------");
 		return usersLobby;
 	}
 
@@ -170,6 +181,7 @@ public class ProgressInfo implements Serializable {
 	}
 
 	// public int get_drawingThickness () { return drawingThickness; }
+	
 	public ArrayList<UserPoint> get_pList() {
 		return pList;
 	}
@@ -199,17 +211,22 @@ public class ProgressInfo implements Serializable {
 	}
 
 	public void set_chat(String item) {
-		System.out.println("<ProgressInfo> set_chat chat: " + item);
+		System.out.println("+++++++++++++++++++++++++++++++++++<ProgressInfo> set_chat: " + item);
 		chat = item;
+	}
+	
+	public void set_RoomName(String item){
+		System.out.println("<ProgressInfo> set_RoomName: " + item);
+		roomName = item;
 	}
 
 	public void set_chattingSentence(String item) {
-		System.out.println("<ProgressInfo> set_chattingSentence chattingSentence: " + item);
+		System.out.println("<ProgressInfo> set_chattingSentence: " + item);
 		chattingSentence = item;
 	}
 
 	public void set_imagePath(String item) {
-		System.out.println("<ProgressInfo> set_imagePath imagePath: " + item);
+		System.out.println("<ProgressInfo> set_imagePath: " + item);
 		imagePath = item;
 		String frontImagePath = seperateImagePath(item);
 		lobbyImagePath = frontImagePath + "L.png";
@@ -267,19 +284,19 @@ public class ProgressInfo implements Serializable {
 	public void setCharName(int item) {
 		switch (item) {
 		case 0:
-			charName = "Shrek";
+			charName = "Spiderman";
 			break;
 		case 1:
-			charName = "Ironman";
+			charName = "Batman";
 			break;
 		case 2:
 			charName = "Captain America";
 			break;
 		case 3:
-			charName = "Batman";
+			charName = "Hurk";
 			break;
 		case 4:
-			charName = "Spiderman";
+			charName = "Ironman";
 			break;
 		}
 

@@ -77,9 +77,7 @@ public class Server extends Thread {
 		}
 	}
 
-	// INPUT: null
-	// OUTPUT: null
-	// Objective: Initialize the word data
+	/** Initialize the word data */
 	private void initWordList() {
 		wordList = new ArrayList<String>();
 		wordList.add("네트워크");
@@ -87,9 +85,7 @@ public class Server extends Thread {
 		wordList.add("학생회관");
 	}
 
-	// INPUT: null
-	// OUTPUT: null
-	// Objective: For all the clients, update chats in lobby panel
+	/** : For all the clients, update chats in lobby panel */
 	public void lobbyChatUpdateAll() {
 		for (ClientManager sc : serverClientList) {
 			try {
@@ -105,19 +101,16 @@ public class Server extends Thread {
 		}
 	}
 
-	// INPUT: null
-	// OUTPUT: null
-	// Objective: For debugging
+	/** For debugging */
 	public void printUsers() {
-		System.out.println("USERS:");
+		System.out.print("<SERVER> USERS: ");
 		for (ClientManager sc : serverClientList) {
-			System.out.println("| " + sc.getUserNickname());
+			System.out.print("| " + sc.getUserNickname());
 		}
+		System.out.println();
 	}
 
-	// INPUT: null
-	// OUTPUT: null
-	// Objective: For debugging
+	/** For debugging */
 	public void printGames() {
 		System.out.println("GAMES:");
 		for (GameInfo gi : gameInfoList) {
@@ -125,9 +118,12 @@ public class Server extends Thread {
 		}
 	}
 
-	// INPUT: nickname of the user trying to enter the lobby
-	// OUTPUT: null
-	// Objective: Check if the nickname is already in use
+	/**
+	 * Check if the nickname is already in use
+	 * 
+	 * @param nickname
+	 *            of the user trying to enter the lobby
+	 */
 	public boolean checkDuplicateUser(String new_nickName) {
 		for (ClientManager serverClient : serverClientList) {
 			if (serverClient.userInfo.get_nickName().equals(new_nickName))
@@ -136,9 +132,12 @@ public class Server extends Thread {
 		return false;
 	}
 
-	// INPUT: name of the game trying to create
-	// OUTPUT: null
-	// Objective: Check if the name is already in user
+	/**
+	 * Check if the name is already in user
+	 * 
+	 * @param new_gameName(name
+	 *            of the game trying to create)
+	 */
 	public boolean checkDuplicateGame(String new_gameName) {
 		for (GameInfo gameInfo : gameInfoList) {
 			if (gameInfo.get_gameName().equals(new_gameName))
@@ -147,16 +146,17 @@ public class Server extends Thread {
 		return false;
 	}
 
-	// INPUT: available name of the newly created game
-	// OUTPUT: null
-	// Objective: Create data structure for the game
+	/**
+	 * Create data structure for the game
+	 * 
+	 * @param available
+	 *            name of the newly created game
+	 */
 	public void newGame(String roomName) {
 		gameInfoList.add(new GameInfo(GameInfo.WATING, roomName, 1));
 	}
 
-	// INPUT: null
-	// OUTPUT: null
-	// Objective: For all the clients, update list of games in lobby panel
+	/** For all the clients, update list of games in lobby panel */
 	public void lobbyGameAllUpdate() {
 		for (ClientManager serverClient : serverClientList) {
 			try {
@@ -170,9 +170,7 @@ public class Server extends Thread {
 		}
 	}
 
-	// INPUT: null
-	// OUTPUT: null
-	// Objective: For all the clients, update list of users in lobby panel
+	/** For all the clients, update list of users in lobby panel */
 	public void lobbyUserAllUpdate() {
 		for (ClientManager serverClient : serverClientList) {
 			try {
@@ -186,10 +184,12 @@ public class Server extends Thread {
 		}
 	}
 
-	// INPUT: name of the target game
-	// OUTPUT: null
-	// Objective: For all the clients in the game, update list of users in game
-	// panel
+	/**
+	 * For all the clients in the game, update list of users in game panel
+	 * 
+	 * @param name
+	 *            of the target game
+	 */
 	public void gameUserAllUpdate(String gameName) {
 		for (ClientManager serverClient : serverClientList) {
 			try {
@@ -205,21 +205,24 @@ public class Server extends Thread {
 		}
 	}
 
-	// INPUT: null
-	// OUTPUT: list of game names
-	// Objective: Get names of the existing games
+	/**
+	 * Get names of the existing games list of game names
+	 */
 	public ArrayList<String> giListNames() {
 		int length = gameInfoList.size();
 		ArrayList<String> names = new ArrayList<String>();
+		System.out.print("<SERVER> giListNames: ");
 		for (int i = 0; i < length; i++) {
 			names.add(gameInfoList.get(i).get_gameName());
+			System.out.print(gameInfoList.get(i).get_gameName() + " | ");
 		}
+		System.out.println();
 		return names;
 	}
 
-	// INPUT: null
-	// OUTPUT: list of users' nicknames
-	// Objective: Get nicknames of connected users
+	/**
+	 * Get nicknames of connected users /* @return list of users' nicknames
+	 */
 	public ArrayList<String> userListNames() {
 		int length = serverClientList.size();
 		ArrayList<String> names = new ArrayList<String>();
@@ -231,9 +234,10 @@ public class Server extends Thread {
 		return names;
 	}
 
-	// INPUT: nickname of the joining user, name of the target game
-	// OUTPUT: null
-	// Objective: Update data structures about input informations.
+	/**
+	 * Update data structures about input informations. @param nickname of the
+	 * joining user, name of the target game
+	 */
 	public void userJoinGame(String nickName, String gameName) {
 		for (GameInfo gameInfo : gameInfoList) {
 			try {
@@ -248,10 +252,9 @@ public class Server extends Thread {
 
 		for (ClientManager serverClient : serverClientList) {
 			try {
-				System.out.println(
-						serverClient.getUserInfo().get_nickName() + " : " + serverClient.getUserInfo().get_gameName());
+				System.out.println("username: " + serverClient.getUserInfo().get_nickName() + ", gamename: "
+						+ serverClient.getUserInfo().get_gameName());
 				if (serverClient.getUserInfo().get_gameName().equals(gameName)) {
-					System.out.println(serverClient.getUserInfo().get_nickName());
 					ProgressInfo pi_ack = new ProgressInfo();
 					pi_ack.set_status(ProgressInfo.JOIN_GAME_NEW);
 					pi_ack.set_usersGame(getUsersGame(gameName));
@@ -263,14 +266,17 @@ public class Server extends Thread {
 		}
 	}
 
-	// INPUT: name of the target game
-	// OUTPUT: null
-	// Objective: Check if the game is full or already started
+	/**
+	 * Check if the game is full or already started
+	 * 
+	 * @param of
+	 *            the target game
+	 */
 	public boolean checkFull(String gameName) {
 		for (GameInfo gameInfo : gameInfoList) {
 			try {
 				if (gameInfo.get_gameName().equals(gameName)) {
-					if (gameInfo.get_participants() == 6 || gameInfo.get_status() == GameInfo.PLAYING)
+					if (gameInfo.get_participants() == 4 || gameInfo.get_status() == GameInfo.PLAYING)
 						return true;
 				}
 			} catch (Exception e) {
@@ -280,10 +286,13 @@ public class Server extends Thread {
 		return false;
 	}
 
-	// INPUT: name of the target game
-	// OUTPUT: null
-	// Objective: Update data structure of game. Notify and update panels for
-	// the left users in that game.
+	/**
+	 * Update data structure of game. Notify and update panels for the left
+	 * users in that game.
+	 * 
+	 * @param name
+	 *            of the target game
+	 */
 	public void userExitGame(String gameName) {
 		loop: for (int i = 0; i < gameInfoList.size(); i++) {
 			try {
@@ -301,9 +310,13 @@ public class Server extends Thread {
 		}
 	}
 
-	// INPUT: name of the target game
-	// OUTPUT: list of users in that game
-	// Objective: Get the list of users for given game name
+	/**
+	 * Get the list of users for given game name
+	 * 
+	 * @param name
+	 *            of the target game
+	 * @return list of users in that game
+	 */
 	public ArrayList<UserInfo> getUsersGame(String gameName) {
 		ArrayList<UserInfo> ui = new ArrayList<UserInfo>();
 		for (ClientManager serverClient : serverClientList) {
@@ -314,19 +327,22 @@ public class Server extends Thread {
 		return ui;
 	}
 
-	// INPUT: null
-	// OUTPUT: null
-	// Objective: For debugging
+	/** For debugging */
 	public void printGi() {
 		for (GameInfo gameInfo : gameInfoList) {
+			System.out.println("<Server> printGi");
 			System.out.println("status: " + gameInfo.get_status() + "gameName: " + gameInfo.get_gameName()
 					+ "participants: " + gameInfo.get_participants());
 		}
 	}
 
-	// INPUT: name of the target game
-	// OUTPUT: true or false
-	// Objective: Check if the game can be started (enough participants)
+	/**
+	 * Check if the game can be started (enough participants)
+	 * 
+	 * @param name
+	 *            of the target game
+	 * @return true or false
+	 */
 	public boolean startAvailable(String gameName) {
 		for (GameInfo gameInfo : gameInfoList) {
 			if (gameInfo.get_gameName().equals(gameName)) {
@@ -337,9 +353,12 @@ public class Server extends Thread {
 		return false;
 	}
 
-	// INPUT: name of the target game
-	// OUTPUT: null
-	// Objective: For all the clients in the game, notify to start the game
+	/**
+	 * For all the clients in the game, notify to start the game
+	 * 
+	 * @param name
+	 *            of the target game
+	 */
 	public void startGameAll(String gameName) {
 		for (GameInfo gameInfo : gameInfoList) {
 			if (gameInfo.get_gameName().equals(gameName)) {
@@ -361,7 +380,8 @@ public class Server extends Thread {
 								if (gameInfo.get_gameName().equals(gameName)) {
 									gameInfo.set_roundNum(ROUND_NUM - 1);
 									gameInfo.set_roundAnswer(getRandomWord());
-									pi_ack.set_chat(gameInfo.get_roundAnswer());
+									pi_ack.set_chat(gameInfo.get_roundAnswer()); // 게임의
+																					// 정답
 								}
 							} catch (Exception e) {
 								e.printStackTrace();
@@ -382,10 +402,15 @@ public class Server extends Thread {
 		}
 	}
 
-	// INPUT: name of the target game, point list to draw
-	// OUTPUT: null
-	// Objective: If questioner draws to canvas, broadcast the drawing to the
-	// users in the game
+	/**
+	 * If questioner draws to canvas, broadcast the drawing to the users in the
+	 * game
+	 * 
+	 * @param name
+	 *            of the target game,
+	 * @param point
+	 *            list to draw
+	 */
 	public void drawBroadcast(String gameName, ArrayList<UserPoint> pList) {
 		for (ClientManager serverClient : serverClientList) {
 			try {
@@ -401,9 +426,12 @@ public class Server extends Thread {
 		}
 	}
 
-	// INPUT: name of the target game
-	// OUTPUT: null
-	// Objective: For all the clients in the game, clear the canvas
+	/**
+	 * For all the clients in the game, clear the canvas
+	 * 
+	 * @param name
+	 *            of the target game
+	 */
 	public void clearBroadcast(String gameName) {
 		for (ClientManager serverClient : serverClientList) {
 			try {
@@ -418,9 +446,12 @@ public class Server extends Thread {
 		}
 	}
 
-	// INPUT: name of the target game
-	// OUTPUT: null
-	// Objective: For all the clients in the game, set the eraser mode
+	/**
+	 * For all the clients in the game, set the eraser mode
+	 * 
+	 * @param name
+	 *            of the target game
+	 */
 	public void eraserBroadcast(String gameName) {
 		for (ClientManager serverClient : serverClientList) {
 			try {
@@ -435,10 +466,12 @@ public class Server extends Thread {
 		}
 	}
 
-	// INPUT: name of the target game
-	// OUTPUT: null
-	// Objective: For all the clients in the game, change the color as
-	// questioner selected
+	/**
+	 * For all the clients in the game, change the color as questioner selected
+	 * 
+	 * @param name
+	 *            of the target game
+	 */
 	public void colorBroadcast(String gameName, int drawingColor) {
 		for (ClientManager serverClient : serverClientList) {
 			try {
@@ -454,12 +487,15 @@ public class Server extends Thread {
 		}
 	}
 
-	// INPUT: name of the target game, nickname of the most recent questioner
-	// OUTPUT: null
-	// Objective:
-	// For all the clients in the game, notifies that the current round ended
-	// and the next questioner
-	// For the new questioner, notify new round answer
+	/**
+	 * For all the clients in the game, notifies that the current round ended
+	 * and the next questioner For the new questioner, notify new round answer
+	 * 
+	 * @param name
+	 *            of the target game
+	 * @param nickname
+	 *            of the most recent questioner
+	 */
 	public void timerExpireBroadcast(String gameName, String recentQuestioner) {
 		int i;
 		String nextQuestioner;
@@ -477,32 +513,37 @@ public class Server extends Thread {
 				if (gameInfo.get_gameName().equals(gameName)) {
 					if (gameInfo.get_roundNum() > 0) {
 						gameInfo.set_roundNum(gameInfo.get_roundNum() - 1);
-						
+
 						System.out.println("roundNum : " + gameInfo.get_roundNum() + "in timer expired");
-						
-						for (ClientManager serverClient : serverClientList) {
+
+						for (ClientManager clientManager : serverClientList) {
 							try {
-								if (serverClient.getUserInfo().get_gameName().equals(gameName)) {
+								if (clientManager.getUserInfo().get_gameName().equals(gameName)) {
 									ProgressInfo pi_ack = new ProgressInfo();
 									System.out.println("<SERVER timerExpireBroadcast>");
-									//pi_ack.set_imagePath(nextQuestioner); // ??????
+									// pi_ack.set_imagePath(nextQuestioner); //
+									// ??????
 									pi_ack.setNickName(nextQuestioner);
 
-									if (serverClient.getUserInfo().get_nickName().equals(nextQuestioner)) {
+									if (clientManager.getUserInfo().get_nickName().equals(nextQuestioner)) {
 										System.out.println("IN if");
-										serverClient.getUserInfo().set_status(UserInfo.IN_GAME_QUESTIONER);
+										clientManager.getUserInfo().set_status(UserInfo.IN_GAME_QUESTIONER);
 										pi_ack.set_status(ProgressInfo.START_APPROVE_QUESTIONER);
 										gameInfo.set_roundAnswer(getRandomWord());
-										pi_ack.set_chat(gameInfo.get_roundAnswer());
+										pi_ack.set_chat(gameInfo.get_roundAnswer()); // 게임의
+																						// 정답
 									} else {
 										System.out.println("IN else");
-										serverClient.getUserInfo().set_status(UserInfo.IN_GAME_ANSWERER);
+										clientManager.getUserInfo().set_status(UserInfo.IN_GAME_ANSWERER);
 										pi_ack.set_status(ProgressInfo.START_APPROVE_ANSWERER);
 									}
-									System.out.println(
-											"  SEND| chat:" + pi_ack.get_chat() + " iPath:" + pi_ack.get_imagePath());
-									System.out.println("        status:" + pi_ack.get_status());
-									serverClient.lockedWrite(pi_ack);
+									System.out.println(" | FROM SERVER SEND MESSAGE | ");
+									System.out.print("chat:" + pi_ack.get_chat());
+									System.out.print(" roomName:" + pi_ack.get_RoomName());
+									System.out.print(" iPath:" + pi_ack.get_imagePath());
+									System.out.println(" status:" + pi_ack.get_status());
+									clientManager.lockedWrite(pi_ack); // progressInfo를
+																		// 보낸다
 									System.out.println("AFTER lockedWrite - expire broadcast");
 								}
 							} catch (Exception e) {
@@ -530,9 +571,13 @@ public class Server extends Thread {
 
 	}
 
-	// INPUT: name of the target game
-	// OUTPUT: null
-	// Objective: For all the clients in the game, show the whole game result
+	/**
+	 * For all the clients in the game, show the whole game result
+	 * 
+	 * @param name
+	 *            of the target game
+	 * @return
+	 */
 	private String findWinner(String gameName) {
 		String winner = "";
 		int scoreMax = 0;
@@ -550,46 +595,54 @@ public class Server extends Thread {
 		return winner;
 	}
 
-	// INPUT: null
-	// OUTPUT: null
-	// Objective: Initialize random variable that is used to select next
-	// questioner and next round answer
+	/**
+	 * Initialize random variable that is used to select next questioner and
+	 * next round answer
+	 */
 	private void initRandom() {
 		random = new Random();
 	}
 
-	// INPUT: null
-	// OUTPUT: round answer
-	// Objective: Get random word from word list
+	/**
+	 * Get random word from word list
+	 * 
+	 * @return round answer
+	 */
 	private String getRandomWord() {
 		// heeee
 		// return wordList.get(random.nextInt(199));
 		return wordList.get(random.nextInt(3));
 	}
 
-	// INPUT: name of the target game, nickname of chat's owner, contents of
-	// chat
-	// OUTPUT: null
-	// Objective:
-	// For newly typed chat, check if it is correct
-	// If correct, notify all the users in the game that the chat's owner got
-	// correct
-	// If not correct, just update the chats in game
+	/**
+	 * For newly typed chat, check if it is correct If correct, notify all the
+	 * users in the game that the chat's owner got correct If not correct, just
+	 * update the chats in game
+	 * 
+	 * @param name
+	 *            of the target game
+	 * @param nickname
+	 *            of chat's owner
+	 * @param contents
+	 *            of
+	 */
 	public void checkAnswer(String gameName, String nickName, String chat) {
 		System.out.println("<SERVER>");
+		System.out.println("---------------------------");
 		System.out.println("gameName: " + gameName);
 		System.out.println("nickName: " + nickName);
 		System.out.println("chat: " + chat);
+		System.out.println("---------------------------");
 		for (GameInfo gameInfo : gameInfoList) {
 			if (gameInfo.get_gameName().equals(gameName)) {
-				if (gameInfo.get_roundAnswer().equals(chat)) {// System.out.println("CORRECT");
+				if (gameInfo.get_roundAnswer().equals(chat)) {
 					ProgressInfo pi_broadcast = new ProgressInfo();
 					pi_broadcast.set_status(ProgressInfo.CORRECT_ANSWER);
-					System.out.println("<ALPHAserver_checkAnswer> call progressInfo set_chat(nickName): " + nickName);
-					pi_broadcast.set_chat(nickName);
-					System.out
-							.println("<ALPHAserver_checkAnswer> call progressInfo set_chattingSentence(chat): " + chat);
+					System.out.println("<ALPHAserver_checkAnswer> pi.setNickName(nickName): " + nickName);
+					System.out.println("<ALPHAserver_checkAnswer> pi.set_chattingSentence(chat): " + chat);
 					// heee
+					// pi_broadcast.set_chat(nickName);
+					pi_broadcast.setNickName(nickName);
 					pi_broadcast.set_chattingSentence(chat); // ?????
 					// pi_broadcast.set_imagePath(chat);
 					for (ClientManager serverClient : serverClientList) {
@@ -601,9 +654,11 @@ public class Server extends Thread {
 				} else {
 					ProgressInfo pi_broadcast = new ProgressInfo();
 					pi_broadcast.set_status(ProgressInfo.CHAT_GAME_UPDATE);
-					System.out.println("<ALPHAserver_checkAnswer> call progressInfo set_chat(nickName): " + nickName);
-					pi_broadcast.set_chat(nickName);
+					System.out.println("<ALPHAserver_checkAnswer> pi.setNickName(nickName): " + nickName);
+					System.out.println("<ALPHAserver_checkAnswer> pi.set_chattingSentence(chat): " + chat);
 					// heee
+					// pi_broadcast.set_chat(nickName);
+					pi_broadcast.setNickName(nickName);
 					pi_broadcast.set_chattingSentence(chat); // ?????
 					// pi_broadcast.set_imagePath(chat); //?????
 					for (ClientManager sc : serverClientList) {
@@ -615,9 +670,11 @@ public class Server extends Thread {
 		}
 	}
 
-	// INPUT: socket
-	// OUTPUT: null
-	// Objective: Close the connection and remove server client
+	/**
+	 * Close the connection and remove server client
+	 * 
+	 * @param socket
+	 */
 	public void exitUser(Socket s) {
 		for (ClientManager serverClient : serverClientList) {
 			if (serverClient.getSocket() == s) {
@@ -633,29 +690,25 @@ public class Server extends Thread {
 		}
 	}
 
-	// INPUT: null
-	// OUTPUT: null
-	// Objective: For all the clients, notify that 1 second elapsed
+	/** For all the clients, notify that 1 second elapsed */
 	public void timerBroadcast() {
 		ProgressInfo pi_broadcast = new ProgressInfo();
 		pi_broadcast.set_status(ProgressInfo.TIMER_BROADCAST);
 		for (ClientManager serverClient : serverClientList) {
 			try {
 				serverClient.lockedWrite(pi_broadcast);
-				// System.out.println ("AFTER lockedWrite - timer broadcast: " +
-				// sc.getUserNickname ());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	// Get method
+	/* Get method */
 	public String get_RLC() {
 		return recentLobbyChat;
 	}
 
-	// Set method
+	/* Set method */
 	public void set_RLC(String item) {
 		recentLobbyChat = item;
 	}

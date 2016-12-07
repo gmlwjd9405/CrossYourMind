@@ -52,8 +52,7 @@ public class ClientManager extends Thread {
 						// The typed nickname is already in use
 						pi_ack.set_status(ProgressInfo.USER_DUPLICATE);
 						lockedWrite(pi_ack);
-					}
-					else { /* accept */
+					} else { /* accept */
 						userInfo.set_nickName(nickName);
 						userInfo.setSelectImageNum(pi.get_selectImageNum());
 						userInfo.set_level(pi.getLevel());
@@ -62,16 +61,16 @@ public class ClientManager extends Thread {
 
 						server.lobbyGameAllUpdate();
 						server.lobbyUserAllUpdate();
-						
+
 						ProgressInfo pi_ack = new ProgressInfo();
 						pi_ack.set_status(ProgressInfo.USER_APPROVE);
 						// heee
-						pi_ack.setNickName(pi.getNickName()); //닉네임 세팅
-						pi_ack.set_selectImageNum(pi.get_selectImageNum()); //캐릭터 이름 세팅
-						pi_ack.setLevel(pi.getLevel()); //레벨 세팅
-						pi_ack.set_imagePath(pi.get_imagePath()); 
+						pi_ack.setNickName(pi.getNickName()); // 닉네임 세팅
+						pi_ack.set_selectImageNum(pi.get_selectImageNum()); // 캐릭터 이름 세팅
+						pi_ack.setLevel(pi.getLevel()); // 레벨 세팅
+						pi_ack.set_imagePath(pi.get_imagePath());
 						System.out.println("<ServerClient> call progressInfo SetImagePath");
-						
+
 						lockedWrite(pi_ack);
 						server.printUsers();
 					}
@@ -79,6 +78,7 @@ public class ClientManager extends Thread {
 				}
 				case ProgressInfo.CHAT_LOBBY: // When user types chat in lobby
 				{
+					System.out.println("<ClientManager> CHAT_LOBBY get_chat: " + pi.get_chat());
 					String s = pi.get_chat();
 					server.set_RLC(userInfo.get_nickName() + ": " + s);
 					server.lobbyChatUpdateAll();
@@ -102,14 +102,21 @@ public class ClientManager extends Thread {
 						lockedWrite(pi_ack);
 					} else {
 						System.out.println("CREATE_GAME_APPROVE");
-						server.newGame(pi.get_chat());
+						//heeee
+						//server.newGame(pi.get_chat());
+						server.newGame(pi.get_RoomName());
 						server.lobbyGameAllUpdate();
 						userInfo.set_status(UserInfo.IN_GAME);
-						userInfo.set_gameName(pi.get_chat());
+						//heeee
+						//userInfo.set_gameName(pi.get_chat());
+						userInfo.set_gameName(pi.get_RoomName());
 						userInfo.set_isMaster(true);
 						ProgressInfo pi_ack = new ProgressInfo();
 						pi_ack.set_status(ProgressInfo.CREATE_GAME_APPROVE);
-						pi_ack.set_usersGame(server.getUsersGame(pi.get_chat()));
+						//heee
+						//pi_ack.set_usersGame(server.getUsersGame(pi.get_chat()));
+						System.out.println("<ClientManager> CREATE_GAME_APPROVE get_RoomName: " + pi.get_RoomName());
+						pi_ack.set_usersGame(server.getUsersGame(pi.get_RoomName()));
 						lockedWrite(pi_ack);
 						server.lobbyUserAllUpdate();
 					}
@@ -119,33 +126,36 @@ public class ClientManager extends Thread {
 													// game
 				{
 					System.out.println("JOIN_GAME_TRY");
-					if (server.checkFull(pi.get_chat())) {
+					if (server.checkFull(pi.get_RoomName())) {
 						ProgressInfo pi_ack = new ProgressInfo();
 						pi_ack.set_status(ProgressInfo.JOIN_GAME_DENIED);
 						lockedWrite(pi_ack);
 					} else {
 						userInfo.set_status(UserInfo.IN_GAME);
 						userInfo.set_isMaster(false);
-						userInfo.set_gameName(pi.get_chat());
+						userInfo.set_gameName(pi.get_RoomName());
 						ProgressInfo pi_ack = new ProgressInfo();
 						pi_ack.set_status(ProgressInfo.JOIN_GAME_APPROVE);
-						pi_ack.set_chat(pi.get_chat());
-						pi_ack.set_usersGame(server.getUsersGame(pi.get_chat()));
+						//heeee
+						System.out.println("???<ClientManager> JOIN_GAME_TRY set_RoomName: " + pi.get_RoomName());
+						//pi_ack.set_chat(pi.get_chat());
+						pi_ack.set_RoomName(pi.get_RoomName());
+						//pi_ack.set_usersGame(server.getUsersGame(pi.get_chat()));
+						pi_ack.set_usersGame(server.getUsersGame(pi.get_RoomName()));
 						lockedWrite(pi_ack);
 					}
 					break;
 				}
-				case ProgressInfo.JOIN_GAME: // When user succeeds to join a
-												// game
+				case ProgressInfo.JOIN_GAME: // When user succeeds to join a game
 				{
-					System.out.println("JOIN_GAME");
+					System.out.println("JOIN_GAME [ClientManager]");
 					server.userJoinGame(userInfo.get_nickName(), userInfo.get_gameName());
 					server.lobbyUserAllUpdate();
 					break;
 				}
 				case ProgressInfo.EXIT_GAME: // When user exits the game
 				{
-					System.out.println("EXIT_GAME");
+					System.out.println("EXIT_GAME [ClientManager]");
 					String gameName = userInfo.get_gameName();
 					userInfo.set_gameName("");
 					userInfo.set_status(UserInfo.IN_LOBBY);
@@ -232,18 +242,17 @@ public class ClientManager extends Thread {
 		}
 	}
 
-	// INPUT: progressInfo
-	// OUTPUT: null
-	// Objective:
-	// When serverClient try to send progressInfo to client, we should prevent
-	// race condition of output stream
-	// Race condition can occur when timer broadcasting function is executed
+	/**
+	 * When serverClient try to send progressInfo to client, we should prevent
+	 * race condition of output stream Race condition can occur when timer
+	 * broadcasting function is executed
+	 * 
+	 * @param progressInfo
+	 */
 	public void lockedWrite(ProgressInfo pi) {
-		// System.out.println ("@@Before while");
 		while (!outLock) {
 			System.out.println("@In while");
 		}
-		// System.out.println ("@@After while");
 		outLock = false;
 		try {
 			out.writeObject(pi);
@@ -275,10 +284,9 @@ public class ClientManager extends Thread {
 		return s;
 	}
 
-	// INPUT: null
-	// OUTPUT: null
-	// Objective:
-	// When user try to exit game, server should disconnect socket and stream to
+	/**
+	 * When user try to exit game, server should disconnect socket and stream to
+	 */
 	// client
 	public void exitClient() {
 		try {
