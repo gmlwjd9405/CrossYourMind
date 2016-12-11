@@ -116,7 +116,7 @@ public class ProgressInfo implements Serializable {
 	}
 
 	public String get_chat() {
-		System.out.println("***********************************<ProgressInfo> get_chat: " + chat);
+		System.out.println("<ProgressInfo> get_chat: " + chat);
 		return chat;
 	}
 	
@@ -211,7 +211,7 @@ public class ProgressInfo implements Serializable {
 	}
 
 	public void set_chat(String item) {
-		System.out.println("+++++++++++++++++++++++++++++++++++<ProgressInfo> set_chat: " + item);
+		System.out.println("<ProgressInfo> set_chat: " + item);
 		chat = item;
 	}
 	

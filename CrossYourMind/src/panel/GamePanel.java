@@ -767,6 +767,9 @@ public class GamePanel extends JPanel {
 	 *            of the correct chat's owner, contents of answer
 	 */
 	public void correctAnswer(String nickName, String answer) {
+		System.out.println("<GamePanel> correctAnswer");
+		System.out.println("nickName: " + nickName + ", answer: " + answer);
+		
 		gameStarted = false;
 		String message = "";
 		if (!(userNickname[3].getText().equals(""))) {

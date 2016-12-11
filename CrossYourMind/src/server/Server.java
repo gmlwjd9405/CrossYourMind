@@ -537,11 +537,13 @@ public class Server extends Thread {
 										clientManager.getUserInfo().set_status(UserInfo.IN_GAME_ANSWERER);
 										pi_ack.set_status(ProgressInfo.START_APPROVE_ANSWERER);
 									}
+									System.out.println("++++++++++++++++++++++++++++++++++++++++++");
 									System.out.println(" | FROM SERVER SEND MESSAGE | ");
-									System.out.print("chat:" + pi_ack.get_chat());
-									System.out.print(" roomName:" + pi_ack.get_RoomName());
-									System.out.print(" iPath:" + pi_ack.get_imagePath());
-									System.out.println(" status:" + pi_ack.get_status());
+									System.out.println("  chat: " + pi_ack.get_chat());
+									System.out.println("  roomName: " + pi_ack.get_RoomName());
+									System.out.println("  iPath: " + pi_ack.get_imagePath());
+									System.out.println("  status: " + pi_ack.get_status());
+									System.out.println("++++++++++++++++++++++++++++++++++++++++++");
 									clientManager.lockedWrite(pi_ack); // progressInfo를
 																		// 보낸다
 									System.out.println("AFTER lockedWrite - expire broadcast");
